@@ -1,3 +1,6 @@
+import userInput
+
+
 class Character:
     """Class containing all character related variables."""
 
@@ -13,8 +16,7 @@ class Character:
         self.name = input("Name: ")
 
     def set_init(self):
-        self.initiative = input("Join Battle Roll: ")
-
+        self.initiative=userInput.int("Join Battle: ")
 
 def clear_screen():
     """Prints a bunch of new lines to clear the screen."""
@@ -37,4 +39,4 @@ character_list = []
 print("Hello World")
 clear_screen()
 character_list.append(add_new_character())
-print(character_list[0].name + " " + character_list[0].initiative)
+print(character_list[0].name + " " + str(character_list[0].initiative))
