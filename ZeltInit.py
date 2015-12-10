@@ -71,6 +71,7 @@ clear_screen()
 character_list.append(add_new_character())
 character_list.append(add_new_character())
 character_list.append(add_new_character())
+character_list.append(add_new_character())
 # print(character_list[0].name + " " + str(character_list[0].initiative))
 
 # set second character to has_gone
