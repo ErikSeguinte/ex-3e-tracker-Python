@@ -39,6 +39,16 @@ def add_new_character():
     new_character.set_init()
     return new_character
 
+def add_players():
+    character_list = []
+    with open('Players.txt', encoding='utf-8') as player_file:
+        for a_line in player_file:
+            character = Character()
+            character.name=a_line.rstrip()
+            character_list.append(character)
+
+    return character_list
+
 
 def print_table(list):
     n = 0
@@ -65,17 +75,14 @@ def sort_table(list):
     return sorted(sorted_list, key=lambda character: character.has_gone)
 
 
-character_list = []
+# character_list = []
 print("Hello World")
 clear_screen()
-character_list.append(add_new_character())
-character_list.append(add_new_character())
-character_list.append(add_new_character())
-character_list.append(add_new_character())
+character_list=add_players()
 # print(character_list[0].name + " " + str(character_list[0].initiative))
 
 # set second character to has_gone
-char2 = character_list[1]
-char2.set_has_gone()
+# char2 = character_list[1]
+# char2.set_has_gone()
 clear_screen()
 print_table(sort_table(character_list))
