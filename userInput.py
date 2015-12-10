@@ -1,6 +1,6 @@
-def int(message):
-    """
-    :param message: Validates user input is valid integer.
+def integer(message):
+    """Validates user input is valid integer.
+    :param message: input prompt
     :return:
     """
     while True:
