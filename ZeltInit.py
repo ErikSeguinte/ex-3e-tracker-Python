@@ -1,5 +1,7 @@
+from random import randint
 import input_validation
 from ui import UI
+from tkinter.filedialog import askopenfilename
 
 ITEMS = (
     "Withering Attack",
@@ -86,6 +88,21 @@ def sort_table(list):
     return sorted(sorted_list, key=lambda character: character.has_gone)
 
 
+def dice_roller():
+    pool = input_validation.integer("Dice Pool: ")
+    successes = 0
+    i = 0
+    while i < pool:
+        d = randint(1, 10)
+        print(d)
+        if d >= 7:
+            successes += 1
+        if d == 10:
+            successes += 1
+        i += 1
+    return successes
+
+
 print("Hello World")
 clear_screen()
 character_list = add_players()
@@ -95,4 +112,7 @@ while True:
     print_table(sort_table(character_list))
     print("")
     ui.print_menu()
-    ui.get_command()
+    command = ui.get_command()
+    if command is "Withering Attack":
+        print(command)
+    print(str(dice_roller()) + " successes!")
