@@ -7,7 +7,7 @@ def integer(message, min_value=None, max_value=None):
     """
     while True:
         try:
-            user_input=int(input(message))
+            user_input = int(input(message))
         except ValueError:
             print("Invalid integer. Please try again.")
             continue
