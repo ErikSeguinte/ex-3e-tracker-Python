@@ -1,4 +1,12 @@
 import input_validation
+from ui import UI
+
+ITEMS = (
+    "Withering Attack",
+    "Decisive Attack",
+    "Add NPCs",
+    "Join Battle!"
+)
 
 
 class Character:
@@ -77,25 +85,14 @@ def sort_table(list):
     sorted_list = sorted(list, key=lambda character: character.initiative, reverse=True)
     return sorted(sorted_list, key=lambda character: character.has_gone)
 
-def print_menu():
-    menu_item = "{0}) {1}"
-    items = (
-        "Withering Attack",
-        "Decisive Attack",
-        "Add NPCs",
-        "Join Battle!"
-    )
-    n=0
-    for item in items:
-        print(menu_item.format(n, item))
-        n+=1
 
 print("Hello World")
 clear_screen()
 character_list = add_players()
+ui = UI(ITEMS)
 while True:
     clear_screen()
     print_table(sort_table(character_list))
     print("")
-    command = input()
-print_menu()
+    ui.print_menu()
+    ui.get_command()

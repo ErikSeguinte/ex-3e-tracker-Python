@@ -1,7 +1,5 @@
-def integer(message):
+def integer(message, min_value=None, max_value=None):
     """Validates user input is valid integer.
-    :param message: input prompt
-    :return:
     """
     while True:
         try:
@@ -10,4 +8,8 @@ def integer(message):
            print("Invalid integer. Please try again.")
            continue
         else:
-            return user_input
+            if (min_value is not None and user_input < min_value) or (max_value is not None and user_input > max_value):
+                print("Out of range. Please try again.")
+                continue
+            else:
+                return user_input
