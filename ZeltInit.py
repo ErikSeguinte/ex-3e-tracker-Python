@@ -44,7 +44,7 @@ class Character:
 
     def set_init(self, successes=None):
         if successes == None:
-            self.initiative = input_validation.integer("Join Battle for " + self.name + ": 2") + 3
+            self.initiative = input_validation.integer("Join Battle for " + self.name + ": ") + 3
         else:
             self.initiative = successes + 3
 
@@ -54,7 +54,7 @@ class Character:
 
 def clear_screen():
     """Prints a bunch of new lines to clear the screen."""
-    for i in range(24):
+    for i in range(10):
         print("")
 
 
@@ -130,39 +130,70 @@ def choose_combatants(list):
     return combatants
 
 
-print("Hello World")
-clear_screen()
-character_list = add_players()
-ui = UI(ITEMS)
-while True:
+def check_for_crash(c, init_damage):
+    """Checks if this attack would cause defender to crash
+
+    :param init_damage:     Damage taken in this attack
+    :param c:               Attacker and Defender
+    :return  crash          True if attack would crash defender
+    :var  init              initiative of the defender
+    :var  new_init          defender's initiative after attack
+    """
+    init = c[1].initiative
+    new_init = init - init_damage
+    if init > 0 and new_init <= 0:
+        # Crash!
+        return True
+    else:
+        return False
+
+
+if __name__ == '__main__':
+    print("Hello World")
     clear_screen()
-    print_table(sort_table(character_list))
-    print("")
-    ui.print_menu()
-    command = ui.get_command()
-    if command is "Withering Attack":
-        print("    " + command)
-        combatants = choose_combatants(character_list)
+    character_list = add_players()
+    ui = UI(ITEMS)
+    while True:
+        clear_screen()
+        character_list = sort_table(character_list)
+        print_table(character_list)
+        print("")
+        ui.print_menu()
+        command = ui.get_command()
+        if command is "Withering Attack":
+            print("    " + command)
+            combatants = choose_combatants(character_list)
+            damage = input_validation.empty_or_integer("Damage: ")
 
-    elif command is "Decisive Attack":
-        print("    " + command)
-        combatants = choose_combatants(character_list)
-    elif command is "Join Battle!":
-        print("    " + command)
-        for c in character_list:
-            if c.join_battle is None:
-                c.set_init()
-            else:
-                c.initiative = dice_roller(c.join_battle)
-    elif command is "Add NPCs":
-        print("    " + "Adding NPCs")
-        max_loop = input_validation.integer("How many NPCs to add? ")
-        i = 0
-        print("Enter an empty line to quit.")
-        while i < max_loop:
-            name = input("New name: ")
+            if damage != 0:
+                # Check for Crash
+                if check_for_crash(combatants, damage):
+                    pass
 
-            # Empty strings are false.
-            if not name:
-                break
-            character_list.append(add_npc(name))
+                # Successful Attack
+                combatants[0].initiative += damage + 1
+                combatants[1].initiative -= damage
+            combatants[0].has_gone = True
+
+        elif command is "Decisive Attack":
+            print("    " + command)
+            combatants = choose_combatants(character_list)
+        elif command is "Join Battle!":
+            print("    " + command)
+            for c in character_list:
+                if c.join_battle is None:
+                    c.set_init()
+                else:
+                    c.initiative = dice_roller(c.join_battle)
+        elif command is "Add NPCs":
+            print("    " + "Adding NPCs")
+            max_loop = input_validation.integer("How many NPCs to add? ")
+            i = 0
+            print("Enter an empty line to quit.")
+            for i in range(max_loop):
+                name = input("New name: ")
+
+                # Empty strings are false.
+                if not name:
+                    break
+                character_list.append(add_npc(name))
