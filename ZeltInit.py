@@ -1,4 +1,5 @@
 from random import randint
+
 import input_validation
 from ui import UI
 
@@ -10,13 +11,13 @@ ITEMS = (
 )
 
 
-def dice_roller():
-    pool = input_validation.integer("Dice Pool: ")
+def dice_roller(pool=None):
+    if pool is None:
+        pool = input_validation.integer("Dice Pool: ")
     successes = 0
     i = 0
     while i < pool:
         d = randint(1, 10)
-        print(d)
         if d >= 7:
             successes += 1
         if d == 10:
@@ -43,9 +44,9 @@ class Character:
 
     def set_init(self, successes=None):
         if successes == None:
-            self.initiative = input_validation.integer("Join Battle: ")
+            self.initiative = input_validation.integer("Join Battle for " + self.name + ": 2") + 3
         else:
-            self.initiative = successes
+            self.initiative = successes + 3
 
     def set_has_gone(self):
         self.has_gone = True
@@ -130,6 +131,11 @@ while True:
         print("    " + command)
     elif command is "Join Battle!":
         print("    " + command)
+        for c in character_list:
+            if c.join_battle is None:
+                c.set_init()
+            else:
+                c.initiative = dice_roller(c.join_battle)
     elif command is "Add NPCs":
         print("    " + "Adding NPCs")
         max_loop = input_validation.integer("How many NPCs to add? ")
