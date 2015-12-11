@@ -115,6 +115,21 @@ def add_new_character():
     return new_character
 
 
+def choose_combatants(list):
+    attacker = input_validation.empty_or_integer("Attacker? Blank = 0: ", 0, len(character_list))
+    defender = input_validation.integer("Defender?", 0, len(character_list))
+
+    if attacker == "":
+        a_char = list[0]
+    else:
+        a_char = list[attacker]
+    d_char = list[defender]
+
+    print(a_char.name + " is attacking " + d_char.name)
+    combatants = (a_char, d_char)
+    return combatants
+
+
 print("Hello World")
 clear_screen()
 character_list = add_players()
@@ -127,19 +142,11 @@ while True:
     command = ui.get_command()
     if command is "Withering Attack":
         print("    " + command)
-        attacker = input_validation.empty_or_integer("Attacker? Blank = 0: ", 0, len(character_list))
-        defender = input_validation.integer("Defender?", 0, len(character_list))
-
-        if attacker == "":
-            a_char = character_list[0]
-        else:
-            a_char = character_list[attacker]
-        d_char = character_list[defender]
-
-        print(a_char.name + " is attacking " + d_char.name)
+        combatants = choose_combatants(character_list)
 
     elif command is "Decisive Attack":
         print("    " + command)
+        combatants = choose_combatants(character_list)
     elif command is "Join Battle!":
         print("    " + command)
         for c in character_list:
