@@ -1,4 +1,4 @@
-import userInput
+import input_validation
 
 
 class Character:
@@ -17,7 +17,7 @@ class Character:
         self.name = input("Name: ")
 
     def set_init(self):
-        self.initiative = userInput.integer("Join Battle: ")
+        self.initiative = input_validation.integer("Join Battle: ")
 
     def set_has_gone(self):
         self.has_gone = True
@@ -53,7 +53,7 @@ def add_players():
 
 
 def print_table(list):
-    """Prints characterss and initiative status, in order."""
+    """Prints characters and initiative status, in order."""
     n = 0
     fmt = "({id:>3}){name:>15} | {init:^5} | {crash:^5} | {gone:^5}"
     print(fmt.format(
