@@ -90,15 +90,9 @@ def print_menu():
         print(menu_item.format(n, item))
         n+=1
 
-# character_list = []
 print("Hello World")
 clear_screen()
 character_list = add_players()
-# print(character_list[0].name + " " + str(character_list[0].initiative))
-
-# set second character to has_gone
-# char2 = character_list[1]
-# char2.set_has_gone()
 while True:
     clear_screen()
     print_table(sort_table(character_list))
