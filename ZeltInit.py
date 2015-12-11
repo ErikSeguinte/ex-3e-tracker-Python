@@ -1,7 +1,6 @@
 from random import randint
 import input_validation
 from ui import UI
-from tkinter.filedialog import askopenfilename
 
 ITEMS = (
     "Withering Attack",
