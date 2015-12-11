@@ -127,6 +127,17 @@ while True:
     command = ui.get_command()
     if command is "Withering Attack":
         print("    " + command)
+        attacker = input_validation.empty_or_integer("Attacker? Blank = 0: ", 0, len(character_list))
+        defender = input_validation.integer("Defender?", 0, len(character_list))
+
+        if attacker == "":
+            a_char = character_list[0]
+        else:
+            a_char = character_list[attacker]
+        d_char = character_list[defender]
+
+        print(a_char.name + " is attacking " + d_char.name)
+
     elif command is "Decisive Attack":
         print("    " + command)
     elif command is "Join Battle!":
