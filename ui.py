@@ -17,5 +17,5 @@ class UI:
 
     def get_command(self):
         """Gets input from user, converts to proper string."""
-        command = input_validation.integer("Enter Command: ", 0, len(self.items))
+        command = input_validation.integer("Enter Command: ", 0, len(self.items) - 1)
         return self.items[command]
