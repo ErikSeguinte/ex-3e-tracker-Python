@@ -39,34 +39,37 @@ def add_new_character():
     new_character.set_init()
     return new_character
 
+
 def add_players():
+    """Add player names from an external file."""
     character_list = []
     with open('Players.txt', encoding='utf-8') as player_file:
         for a_line in player_file:
             character = Character()
-            character.name=a_line.rstrip()
+            character.name = a_line.rstrip()
             character_list.append(character)
 
     return character_list
 
 
 def print_table(list):
+    """Prints characterss and initiative status, in order."""
     n = 0
     fmt = "({id:>3}){name:>15} | {init:^5} | {crash:^5} | {gone:^5}"
     print(fmt.format(
-        name="Name",
-        init="init",
-        crash="crash",
-        id="id",
-        gone="gone"))
+            name="Name",
+            init="init",
+            crash="crash",
+            id="id",
+            gone="gone"))
     print("===========================================")
     for char in list:
         print(fmt.format(
-            name=char.name,
-            init=str(char.initiative),
-            crash=char.crash_state,
-            id=str(n),
-            gone=char.has_gone))
+                name=char.name,
+                init=str(char.initiative),
+                crash=char.crash_state,
+                id=str(n),
+                gone=char.has_gone))
         n += 1
 
 
@@ -74,15 +77,31 @@ def sort_table(list):
     sorted_list = sorted(list, key=lambda character: character.initiative, reverse=True)
     return sorted(sorted_list, key=lambda character: character.has_gone)
 
+def print_menu():
+    menu_item = "{0}) {1}"
+    items = (
+        "Withering Attack",
+        "Decisive Attack",
+        "Add NPCs",
+        "Join Battle!"
+    )
+    n=0
+    for item in items:
+        print(menu_item.format(n, item))
+        n+=1
 
 # character_list = []
 print("Hello World")
 clear_screen()
-character_list=add_players()
+character_list = add_players()
 # print(character_list[0].name + " " + str(character_list[0].initiative))
 
 # set second character to has_gone
 # char2 = character_list[1]
 # char2.set_has_gone()
-clear_screen()
-print_table(sort_table(character_list))
+while True:
+    clear_screen()
+    print_table(sort_table(character_list))
+    print("")
+    command = input()
+print_menu()
