@@ -149,19 +149,48 @@ def check_for_crash(defender, init_damage):
         return False
 
 
-def handle_withering():
-    combatants = choose_combatants()
-    damage = input_validation.empty_or_integer("Damage: ")
+def handle_withering(combatants, damage):
+    global character_list
+    attacker =
+    defender = character_list[combatants[1]]
 
     if damage != 0:
         # Check for Crash
-        if check_for_crash(combatants, damage):
-            pass
+        if check_for_crash(combatants[1], damage):
+            attacker.initiative += 5
+            defender.crash_state = True
 
         # Successful Attack
-        combatants[0].initiative += damage + 1
-        combatants[1].initiative -= damage
-    combatants[0].has_gone = True
+        attacker.initiative += damage + 1
+        defender.initiative -= damage
+    attacker.has_gone = True
+
+    if attacker.initiative > 0:
+        attacker.crash_state = False
+        attacker.crash_counter = 0
+    else:
+        attacker.crash_state = True
+
+    if check_for_end_of_round():
+        reset_has_gone()
+
+    character_list[combatants[0]] = attacker
+    character_list[combatants[1]] = defender
+
+
+def check_for_end_of_round():
+    global character_list
+    for character in character_list:
+        if not character.has_gone:
+            return False
+    return True
+
+
+def reset_has_gone():
+    global character_list
+
+    for character in character_list:
+        character.has_gone = False
 
 
 def name_generator():
@@ -205,6 +234,8 @@ if __name__ == '__main__':
         command = ui.get_command()
         if command is "Withering Attack":
             print("    " + command)
+            combatants = choose_combatants()
+            damage = input_validation.empty_or_integer("Damage: ")
 
 
         elif command is "Decisive Attack":
