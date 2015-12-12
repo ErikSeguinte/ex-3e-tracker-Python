@@ -121,8 +121,8 @@ def add_new_character():
 
 def choose_combatants():
     global character_list
-    attacker = input_validation.empty_or_integer("Attacker? Blank = 0: ", 0, len(character_list))
-    defender = input_validation.integer("Defender?", 0, len(character_list))
+    attacker = input_validation.empty_or_integer("Attacker? Blank = 0: ", 0, len(character_list) - 1)
+    defender = input_validation.integer("Defender?", 0, len(character_list) - 1)
 
     if attacker == "":
         attacker = 0
@@ -151,7 +151,7 @@ def check_for_crash(defender, init_damage):
 
 def handle_withering(combatants, damage):
     global character_list
-    attacker =
+    attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
 
     if damage != 0:
@@ -163,19 +163,18 @@ def handle_withering(combatants, damage):
         # Successful Attack
         attacker.initiative += damage + 1
         defender.initiative -= damage
+        if attacker.initiative > 0:
+            attacker.crash_state = False
+            attacker.crash_counter = 0
+        else:
+            attacker.crash_state = True
     attacker.has_gone = True
-
-    if attacker.initiative > 0:
-        attacker.crash_state = False
-        attacker.crash_counter = 0
-    else:
-        attacker.crash_state = True
 
     if check_for_end_of_round():
         reset_has_gone()
 
-    character_list[combatants[0]] = attacker
-    character_list[combatants[1]] = defender
+        # character_list[combatants[0]] = attacker
+        # character_list[combatants[1]] = defender
 
 
 def check_for_end_of_round():
@@ -236,6 +235,7 @@ if __name__ == '__main__':
             print("    " + command)
             combatants = choose_combatants()
             damage = input_validation.empty_or_integer("Damage: ")
+            handle_withering(combatants, damage)
 
 
         elif command is "Decisive Attack":
