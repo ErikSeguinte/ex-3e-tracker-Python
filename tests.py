@@ -66,7 +66,7 @@ class MyTest(unittest.TestCase):
             # Trick Assertions
 
             Z.sort_table()
-            Z.print_table()
+            # Z.print_table()
 
     # def test_multiple_rounds(self):
     #     """Test for round counting logic.
@@ -85,6 +85,11 @@ class MyTest(unittest.TestCase):
     #     known_values = (
     #         (0)
     #     )
+
+
+    def test_initiative_shift(self):
+        Z.print_table()
+
 
 
     def test_decisive(self):

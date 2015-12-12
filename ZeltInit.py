@@ -47,10 +47,12 @@ class Character:
         self.initiative = 0
         self.inert_initiative = False
         self.crash_state = False
-        self.crash_counter = 0
+        self.crash_counter = 0  # Number of turns in crash
+        self.crash_return_counter = 0  # Number of turns after returning from crash
         self.shift_target = ""
         self.has_gone = False
         self.join_battle = None
+        self.shift_target = None  # Character who crashed this character, for init shift.
 
     def set_name(self):
         self.name = input("Name: ")
