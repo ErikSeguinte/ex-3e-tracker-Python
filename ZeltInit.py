@@ -182,6 +182,8 @@ def set_up_test():
     for character in character_list:
         character.name = next(generater)
         character.initiative = i
+        if i % 3 == 0:
+
         character.join_battle = i
         character.has_gone = i % 2
         i += 1
