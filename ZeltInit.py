@@ -147,10 +147,12 @@ def check_for_crash(defender, init_damage):
         return False
 
 
-def handle_withering(combatants, damage):
+def handle_withering(combatants, damage, trick):
     global character_list
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
+
+    handle_tricks(combatants, *trick)
 
     if damage != 0:
         # Check for Crash
@@ -231,6 +233,25 @@ def set_up_test():
     sort_table()
 
 
+def handle_tricks(combatants, trick_status, att_trick, def_trick):
+    global character_list
+    attacker = character_list[combatants[0]]
+    defender = character_list[combatants[1]]
+    if trick_status:
+        if att_trick < 0:
+            if check_for_crash(combatants[0], att_trick * -1):
+                attacker.initiative -= 5
+                attacker.crash_state = True
+            attacker.initiative += att_trick
+
+    if def_trick < 0:
+        if check_for_crash(combatants[1], def_trick * -1):
+            defender.initiative -= 5
+            defender.crash_state = True
+            attacker.initiative += 5
+        defender.initiative += def_trick
+
+
 def main():
     global character_list
 
@@ -247,7 +268,7 @@ def main():
             print("    " + command)
             combatants = ui.choose_combatants()
             damage = input_validation.empty_or_integer("Damage: ")
-            handle_withering(combatants, damage)
+            handle_withering(combatants, damage, (False, 0, 0))
 
         elif command is "Decisive Attack":
             print("    " + command)
