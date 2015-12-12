@@ -186,6 +186,8 @@ def set_up_test():
             character.initiative *= -1
         character.join_battle = i
         character.has_gone = i % 2
+        if character.initiative <= 0:
+            character.crash_state = True
         i += 1
     sort_table()
 
