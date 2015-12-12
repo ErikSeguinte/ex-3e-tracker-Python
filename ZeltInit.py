@@ -6,8 +6,11 @@ from ui import UI
 ITEMS = (
     "Withering Attack",
     "Decisive Attack",
+    "Gambits",
+    "Other Actions",
     "Add NPCs",
-    "Join Battle!"
+    "Join Battle!",
+    "Modify Initiative",
 )
 
 global character_list
@@ -119,17 +122,7 @@ def add_new_character():
     return new_character
 
 
-def choose_combatants():
-    global character_list
-    attacker = input_validation.empty_or_integer("Attacker? Blank = 0: ", 0, len(character_list) - 1)
-    defender = input_validation.integer("Defender?", 0, len(character_list) - 1)
 
-    if attacker == "":
-        attacker = 0
-
-    print(character_list[attacker].name + " is attacking " + character_list[defender].name)
-    combatants = (attacker, defender)
-    return combatants
 
 
 def check_for_crash(defender, init_damage):
@@ -220,7 +213,8 @@ def set_up_test():
     sort_table()
 
 
-if __name__ == '__main__':
+def main():
+    global character_list
     character_list = []
     add_players()
     ui = UI(ITEMS)
@@ -233,14 +227,13 @@ if __name__ == '__main__':
         command = ui.get_command()
         if command is "Withering Attack":
             print("    " + command)
-            combatants = choose_combatants()
+            combatants = ui.choose_combatants()
             damage = input_validation.empty_or_integer("Damage: ")
             handle_withering(combatants, damage)
 
-
         elif command is "Decisive Attack":
             print("    " + command)
-            combatants = choose_combatants()
+            combatants = ui.choose_combatants()
         elif command is "Join Battle!":
             print("    " + command)
             for c in character_list:
@@ -259,3 +252,12 @@ if __name__ == '__main__':
                 # Empty strings are false.
                 if not name:
                     break
+        elif command is "Other Actions":
+            pass
+        elif command is "Gambits":
+            pass
+        elif command is "Modify Initiative":
+            pass
+
+if __name__ == '__main__':
+    main()

@@ -1,6 +1,8 @@
 import unittest
 import ZeltInit
 
+Z = ZeltInit
+
 
 class MyTest(unittest.TestCase):
     def setUp(self):
@@ -8,7 +10,7 @@ class MyTest(unittest.TestCase):
         for i in range(5):
             print("")
 
-        ZeltInit.set_up_test()
+        Z.set_up_test()
 
     def test_for_crash(self):
         """check_for_crash should return known values for known inputs."""
@@ -22,7 +24,7 @@ class MyTest(unittest.TestCase):
             (2, 4, False)
         )
         for combatants, init_damage, correct_value in known_values:
-            result = ZeltInit.check_for_crash(combatants, init_damage)
+            result = Z.check_for_crash(combatants, init_damage)
             self.assertEqual(correct_value, result, "Combatant " + str(combatants) + " taking "
                              + str(init_damage) + " damage crashes: " + str(result) + "\n should be: "
                              + str(correct_value))
@@ -35,25 +37,30 @@ class MyTest(unittest.TestCase):
             (0, 1, 1, 4, -1, False, True, True),
             (0, 1, 5, 5, -9, False, True, True),
             (0, 1, 10, 7, -5, False, True, False),  # New Round
-            (0, 1, 0, 7, 4, False, False, True)  # test for missed withering attacks.
+            (0, 1, 0, 7, 4, False, False, True),  # test for missed withering attacks.
         )
         for attacker, defender, damage, n_attacker_init, n_defender_init, a_crash, d_crash, has_gone in known_values:
             print("")
             print("")
             combatants = (attacker, defender)
-            ZeltInit.handle_withering(combatants, damage)
-            self.assertEqual(ZeltInit.character_list[attacker].initiative, n_attacker_init)
-            self.assertEqual(ZeltInit.character_list[defender].initiative, n_defender_init)
-            self.assertEqual(ZeltInit.character_list[defender].crash_state, d_crash,
-                             ZeltInit.character_list[defender].name + "'s d_crash status is not correct.")
-            self.assertEqual(ZeltInit.character_list[attacker].crash_state, a_crash,
-                             ZeltInit.character_list[attacker].name + "'s a_crash status is not correct.")
-            self.assertEqual(ZeltInit.character_list[attacker].has_gone, has_gone)
+            Z.handle_withering(combatants, damage)
+            self.assertEqual(Z.character_list[attacker].initiative, n_attacker_init)
+            self.assertEqual(Z.character_list[defender].initiative, n_defender_init)
+            self.assertEqual(Z.character_list[defender].crash_state, d_crash,
+                             Z.character_list[defender].name + "'s d_crash status is not correct.")
+            self.assertEqual(Z.character_list[attacker].crash_state, a_crash,
+                             Z.character_list[attacker].name + "'s a_crash status is not correct.")
+            self.assertEqual(Z.character_list[attacker].has_gone, has_gone)
 
-            ZeltInit.sort_table()
-            # ZeltInit.print_table()
+            Z.sort_table()
+            Z.print_table()
 
-        self.fail("Cannot gain Initiative break on turn after out of crash")
+    def test_multiple_rounds(self):
+        """Test for round counting logic.
+
+        Tests for initiative break bonus denial after coming out of crash,
+        coming out of crash after 3 turns
+        """
 
         #
         # def test_decisive(self):
