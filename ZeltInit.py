@@ -12,8 +12,16 @@ ITEMS = (
     "Join Battle!",
     "Modify Initiative",
 )
+GAMBITS = (
+    ("Disarm", 3),
+    ("Unhorse", 4),
+    ("Distract", 3),
+    ("Distract", 4),
+    ("Distract", 5),
+    ("Grapple", 2),
+)
 
-global character_list
+character_list = []
 
 
 def dice_roller(pool=None):
@@ -122,9 +130,6 @@ def add_new_character():
     return new_character
 
 
-
-
-
 def check_for_crash(defender, init_damage):
     """Checks if this attack would cause defender to crash
 
@@ -168,6 +173,19 @@ def handle_withering(combatants, damage):
 
         # character_list[combatants[0]] = attacker
         # character_list[combatants[1]] = defender
+
+
+def handle_decisive(attacker, success):
+    global character_list
+    character = character_list[attacker]
+    if success is True:
+        character.initiative = 3
+    else:
+        if character.initiative >= 11:
+            character.initiative -= 3
+        else:
+            character.initiative -= 2
+    character.has_gone = True
 
 
 def check_for_end_of_round():
@@ -215,7 +233,7 @@ def set_up_test():
 
 def main():
     global character_list
-    character_list = []
+
     add_players()
     ui = UI(ITEMS)
     while True:
@@ -244,9 +262,8 @@ def main():
         elif command is "Add NPCs":
             print("    " + "Adding NPCs")
             max_loop = input_validation.integer("How many NPCs to add? ")
-            i = 0
             print("Enter an empty line to quit.")
-            for i in range(max_loop):
+            for _i in range(max_loop):
                 name = input("New name: ")
 
                 # Empty strings are false.
@@ -258,6 +275,7 @@ def main():
             pass
         elif command is "Modify Initiative":
             pass
+
 
 if __name__ == '__main__':
     main()
