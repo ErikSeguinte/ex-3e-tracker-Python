@@ -176,6 +176,8 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
     global character_list
     attacker_index, defender_index = combatants
     attacker, defender = character_list[attacker_index], character_list[defender_index]
+
+    # Reset Crash Counter at the beginning of the 4th turn if survives
     if attacker.crash_counter >= 3:
         attacker.crash_counter = 0
         attacker.crash_state = False
@@ -203,18 +205,20 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
 
         defender.initiative -= damage
         if attacker.initiative > 0:
+            if attacker.crash_state:
+                attacker.recently_crashed = True
             attacker.crash_state = False
             attacker.crash_counter = 0
             attacker.shift_target = None
         else:
             attacker.crash_state = True
+            attacker.recently_crashed = False
 
     if attacker.crash_state:
         attacker.crash_counter += 1
 
     if check_for_end_of_round():
         reset_has_gone()
-
 
 
 def handle_decisive(attacker, success):
@@ -242,6 +246,11 @@ def reset_has_gone():
     global character_list
 
     for character in character_list:
+        if character.crash_return_counter >= 1:
+            character.crash_return_counter = 0
+            character.recently_crashed = False
+        if character.recently_crashed:
+            character.crash_return_counter += 1
         character.has_gone = False
 
 
@@ -259,9 +268,9 @@ def set_up_test():
     global character_list
     character_list = [Character(), Character(), Character(), Character(), Character(), ]
     i = 0
-    generater = name_generator()
+    generator = name_generator()
     for character in character_list:
-        character.name = next(generater)
+        character.name = next(generator)
         character.initiative = i
         if i % 4 == 0:
             character.initiative *= -1
