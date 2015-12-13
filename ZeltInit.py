@@ -25,7 +25,7 @@ GAMBITS = (
 character_list = []
 
 
-def dice_roller(pool=None):
+def dice_roller(pool=None, doubles=10):
     if pool is None:
         pool = input_validation.integer("Dice Pool: ")
     successes = 0
@@ -33,7 +33,7 @@ def dice_roller(pool=None):
         d = randint(1, 10)
         if d >= 7:
             successes += 1
-        if d == 10:
+        if d >= doubles:
             successes += 1
     return successes
 
