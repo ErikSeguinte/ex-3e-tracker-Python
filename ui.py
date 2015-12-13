@@ -20,8 +20,7 @@ class UI:
         command = input_validation.integer("Enter Command: ", 0, len(self.items) - 1)
         return self.items[command]
 
-    def choose_combatants():
-        global character_list
+    def choose_combatants(self, character_list):
         attacker = input_validation.empty_or_integer("Attacker? Blank = 0: ", 0, len(character_list) - 1)
         defender = input_validation.integer("Defender: ", 0, len(character_list) - 1)
 

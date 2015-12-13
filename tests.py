@@ -34,6 +34,8 @@ class MyTest(unittest.TestCase):
         print("Testing for Withering Attacks")
         # (damage, new attacker init, new defender init, a_crash, d_crash, has gone\
         # (tricks, att_trick, def_trick))
+        i = 0
+
         known_values = (
             (1, 4, -1, False, True, True, (False, 0, 0)),
             (5, 5, -9, False, True, True, (False, 0, 0)),
@@ -45,28 +47,43 @@ class MyTest(unittest.TestCase):
             (0, -6, 1, True, False, True, (True, -2, 0)),  # Attacker crashes himself
             (0, 1, -5, False, True, True, (False, 0, 0)),  # missed attack
             (5, 6, 0, False, True, False, (True, 0, -2)),  # Defender crashes from attack, not trick
-            (1, 13, -6, False, True, True, (True, 0, -4)),  # missed attack
+            (1, 11, -6, False, True, False, (True, 0, -4)),  # defender crashes from trick
         )
         for damage, n_attacker_init, n_defender_init, a_crash, d_crash, has_gone, \
             tricks, in known_values:
             print("")
             print("")
+
             combatants = (0, 1)
+
+            shifting = False
+            a, d = Z.character_list[0], Z.character_list[1]
+
+            if a.shift_target is d and Z.check_for_crash(combatants[1], damage - tricks[2]):
+                shifting = True
+
+            print("*****" + str(a) + " is attacking " + str(d))
             Z.handle_withering(combatants, damage, tricks)
 
-            self.assertEqual(Z.character_list[0].initiative, n_attacker_init)
-            self.assertEqual(Z.character_list[0].crash_state, a_crash,
-                             Z.character_list[0].name + "'s a_crash status is not correct.")
+            if not shifting:
+                self.assertEqual(a.initiative, n_attacker_init,
+                                 "loop " + str(i) + " " + a.name + " attacking " + d.name)
+            else:
+                self.assertTrue(a.initiative >= 3,
+                                str(a) + "'s initiative is: " + str(a.initiative) + " in loop: " + str(
+                                    i) + ", Post Shift")
+            self.assertEqual(a.crash_state, a_crash,
+                             str(a) + "'s a_crash status is not correct.")
 
-            self.assertEqual(Z.character_list[0].has_gone, has_gone)
-            self.assertEqual(Z.character_list[1].initiative, n_defender_init)
-            self.assertEqual(Z.character_list[1].crash_state, d_crash,
-                             Z.character_list[1].name + "'s d_crash status is not correct.")
+            self.assertEqual(a.has_gone, has_gone, a.name + " should have gone: " + str(has_gone))
+            self.assertEqual(d.initiative, n_defender_init)
+            self.assertEqual(d.crash_state, d_crash,
+                             str(d) + "'s d_crash status is not correct.")
 
             # Trick Assertions
-
+            i += 1
             Z.sort_table()
-            # Z.print_table()
+            Z.print_table()
 
     # def test_multiple_rounds(self):
     #     """Test for round counting logic.
@@ -88,32 +105,69 @@ class MyTest(unittest.TestCase):
 
 
     def test_initiative_shift(self):
-        Z.print_table()
-
-
-
-    def test_decisive(self):
-        """Tests decisive attacks against known values and inputs"""
-        for i in range(13):
+        for i in range(3):
             Z.handle_withering((0, 1), i, (False, 0, 0))
             Z.sort_table()
-        # success, new_init,
-        known_values = (
-            (True, 3),  # Successful
-            (False, 10),  # Failed, init >=11
-            (False, 6),  # Failed, init <11
-        )
-        print("Testing Decisive Attacks.")
-        # Z.print_table()
 
-        for success, new_init in known_values:
-            Z.handle_decisive(0, success)
-            self.assertEqual(Z.character_list[0].initiative, new_init)
-            self.assertTrue(Z.character_list[0].has_gone)
+        Z.print_table()
+        # Attacker, Defender, damage, n_att_init, n_def_init, (Tricks, att_trick, def_trick),\
+        # a_crash, d_crash, (Crashing, d_crasher)
+        # Crashing_Values=(
+        #     (0, "No crashing"),
+        #     (1, "Crash"),
+        #     (2, "Shift!")
+        # )
+        known_values = (
+            (0, 1, 2, 10, 0, (False, 0, 0), False, True, (1, Z.character_list[0])),  # Arnold Crashes Carol
+            (2, 4, 10, None, 0, (False, 0, 0), False, True, (2, None)),  # Shift
+        )
+
+        for attacker, defender, damage, n_att_init, n_def_init, trick, a_crash, d_crash, \
+            crashing in known_values:
             print("")
             print("")
+            combatants = (attacker, defender)
+            a, d = Z.character_list[attacker], Z.character_list[defender]
+            print(combatants, damage)
+            Z.handle_withering(combatants, damage, trick)
+
+            self.assertEqual(d.initiative, n_def_init)
+            self.assertEqual(a.crash_state, a_crash)
+            self.assertEqual(d.crash_state, d_crash)
+
+            if crashing[0] == 1:
+                self.assertEqual(d.shift_target, crashing[1])
+            elif crashing[0] == 0:
+                self.assertEqual(a.initiative, n_att_init)
+            else:
+                self.assertTrue(3 <= a.initiative < 16,
+                                a.name + "'s initiative is " + str(a.initiative) + ", but should be lower.")
+
             Z.sort_table()
-            # Z.print_table()
+            Z.print_table()
+
+            # def test_decisive(self):
+            #     """Tests decisive attacks against known values and inputs"""
+            #     for i in range(13):
+            #         Z.handle_withering((0, 1), i, (False, 0, 0))
+            #         Z.sort_table()
+            #     # success, new_init,
+            #     known_values = (
+            #         (True, 3),  # Successful
+            #         (False, 10),  # Failed, init >=11
+            #         (False, 6),  # Failed, init <11
+            #     )
+            #     print("Testing Decisive Attacks.")
+            #     # Z.print_table()
+            #
+            #     for success, new_init in known_values:
+            #         Z.handle_decisive(0, success)
+            #         self.assertEqual(Z.character_list[0].initiative, new_init)
+            #         self.assertTrue(Z.character_list[0].has_gone)
+            #         print("")
+            #         print("")
+            #         Z.sort_table()
+            #         # Z.print_table()
 
 
 if __name__ == '__main__':

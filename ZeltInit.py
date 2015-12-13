@@ -1,6 +1,7 @@
 from random import randint
 
 import input_validation
+import ui
 from ui import UI
 
 ITEMS = (
@@ -28,14 +29,12 @@ def dice_roller(pool=None):
     if pool is None:
         pool = input_validation.integer("Dice Pool: ")
     successes = 0
-    i = 0
-    while i < pool:
+    for _i in range(pool):
         d = randint(1, 10)
         if d >= 7:
             successes += 1
         if d == 10:
             successes += 1
-        i += 1
     return successes
 
 
@@ -49,22 +48,27 @@ class Character:
         self.crash_state = False
         self.crash_counter = 0  # Number of turns in crash
         self.crash_return_counter = 0  # Number of turns after returning from crash
-        self.shift_target = ""
         self.has_gone = False
-        self.join_battle = None
+        self.join_battle_pool = None
         self.shift_target = None  # Character who crashed this character, for init shift.
 
     def set_name(self):
         self.name = input("Name: ")
 
-    def set_init(self, successes=None):
-        if successes is None:
-            self.initiative = input_validation.integer("Join Battle for " + self.name + ": ") + 3
+    def set_init(self):  # Join Battle roll.
+        if self.join_battle_pool is None:
+            self.initiative = input_validation.integer("Join Battle roll for " + self.name + ": ") + 3
         else:
-            self.initiative = successes + 3
+            self.initiative = self.join_battle() + 3
 
     def set_has_gone(self):
         self.has_gone = True
+
+    def __str__(self):
+        return str(self.name)
+
+    def join_battle(self):
+        return dice_roller(self.join_battle_pool)
 
 
 def clear_screen():
@@ -117,7 +121,7 @@ def add_npc(name):
     new_character = Character()
     new_character.name = name
     join_battle = input_validation.integer("Join Battle Dice Pool: ")
-    new_character.join_battle = join_battle
+    new_character.join_battle_pool = join_battle
     character_list.append(new_character)
 
 
@@ -149,28 +153,44 @@ def check_for_crash(defender, init_damage):
         return False
 
 
-def handle_withering(combatants, damage, trick):
+def handle_withering(combatants, damage, trick=(False, 0, 0)):
     global character_list
-    attacker = character_list[combatants[0]]
-    defender = character_list[combatants[1]]
+    attacker_index, defender_index = combatants
+    attacker, defender = character_list[attacker_index], character_list[defender_index]
 
     handle_tricks(combatants, *trick)
 
+    attacker.has_gone = True
     if damage != 0:
         # Check for Crash
-        if check_for_crash(combatants[1], damage):
-            attacker.initiative += 5
+        shifting = False
+        print("Checking for Crash: " + str(check_for_crash(defender_index, damage)))
+        if check_for_crash(defender_index, damage):
+            print("Checking for Shift: " + str(attacker.shift_target == defender))
+            if attacker.shift_target is defender:  # Initiative Shift!
+                print(defender.name + " is the shift target")
+                shifting = True
+            else:
+                attacker.initiative += 5
             defender.crash_state = True
+            defender.shift_target = attacker
 
         # Successful Attack
         attacker.initiative += damage + 1
+        if shifting:
+            print("Shifting!")
+            attacker.has_gone = False
+            if attacker.initiative < 3:
+                attacker.initiative = 3
+            attacker.initiative += attacker.join_battle()
+
         defender.initiative -= damage
         if attacker.initiative > 0:
             attacker.crash_state = False
             attacker.crash_counter = 0
+            attacker.shift_target = None
         else:
             attacker.crash_state = True
-    attacker.has_gone = True
 
     if check_for_end_of_round():
         reset_has_gone()
@@ -182,7 +202,7 @@ def handle_withering(combatants, damage, trick):
 def handle_decisive(attacker, success):
     global character_list
     character = character_list[attacker]
-    if success is True:
+    if success:
         character.initiative = 3
     else:
         if character.initiative >= 11:
@@ -227,7 +247,7 @@ def set_up_test():
         character.initiative = i
         if i % 4 == 0:
             character.initiative *= -1
-        character.join_battle = i
+        character.join_battle_pool = i + 1
         character.has_gone = i % 2
         if character.initiative <= 0:
             character.crash_state = True
@@ -237,6 +257,7 @@ def set_up_test():
 
 def handle_tricks(combatants, trick_status, att_trick, def_trick):
     global character_list
+    print("Handling Tricks")
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
     if trick_status:
@@ -247,6 +268,7 @@ def handle_tricks(combatants, trick_status, att_trick, def_trick):
             attacker.initiative += att_trick
 
     if def_trick < 0:
+        print(str(attacker) + " is tricking for " + str(def_trick))
         if check_for_crash(combatants[1], def_trick * -1):
             defender.initiative -= 5
             defender.crash_state = True
@@ -266,23 +288,20 @@ def main():
         print("")
         ui.print_menu()
         command = ui.get_command()
-        if command is "Withering Attack":
+        if command == "Withering Attack":
             print("    " + command)
-            combatants = ui.choose_combatants()
+            combatants = ui.choose_combatants(character_list)
             damage = input_validation.empty_or_integer("Damage: ")
             handle_withering(combatants, damage, (False, 0, 0))
 
-        elif command is "Decisive Attack":
+        elif command == "Decisive Attack":
             print("    " + command)
-            combatants = ui.choose_combatants()
-        elif command is "Join Battle!":
+            combatants = ui.choose_combatants(character_list)
+        elif command == "Join Battle!":
             print("    " + command)
             for c in character_list:
-                if c.join_battle is None:
-                    c.set_init()
-                else:
-                    c.initiative = dice_roller(c.join_battle)
-        elif command is "Add NPCs":
+                c.set_init()
+        elif command == "Add NPCs":
             print("    " + "Adding NPCs")
             max_loop = input_validation.integer("How many NPCs to add? ")
             print("Enter an empty line to quit.")
@@ -292,11 +311,11 @@ def main():
                 # Empty strings are false.
                 if not name:
                     break
-        elif command is "Other Actions":
+        elif command == "Other Actions":
             pass
-        elif command is "Gambits":
+        elif command == "Gambits":
             pass
-        elif command is "Modify Initiative":
+        elif command == "Modify Initiative":
             pass
 
 
