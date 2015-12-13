@@ -25,6 +25,15 @@ GAMBITS = (
 character_list = []
 
 
+def debug_print(string):
+    """ Prints string. Used in debugging so it can be found easier later.
+
+    :param string: String to be printed
+    :return: none
+    """
+    print(string)
+
+
 def dice_roller(pool=None, doubles=10):
     if pool is None:
         pool = input_validation.integer("Dice Pool: ")
@@ -170,13 +179,9 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
 
     attacker.has_gone = True
     if damage != 0:
-        # Check for Crash
         shifting = False
-        # print("Checking for Crash: " + str(check_for_crash(defender_index, damage)))
         if check_for_crash(defender_index, damage):
-            #    print("Checking for Shift: " + str(attacker.shift_target == defender))
             if attacker.shift_target is defender:  # Initiative Shift!
-                # print(defender.name + " is the shift target")
                 shifting = True
             attacker.initiative += 5
             defender.crash_state = True
@@ -185,7 +190,6 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
         # Successful Attack
         attacker.initiative += damage + 1
         if shifting:
-            print("Shifting!")
             attacker.has_gone = False
             if attacker.initiative < 3:
                 attacker.initiative = 3
@@ -205,8 +209,6 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
     if check_for_end_of_round():
         reset_has_gone()
 
-        # character_list[combatants[0]] = attacker
-        # character_list[combatants[1]] = defender
 
 
 def handle_decisive(attacker, success):
@@ -267,7 +269,6 @@ def set_up_test():
 
 def handle_tricks(combatants, trick_status, att_trick, def_trick):
     global character_list
-    # print("Handling Tricks")
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
     if trick_status:
@@ -278,7 +279,6 @@ def handle_tricks(combatants, trick_status, att_trick, def_trick):
             attacker.initiative += att_trick
 
     if def_trick < 0:
-        # print(str(attacker) + " is tricking for " + str(def_trick))
         if check_for_crash(combatants[1], def_trick * -1):
             defender.initiative -= 5
             defender.crash_state = True

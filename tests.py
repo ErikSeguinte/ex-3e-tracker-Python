@@ -9,21 +9,17 @@ def simulate_round(turns):
     for _i in range(turns):
         Z.handle_withering((0, 1), 0)
         Z.sort_table()
-    Z.print_table()
 
 
 class MyTest(unittest.TestCase):
     def setUp(self):
         print("*****")
-        # for i in range(5):
-        #     print("")
 
         Z.set_up_test()
 
     def test_for_crash(self):
         """check_for_crash should return known values for known inputs."""
         print("Testing for Crash")
-        # ZeltInit.print_table()
         known_values = (
             (0, 2, True),
             (1, 2, False),
@@ -66,10 +62,8 @@ class MyTest(unittest.TestCase):
 
             a, d = Z.character_list[0], Z.character_list[1]
 
-            # print("*****" + str(a) + " is attacking " + str(d))
             Z.handle_withering(combatants, damage, tricks)
 
-            # Prevent Initiative Shift, Tested elsewhere.
             a.shift_target = None
             d.shift_target = None
 
@@ -86,26 +80,8 @@ class MyTest(unittest.TestCase):
             # Trick Assertions
             i += 1
             Z.sort_table()
-            # Z.print_table()
 
 
-            # def test_multiple_rounds(self):
-            #     """Test for round counting logic.
-            #
-            #     Tests for initiative break bonus denial after coming out of crash,
-            #     coming out of crash after 3 turns
-            #     """
-            #     pass
-
-            # def test_gambits(self):
-            #     """Tests Gambits"""
-            #     print("Testing Gambits")
-            #
-            #
-            #     Z.print_table()
-            #     known_values = (
-            #         (0)
-            #     )
 
     def test_initiative_shift(self):
         print("Testing for Shift")
@@ -116,8 +92,7 @@ class MyTest(unittest.TestCase):
         for c in Z.character_list:
             if c.crash_state:
                 Z.character_list[4].shift_target = Z.character_list[3]
-                # print(str(c) + "'s shift target is " + str(c.shift_target))
-        # Z.print_table()
+
         # Attacker, Defender, damage, n_att_init, n_def_init, (Tricks, att_trick, def_trick),\
         # a_crash, d_crash, (Crashing, d_crasher)
         # Crashing_Values=(
@@ -133,12 +108,10 @@ class MyTest(unittest.TestCase):
 
         for attacker, defender, damage, n_att_init, n_def_init, trick, a_crash, d_crash, \
             crashing in known_values:
-            # print("")
-            # print("")
 
             combatants = (attacker, defender)
             a, d = Z.character_list[attacker], Z.character_list[defender]
-            # print(combatants, damage)
+
             Z.handle_withering(combatants, damage, trick)
 
             self.assertEqual(d.initiative, n_def_init)
@@ -155,14 +128,11 @@ class MyTest(unittest.TestCase):
                         n_att_init) + " and " + str((n_att_init + a.join_battle_pool) * 2)
 
             Z.sort_table()
-            # Z.print_table()
 
     def test_crash_3_turns(self):
         for i in range(3):
             Z.handle_withering((0, 1), i)
             Z.sort_table()
-        print("STARTING VALUES")
-        Z.print_table()
 
         # Combatants, damage, n_att_init, n_def_init, crash_status, crash counter
 
@@ -174,7 +144,6 @@ class MyTest(unittest.TestCase):
         Z.handle_withering(combatants, damage)
         Z.sort_table()
         print("")
-        Z.print_table()
         self.assertEqual(a.initiative, n_att_init)
         self.assertEqual(d.initiative, n_def_init)
         self.assertTrue(d.crash_state)
@@ -231,7 +200,6 @@ class MyTest(unittest.TestCase):
         a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
         Z.handle_withering(combatants, damage)
         Z.sort_table()
-        Z.print_table()
         self.assertEqual(a.initiative, n_att_init)
         self.assertFalse(a.crash_state)
         self.assertEqual(a.crash_counter, counter)
