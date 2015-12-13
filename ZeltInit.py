@@ -35,6 +35,12 @@ def debug_print(string):
 
 
 def dice_roller(pool=None, doubles=10):
+    """
+    :param pool: int: Dice pool to be rolled.
+    :param doubles: int: This number or higher earns an additional success.
+    :return: number of successes.
+    :rtype: int
+    """
     if pool is None:
         pool = input_validation.integer("Dice Pool: ")
     successes = 0
