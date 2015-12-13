@@ -1,14 +1,22 @@
 import unittest
+
 import ZeltInit
 
 Z = ZeltInit
 
 
+def simulate_round(turns):
+    for _i in range(turns):
+        Z.handle_withering((0, 1), 0)
+        Z.sort_table()
+    Z.print_table()
+
+
 class MyTest(unittest.TestCase):
     def setUp(self):
         print("*****")
-        for i in range(5):
-            print("")
+        # for i in range(5):
+        #     print("")
 
         Z.set_up_test()
 
@@ -58,7 +66,7 @@ class MyTest(unittest.TestCase):
 
             a, d = Z.character_list[0], Z.character_list[1]
 
-            print("*****" + str(a) + " is attacking " + str(d))
+            # print("*****" + str(a) + " is attacking " + str(d))
             Z.handle_withering(combatants, damage, tricks)
 
             # Prevent Initiative Shift, Tested elsewhere.
@@ -100,14 +108,16 @@ class MyTest(unittest.TestCase):
             #     )
 
     def test_initiative_shift(self):
+        print("Testing for Shift")
         for i in range(3):
             Z.handle_withering((0, 1), i, (False, 0, 0))
             Z.sort_table()
 
         for c in Z.character_list:
             if c.crash_state:
-                print(str(c) + "'s shift target is " + str(c.shift_target))
-        Z.print_table()
+                Z.character_list[4].shift_target = Z.character_list[3]
+                # print(str(c) + "'s shift target is " + str(c.shift_target))
+        # Z.print_table()
         # Attacker, Defender, damage, n_att_init, n_def_init, (Tricks, att_trick, def_trick),\
         # a_crash, d_crash, (Crashing, d_crasher)
         # Crashing_Values=(
@@ -117,13 +127,15 @@ class MyTest(unittest.TestCase):
         # )
         known_values = (
             (0, 1, 2, 10, 0, (False, 0, 0), False, True, (1, Z.character_list[0])),  # Arnold Crashes Carol
-            (2, 4, 10, None, 0, (False, 0, 0), False, True, (2, None)),  # Shift
+            (2, 4, 10, 16, 0, (False, 0, 0), False, True, (2, None)),  # Shift, init higher than base.
+            (3, 2, 1, 3, 0, (False, 0, 0), False, True, (2, None)),  # Shift, init lower than base
         )
 
         for attacker, defender, damage, n_att_init, n_def_init, trick, a_crash, d_crash, \
             crashing in known_values:
-            print("")
-            print("")
+            # print("")
+            # print("")
+
             combatants = (attacker, defender)
             a, d = Z.character_list[attacker], Z.character_list[defender]
             # print(combatants, damage)
@@ -138,34 +150,106 @@ class MyTest(unittest.TestCase):
             elif crashing[0] == 0:
                 self.assertEqual(a.initiative, n_att_init)
             else:
-                self.assertTrue(a.initiative >= 16,
-                                a.name + "'s initiative is " + str(a.initiative) + ", but should be lower.")
+                self.assertTrue(n_att_init <= a.initiative <= (n_att_init + a.join_battle_pool) * 2), \
+                a.name + "'s initiative is " + str(a.initiative) + ", but should be between " + str(
+                        n_att_init) + " and " + str((n_att_init + a.join_battle_pool) * 2)
 
             Z.sort_table()
-            Z.print_table()
+            # Z.print_table()
 
-            # def test_decisive(self):
-            #     """Tests decisive attacks against known values and inputs"""
-            #     for i in range(13):
-            #         Z.handle_withering((0, 1), i, (False, 0, 0))
-            #         Z.sort_table()
-            #     # success, new_init,
-            #     known_values = (
-            #         (True, 3),  # Successful
-            #         (False, 10),  # Failed, init >=11
-            #         (False, 6),  # Failed, init <11
-            #     )
-            #     print("Testing Decisive Attacks.")
-            #     # Z.print_table()
-            #
-            #     for success, new_init in known_values:
-            #         Z.handle_decisive(0, success)
-            #         self.assertEqual(Z.character_list[0].initiative, new_init)
-            #         self.assertTrue(Z.character_list[0].has_gone)
-            #         print("")
-            #         print("")
-            #         Z.sort_table()
-            #         # Z.print_table()
+    def test_crash_3_turns(self):
+        for i in range(3):
+            Z.handle_withering((0, 1), i)
+            Z.sort_table()
+        print("STARTING VALUES")
+        Z.print_table()
+
+        # Combatants, damage, n_att_init, n_def_init, crash_status, crash counter
+
+        known_values = self.crash_counter_value_gen()
+
+        combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
+        a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
+
+        Z.handle_withering(combatants, damage)
+        Z.sort_table()
+        print("")
+        Z.print_table()
+        self.assertEqual(a.initiative, n_att_init)
+        self.assertEqual(d.initiative, n_def_init)
+        self.assertTrue(d.crash_state)
+        self.assertEqual(d.crash_counter, counter)
+
+        combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
+        a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
+        Z.handle_withering(combatants, damage)
+
+        self.assertEqual(a.initiative, n_att_init)
+        self.assertTrue(a.crash_state)
+        self.assertEqual(a.crash_counter, counter)
+        Z.sort_table()
+        # End Round 1
+
+        simulate_round(3)
+        combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
+        a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
+        self.assertEqual(a.initiative, n_att_init)
+        self.assertTrue(a.crash_state)
+        self.assertEqual(a.crash_counter, counter)
+
+        combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
+        a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
+        Z.handle_withering(combatants, damage)
+        self.assertEqual(a.initiative, n_att_init)
+        self.assertTrue(a.crash_state)
+        self.assertEqual(a.crash_counter, counter)
+        Z.sort_table()
+        # end Round 2
+
+        simulate_round(4)
+        combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
+        a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
+        self.assertEqual(a.initiative, n_att_init)
+        self.assertTrue(a.crash_state)
+        self.assertEqual(a.crash_counter, counter)
+        combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
+        a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
+        Z.handle_withering(combatants, damage)
+        self.assertEqual(a.initiative, n_att_init)
+        self.assertTrue(a.crash_state)
+        self.assertEqual(a.crash_counter, counter)
+        Z.sort_table()
+
+        # end Round 3
+        simulate_round(4)
+        combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
+        a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
+        self.assertEqual(a.initiative, n_att_init)
+        self.assertTrue(a.crash_state)
+        self.assertEqual(a.crash_counter, counter)
+        combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
+        a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
+        Z.handle_withering(combatants, damage)
+        Z.sort_table()
+        Z.print_table()
+        self.assertEqual(a.initiative, n_att_init)
+        self.assertFalse(a.crash_state)
+        self.assertEqual(a.crash_counter, counter)
+
+    def crash_counter_value_gen(self):
+        values = (
+            ((0, 1), 10, 18, -8, True, 0),
+            ((3, 1), 0, -8, 1, True, 1),
+            ((4, 0), 0, -8, 1, True, 1),
+            ((4, 0), 0, -8, 1, True, 2),
+            ((4, 0), 0, -8, 1, True, 2),
+            ((4, 0), 0, -8, 1, True, 3),
+            ((4, 0), 0, -8, 1, True, 3),
+            ((4, 0), 1, 5, 17, True, 0),
+        )
+
+        for value in values:
+            yield value
 
 
 if __name__ == '__main__':

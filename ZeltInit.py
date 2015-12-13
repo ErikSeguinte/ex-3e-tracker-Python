@@ -51,6 +51,7 @@ class Character:
         self.has_gone = False
         self.join_battle_pool = None
         self.shift_target = None  # Character who crashed this character, for init shift.
+        self.recently_crashed = False
 
     def set_name(self):
         self.name = input("Name: ")
@@ -68,7 +69,7 @@ class Character:
         return str(self.name).rstrip()
 
     def __repr__(self):
-        return str(self.name).rstrip
+        return str(self.name).rstrip()
 
     def join_battle(self):
         return dice_roller(self.join_battle_pool)
@@ -160,6 +161,10 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
     global character_list
     attacker_index, defender_index = combatants
     attacker, defender = character_list[attacker_index], character_list[defender_index]
+    if attacker.crash_counter >= 3:
+        attacker.crash_counter = 0
+        attacker.crash_state = False
+        attacker.initiative = 3
 
     handle_tricks(combatants, *trick)
 
@@ -171,7 +176,7 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
         if check_for_crash(defender_index, damage):
             #    print("Checking for Shift: " + str(attacker.shift_target == defender))
             if attacker.shift_target is defender:  # Initiative Shift!
-                print(defender.name + " is the shift target")
+                # print(defender.name + " is the shift target")
                 shifting = True
             attacker.initiative += 5
             defender.crash_state = True
@@ -193,6 +198,9 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
             attacker.shift_target = None
         else:
             attacker.crash_state = True
+
+    if attacker.crash_state:
+        attacker.crash_counter += 1
 
     if check_for_end_of_round():
         reset_has_gone()
