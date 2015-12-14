@@ -12,6 +12,7 @@ ITEMS = (
     "Add NPCs",
     "Join Battle!",
     "Modify Initiative",
+    "Remove from combat",
 )
 GAMBITS = (
     ("Disarm", 3),
@@ -312,6 +313,14 @@ def handle_decisive(attacker, success):
         else:
             a.initiative -= 3
     a.has_gone = True
+
+
+def remove_from_combat(character_index):
+    global character_list
+    print("Removing:")
+    print(character_list[character_index])
+    del character_list[character_index]
+
 
 
 def main():

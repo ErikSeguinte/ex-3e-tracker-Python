@@ -211,7 +211,7 @@ class MyTest(unittest.TestCase):
         for c in Z.character_list:
             c.initiative = next(init)
         Z.sort_table()
-        Z.print_table()
+
 
         known_values = (
             (False, 12),
@@ -226,7 +226,6 @@ class MyTest(unittest.TestCase):
             Z.handle_decisive(0, success)
             self.assertEqual(a.initiative, n_init)
             Z.sort_table()
-            Z.print_table()
 
 
     def crash_counter_value_gen(self):
@@ -248,5 +247,46 @@ class MyTest(unittest.TestCase):
         values = (9, 10, 11, 15, 10)
         for value in values:
             yield value
+
+    def test_character_remove(self):
+        c_list = Z.character_list
+
+        still_in_play = []
+        removed_from_play = []
+        for c in c_list:
+            still_in_play.append(c)
+
+        Z.print_table()
+
+        for character in still_in_play:
+            self.assertIn(character, c_list)
+
+        removed_from_play.append(still_in_play.pop(0))
+        Z.remove_from_combat(0)
+
+        for character in still_in_play:
+            self.assertIn(character, c_list)
+
+        for character in removed_from_play:
+            self.assertNotIn(character, c_list)
+
+        Z.sort_table()
+        Z.print_table()
+
+        still_in_play = []
+        for c in c_list:
+            still_in_play.append(c)
+        removed_from_play.append(still_in_play.pop(2))
+        Z.remove_from_combat(2)
+
+        for character in still_in_play:
+            self.assertIn(character, c_list)
+
+        Z.sort_table()
+        Z.print_table()
+
+        for character in removed_from_play:
+            self.assertNotIn(character, Z.character_list)
+
 if __name__ == '__main__':
     unittest.main()
