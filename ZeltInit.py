@@ -301,6 +301,19 @@ def handle_tricks(combatants, trick_status, att_trick, def_trick):
         defender.initiative += def_trick
 
 
+def handle_decisive(attacker, success):
+    a = character_list[attacker]
+
+    if success:
+        a.initiative = 3
+    else:
+        if a.initiative <= 10:
+            a.initiative -= 2
+        else:
+            a.initiative -= 3
+    a.has_gone = True
+
+
 def main():
     global character_list
 

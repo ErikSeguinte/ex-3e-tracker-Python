@@ -204,6 +204,31 @@ class MyTest(unittest.TestCase):
         self.assertFalse(a.crash_state)
         self.assertEqual(a.crash_counter, counter)
 
+    def test_decisive(self):
+        print("Testing Decisive Attacks")
+        simulate_round(3)
+        init = self.decisive_initiative_generator()
+        for c in Z.character_list:
+            c.initiative = next(init)
+        Z.sort_table()
+        Z.print_table()
+
+        known_values = (
+            (False, 12),
+            (True, 3),
+            (False, 8),
+            (True, 3),
+            (False, 7),
+        )
+
+        for success, n_init in known_values:
+            a = Z.character_list[0]
+            Z.handle_decisive(0, success)
+            self.assertEqual(a.initiative, n_init)
+            Z.sort_table()
+            Z.print_table()
+
+
     def crash_counter_value_gen(self):
         values = (
             ((0, 1), 10, 18, -8, True, 0),
@@ -219,6 +244,9 @@ class MyTest(unittest.TestCase):
         for value in values:
             yield value
 
-
+    def decisive_initiative_generator(self):
+        values = (9, 10, 11, 15, 10)
+        for value in values:
+            yield value
 if __name__ == '__main__':
     unittest.main()
