@@ -81,8 +81,6 @@ class MyTest(unittest.TestCase):
             i += 1
             Z.sort_table()
 
-
-
     def test_initiative_shift(self):
         print("Testing for Shift")
         for i in range(3):
@@ -212,7 +210,6 @@ class MyTest(unittest.TestCase):
             c.initiative = next(init)
         Z.sort_table()
 
-
         known_values = (
             (False, 12),
             (True, 3),
@@ -226,7 +223,6 @@ class MyTest(unittest.TestCase):
             Z.handle_decisive(0, success)
             self.assertEqual(a.initiative, n_init)
             Z.sort_table()
-
 
     def crash_counter_value_gen(self):
         values = (
@@ -287,6 +283,7 @@ class MyTest(unittest.TestCase):
 
         for character in removed_from_play:
             self.assertNotIn(character, Z.character_list)
+
 
 if __name__ == '__main__':
     unittest.main()

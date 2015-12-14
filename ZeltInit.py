@@ -322,7 +322,6 @@ def remove_from_combat(character_index):
     del character_list[character_index]
 
 
-
 def main():
     global character_list
 
