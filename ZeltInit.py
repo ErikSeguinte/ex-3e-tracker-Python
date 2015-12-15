@@ -16,9 +16,9 @@ ITEMS = (
 GAMBITS = (
     ("Disarm", 3),
     ("Unhorse", 4),
-    ("Distract", 3),
-    ("Distract", 4),
-    ("Distract", 5),
+    ("Distract(3)", 3),
+    ("Distract(4)", 4),
+    ("Distract(5)", 5),
     ("Grapple", 2),
 )
 
@@ -280,7 +280,7 @@ def main():
     global character_list
 
     add_players()
-    ui = UI(ITEMS)
+    ui = UI(ITEMS, GAMBITS)
     while True:
         clear_screen()
         sort_table()
@@ -314,7 +314,7 @@ def main():
         elif command == "Other Actions":
             pass
         elif command == "Gambits":
-            pass
+            cost = ui.choose_gambit()
         elif command == "Modify Initiative":
             pass
 
