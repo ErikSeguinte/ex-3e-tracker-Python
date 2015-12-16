@@ -1,6 +1,4 @@
-import ZeltInit
 import input_validation
-
 
 
 class UI:
@@ -43,27 +41,30 @@ class UI:
         combatants = (attacker, defender)
         return combatants
 
-    def handle_attack(self, type, number_of_combatants):
+    def attack_interface(self, attack_type, number_of_combatants):
         """
-        :param type: Type of attack. 0 = Withering, 1 = complex withering, 2 = decisive, 3 = complex decisive, 4 =\
+        :param number_of_combatants:
+        :param attack_type: Type of attack. 0 = Withering, 1 = complex withering, 2 = decisive, 3 = complex decisive, 4 =\
                     gambit, 5 = complex gambit.
         :return:
         """
-
-        if type == 0:
-            combatants = self.choose_combatants(number_of_combatants)
+        combatants = self.choose_combatants(number_of_combatants)
+        if attack_type == 0:
             damage = self.get_damage()
-            return (combatants, damage)
+            return combatants, damage
 
-        elif type == 1:
+        elif attack_type == 1:
+            damage = self.get_damage()
+            trick = self.get_tricks()
+            return combatants, damage, trick
+        elif attack_type == 2:
             pass
-        elif type == 2:
+        elif attack_type == 3:
             pass
-        elif type == 3:
-            pass
-        elif type == 4:
-            pass
-        elif type == 5:
+        elif attack_type == 4:
+            gambit, cost = self.get_gambit()
+            return combatants, gambit, cost
+        elif attack_type == 5:
             pass
 
     def get_damage(self):
@@ -71,4 +72,26 @@ class UI:
         return damage
 
     def get_tricks(self):
-        pass
+        off_trick = input_validation.empty_or_integer("Defensive Init Modification: ")
+        def_trick = input_validation.empty_or_integer("Defensive Init Modification: ")
+
+        if off_trick == "":
+            off_trick = 0
+        if def_trick == "":
+            def_trick = 0
+
+        if off_trick == 0 and def_trick == 0:
+            return None
+        else:
+            trick = (True, off_trick, def_trick)
+            return trick
+
+    def get_gambit(self):
+        print("")
+        for i, gambit in enumerate(self.gambit_names):
+            cost = self.gambit_dict[gambit]
+            print("    " + str(i) + ") " + gambit + ", " + str(cost) + "i")
+
+        gambit_number = input_validation.integer("Choose Gambit: ")
+        gambit_name = self.gambit_names[gambit_number]
+        return gambit_name, self.gambit_dict[gambit_name]

@@ -3,6 +3,7 @@ import time
 
 import input_validation
 import user_interface
+import re
 
 ITEMS = (
     "Withering Attack",
@@ -178,9 +179,10 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
     attacker_index, defender_index = combatants
     attacker, defender = character_list[attacker_index], character_list[defender_index]
 
-    print(character_list[attacker_index].name + " is attacking " + character_list[
-        defender_index].name + " for " + str(damage) + " damage")
-    time.sleep(1)
+    if __name__ == '__main__':
+        print(character_list[attacker_index].name + " is attacking " + character_list[
+            defender_index].name + " for " + str(damage) + " damage")
+        time.sleep(1)
 
     # Reset Crash Counter at the beginning of the 4th turn if survives
     if attacker.crash_counter >= 3:
@@ -326,11 +328,22 @@ def remove_from_combat(character_index):
     del character_list[character_index]
 
 
+def handle_gambits(combatants, gambit, cost):
+    attacker = character_list[combatants[0]]
+    defender = character_list[combatants[1]]
+
+    attacker.initiative -= cost
+    if re.search(r"Distract", gambit):
+        defender.initiative += cost
+        print("Distracted!")
+
+    attacker.has_gone = True
+
 def main():
     global character_list
 
     add_players()
-ui = user_interface.UI(ITEMS, GAMBITS)
+    ui = user_interface.UI(ITEMS, GAMBITS)
 
     while True:
         clear_screen()
@@ -364,7 +377,9 @@ ui = user_interface.UI(ITEMS, GAMBITS)
         elif command == "Other Actions":
             pass
         elif command == "Gambits":
-            cost = ui.choose_gambit()
+            handle_gambits(*ui.attack_interface(4, number_of_combatants))
+
+
         elif command == "Modify Initiative":
             pass
 
