@@ -1,8 +1,8 @@
 from random import randint
+import time
 
 import input_validation
-import ui
-from ui import UI
+import user_interface
 
 ITEMS = (
     "Withering Attack",
@@ -178,6 +178,10 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
     attacker_index, defender_index = combatants
     attacker, defender = character_list[attacker_index], character_list[defender_index]
 
+    print(character_list[attacker_index].name + " is attacking " + character_list[
+        defender_index].name + " for " + str(damage) + " damage")
+    time.sleep(1)
+
     # Reset Crash Counter at the beginning of the 4th turn if survives
     if attacker.crash_counter >= 3:
         attacker.crash_counter = 0
@@ -326,19 +330,18 @@ def main():
     global character_list
 
     add_players()
-    ui = UI(ITEMS)
+    ui = user_interface.UI(ITEMS, )
     while True:
         clear_screen()
         sort_table()
         print_table()
         print("")
         ui.print_menu()
+        number_of_combatants = len(character_list)
         command = ui.get_command()
         if command == "Withering Attack":
             print("    " + command)
-            combatants = ui.choose_combatants(character_list)
-            damage = input_validation.empty_or_integer("Damage: ")
-            handle_withering(combatants, damage, (False, 0, 0))
+            handle_withering(*ui.handle_attack(0, number_of_combatants))
 
         elif command == "Decisive Attack":
             print("    " + command)
