@@ -98,10 +98,11 @@ def clear_screen():
         print("")
 
 
-def add_players():
+def add_players(f):
     """Add player names from an external file."""
+
     global character_list
-    with open('Players.txt', encoding='utf-8') as player_file:
+    with open(f, encoding='utf-8') as player_file:
         for a_line in player_file:
             character = Character()
             character.name = a_line.rstrip()
