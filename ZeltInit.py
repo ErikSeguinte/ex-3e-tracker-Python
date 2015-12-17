@@ -225,19 +225,6 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
         reset_has_gone()
 
 
-def handle_decisive(attacker, success):
-    global character_list
-    character = character_list[attacker]
-    if success:
-        character.initiative = 3
-    else:
-        if character.initiative >= 11:
-            character.initiative -= 3
-        else:
-            character.initiative -= 2
-    character.has_gone = True
-
-
 def check_for_end_of_round():
     global character_list
     for character in character_list:
