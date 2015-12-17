@@ -220,7 +220,7 @@ class MyTest(unittest.TestCase):
 
         for success, n_init in known_values:
             a = Z.character_list[0]
-            Z.handle_decisive(0, success)
+            Z.handle_decisive((0, 1), success)
             self.assertEqual(a.initiative, n_init)
             Z.sort_table()
 

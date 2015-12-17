@@ -185,10 +185,7 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
         time.sleep(1)
 
     # Reset Crash Counter at the beginning of the 4th turn if survives
-    if attacker.crash_counter >= 3:
-        attacker.crash_counter = 0
-        attacker.crash_state = False
-        attacker.initiative = 3
+    reset_crash_check(attacker)
 
     handle_tricks(combatants, *trick)
 
@@ -308,8 +305,13 @@ def handle_tricks(combatants, trick_status, att_trick, def_trick):
         defender.initiative += def_trick
 
 
-def handle_decisive(attacker, success):
+def handle_decisive(combatants, success, trick=(False, 0, 0)):
+    attacker = combatants[0]
+
     a = character_list[attacker]
+
+    reset_crash_check(attacker)
+    handle_tricks(combatants, *trick)
 
     if success:
         a.initiative = 3
@@ -328,9 +330,12 @@ def remove_from_combat(character_index):
     del character_list[character_index]
 
 
-def handle_gambits(combatants, gambit, cost):
+def handle_gambits(combatants, gambit, cost, trick=(False, 0, 0)):
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
+
+    reset_crash_check(attacker)
+    handle_tricks(attacker, *trick)
 
     attacker.initiative -= cost
     if re.search(r"Distract", gambit):
@@ -338,6 +343,14 @@ def handle_gambits(combatants, gambit, cost):
         print("Distracted!")
 
     attacker.has_gone = True
+
+
+def reset_crash_check(attacker):
+    if attacker.crash_counter >= 3:
+        attacker.crash_counter = 0
+        attacker.crash_state = False
+        attacker.initiative = 3
+
 
 def main():
     global character_list
