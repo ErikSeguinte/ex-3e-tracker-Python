@@ -310,7 +310,7 @@ def handle_decisive(combatants, success, trick=(False, 0, 0)):
 
     a = character_list[attacker]
 
-    reset_crash_check(attacker)
+    reset_crash_check(a)
     handle_tricks(combatants, *trick)
 
     if success:
@@ -350,6 +350,10 @@ def reset_crash_check(attacker):
         attacker.crash_counter = 0
         attacker.crash_state = False
         attacker.initiative = 3
+
+
+def remove_character(char_index):
+    return character_list.pop(char_index)
 
 
 def main():
