@@ -273,7 +273,7 @@ def set_up_test():
     sort_table()
 
 
-def handle_tricks(combatants, trick_status, att_trick, def_trick):
+def handle_tricks(combatants, trick_status=False, att_trick=0, def_trick=0):
     global character_list
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
@@ -359,11 +359,11 @@ def main():
         command = ui.get_command()
         if command == "Withering Attack":
             print("    " + command)
-            handle_withering(*ui.handle_attack(0, number_of_combatants))
+            handle_withering(*ui.attack_interface(0, number_of_combatants))
 
         elif command == "Decisive Attack":
             print("    " + command)
-            combatants = ui.choose_combatants(character_list)
+            handle_decisive(*ui.attack_interface(2, number_of_combatants))
         elif command == "Join Battle!":
             print("    " + command)
             for c in character_list:
@@ -382,7 +382,6 @@ def main():
             pass
         elif command == "Gambits":
             handle_gambits(*ui.attack_interface(4, number_of_combatants))
-
 
         elif command == "Modify Initiative":
             pass
