@@ -35,7 +35,12 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         Z.set_up_test()
         character_list = Z.character_list
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
-        self.model.setHeaderData(0, QtCore.Qt.Horizontal, "Label")
+        self.model.setHeaderData(0, QtCore.Qt.Horizontal, "ID")
+        self.model.setHeaderData(1, QtCore.Qt.Horizontal, "name")
+        self.model.setHeaderData(2, QtCore.Qt.Horizontal, "Initiative")
+        self.model.setHeaderData(3, QtCore.Qt.Horizontal, "Crash")
+        self.model.setHeaderData(4, QtCore.Qt.Horizontal, "Has Gone")
+
         self.table = self.tableView
         self.tableView.setModel(self.model)
         character_list = Z.character_list
@@ -51,7 +56,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.model.setData(self.model.index(row, 0, QtCore.QModelIndex()), row)
             self.model.setData(self.model.index(row, 1, QtCore.QModelIndex()), character.name)
             self.model.setData(self.model.index(row, 2, QtCore.QModelIndex()), character.initiative)
-            self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.has_gone)
+            self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.crash_state)
+            self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.has_gone)
             row += 1
 
 
