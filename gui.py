@@ -14,6 +14,19 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.statusBar()
         # self.Withering_btn.
 
+        # Model View stuff
+        self.model = QtGui.QStandardItemModel(4, 3, self)
+        table = self.tableView
+
+        table.setModel(self.model)
+        # self.model.insertRow(self,1,QtCore.QModelIndex)
+
+        character_list = self.get_character_list()
+
+        self.model.setData(self.model.index(1, 0), "Name", )
+
+
+
     def print_stuff(self):
         print("OMG")
 
@@ -25,10 +38,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if fname[0]:
             ZeltInit.add_players(fname[0])
 
+    def get_character_list(self):
+        return ZeltInit.character_list
 
-class InitView(QtWidgets.QAbstractItemView):
-    def __init__(self, parent=None):
-        super().__init__()
 
 
 
