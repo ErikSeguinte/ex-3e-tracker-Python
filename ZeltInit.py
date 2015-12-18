@@ -274,7 +274,8 @@ def set_up_test():
         if i % 4 == 0:
             character.initiative *= -1
         character.join_battle_pool = i + 1
-        character.has_gone = i % 2
+
+        character.has_gone = ((i % 2) == 1)
         if character.initiative <= 0:
             character.crash_state = True
         i += 1
@@ -331,7 +332,11 @@ def handle_gambits(combatants, success, gambit, trick=(False, 0, 0), ):
     cost = gambit_dict[gambit]
 
     reset_crash_check(attacker)
-    handle_tricks(attacker, *trick)
+    handle_tricks(combatants, *trick)
+
+    if check_for_crash(combatants[0], cost):
+        attacker.initiative -= 5
+        defender.initiative += 5
 
     if success:
         attacker.initiative -= cost
@@ -342,7 +347,7 @@ def handle_gambits(combatants, success, gambit, trick=(False, 0, 0), ):
         if attacker.initiative <= 10:
             attacker.initiative -= 2
         else:
-            a.initiative -= 3
+            attacker.initiative -= 3
 
     attacker.has_gone = True
 
