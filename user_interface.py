@@ -58,7 +58,9 @@ class UI:
             trick = self.get_tricks()
             return combatants, damage, trick
         elif attack_type == 2:
-            pass
+            success = self.get_success()
+            trick = self.get_tricks()
+            return combatants, success, trick
         elif attack_type == 3:
             pass
         elif attack_type == 4:
@@ -72,7 +74,7 @@ class UI:
         return damage
 
     def get_tricks(self):
-        off_trick = input_validation.empty_or_integer("Defensive Init Modification: ")
+        off_trick = input_validation.empty_or_integer("Offensive Init Modification: ")
         def_trick = input_validation.empty_or_integer("Defensive Init Modification: ")
 
         if off_trick == "":
@@ -81,7 +83,7 @@ class UI:
             def_trick = 0
 
         if off_trick == 0 and def_trick == 0:
-            return None
+            return False, 0, 0
         else:
             trick = (True, off_trick, def_trick)
             return trick
@@ -95,3 +97,7 @@ class UI:
         gambit_number = input_validation.integer("Choose Gambit: ")
         gambit_name = self.gambit_names[gambit_number]
         return gambit_name, self.gambit_dict[gambit_name]
+
+    def get_success(self):
+        success = input_validation.boolean("Was the attack successful? ")
+        return success

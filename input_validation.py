@@ -46,3 +46,27 @@ def empty_or_integer(message, min_value=None, max_value=None):
                     continue
                 else:
                     return user_input
+
+
+def boolean(message):
+    while True:
+        user_input = input(message)
+
+        try:
+            user_input = int(user_input)
+        except ValueError:
+            user_input = str(user_input).lower()
+
+            if user_input == "yes" or user_input == "y":
+                return True
+            elif user_input == "no" or user_input == "n":
+                return False
+        else:
+            if user_input == 1:
+                return True
+            elif user_input == 0:
+                return False
+
+        print("I'm sorry. I didn't understand that.")
+        print("Please use 1, y, or yes for affirmative; or 0, n, or no for negative.")
+        continue
