@@ -25,6 +25,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
 
 
+
+
         # self.model.setData(QtCore.QModelIndex(0,0),1)
 
     def open_attack_window(self):
@@ -43,7 +45,11 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             values = self.window2.exec()
 
             if values:
-                Z.handle_withering(*values)
+                if len(values) == 3:
+                    Z.handle_decisive(*values)
+
+                else:
+                    Z.handle_gambits(*values)
                 Z.sort_table()
                 self.setup_model()
 
@@ -155,7 +161,6 @@ class decisive_window(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
     def exec(self):
 
         super().exec()
-        print(self.result())
 
         if self.result():
             return self.get_values()
@@ -167,16 +172,26 @@ class decisive_window(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
         defender = self.defender_box.currentIndex()
         attacker_trick = self.a_spinBox.value()
         defender_trick = self.d_spinbox.value()
-        damage = self.damage_spinbox.value()
+        gambit_type = self.gambit_combo.currentText()
+        success = self.success_radio.isChecked()
 
         if attacker_trick != 0 or defender_trick != 0:
             tricks = True
         else:
             tricks = False
-
         trick = (tricks, attacker_trick, defender_trick)
 
-        values = ((attacker, defender), damage, trick)
+        if gambit_type == "Standard Decisive":
+            # prepare for handle_decisive
+            values = ((attacker, defender), success, trick)
+        else:
+            values = ((attacker, defender), success, gambit_type, trick)
+
+
+
+
+
+
         return values
 
 app = QtWidgets.QApplication(sys.argv)

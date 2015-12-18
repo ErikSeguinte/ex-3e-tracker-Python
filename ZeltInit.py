@@ -26,6 +26,15 @@ GAMBITS = (
 
 character_list = []
 
+# set up gambits
+gambit_dict = {}
+gambit_names = []
+
+for gambit in GAMBITS:
+    name = gambit[0]
+    cost = gambit[1]
+    gambit_names.append(name)
+    gambit_dict[name] = cost
 
 def debug_print(string):
     """ Prints string. Used in debugging so it can be found easier later.
@@ -316,19 +325,27 @@ def remove_from_combat(character_index):
     del character_list[character_index]
 
 
-def handle_gambits(combatants, gambit, cost, trick=(False, 0, 0)):
+def handle_gambits(combatants, success, gambit, trick=(False, 0, 0), ):
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
+    cost = gambit_dict[gambit]
 
     reset_crash_check(attacker)
     handle_tricks(attacker, *trick)
 
-    attacker.initiative -= cost
-    if re.search(r"Distract", gambit):
-        defender.initiative += cost
-        print("Distracted!")
+    if success:
+        attacker.initiative -= cost
+        if re.search(r"Distract", gambit):
+            defender.initiative += cost
+            print("Distracted!")
+    else:
+        if attacker.initiative <= 10:
+            attacker.initiative -= 2
+        else:
+            a.initiative -= 3
 
     attacker.has_gone = True
+
 
 
 def reset_crash_check(attacker):
