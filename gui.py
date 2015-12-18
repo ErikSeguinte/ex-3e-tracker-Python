@@ -76,7 +76,9 @@ class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         attacker_box = self.attacker_combo
         attacker_box.setModel(self.model)
 
-
+        defender_box = self.defender_combobox
+        defender_box.setModel(self.model)
+        defender_box.setCurrentIndex(1)
 
 
 
