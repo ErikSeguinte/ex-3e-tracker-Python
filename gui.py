@@ -3,7 +3,7 @@ import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 import ZeltInit as Z
 import main_window
-import attack_gui
+import attack_gui,decisive_gui
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -13,6 +13,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.setupUi(self)
         self.Withering_btn.clicked.connect(self.open_attack_window)
         self.actionLoad_Players.triggered.connect(self.show_file_dialog)
+        self.Decisive_btn.clicked.connect(self.open_decisive_window)
         self.statusBar()
         # self.Withering_btn.
         character_list = Z.character_list
@@ -35,6 +36,16 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             Z.handle_withering(*values)
             Z.sort_table()
             self.setup_model()
+
+    def open_decisive_window(self):
+
+            self.window2 = decisive_window(self.model)
+            values = self.window2.exec()
+
+            if values:
+                Z.handle_withering(*values)
+                Z.sort_table()
+                self.setup_model()
 
     def print_stuff(self):
         print("OMG")
@@ -119,6 +130,47 @@ class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         values = ((attacker, defender), damage, trick)
         return values
 
+
+class decisive_window(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
+    def __init__(self, model, parent=None, ):
+        super().__init__()
+        self.model = model
+        self.setupUi(self)
+        print("Setup!")
+
+        self.attacker_box = self.attacker_combo
+        self.attacker_box.setModel(self.model)
+
+        self.defender_box = self.defender_combobox
+        self.defender_box.setModel(self.model)
+        self.defender_box.setCurrentIndex(1)
+
+    def exec(self):
+
+        super().exec()
+        print(self.result())
+
+        if self.result():
+            return self.get_values()
+        else:
+            return None
+
+    def get_values(self):
+        attacker = self.attacker_box.currentIndex()
+        defender = self.defender_box.currentIndex()
+        attacker_trick = self.a_spinBox.value()
+        defender_trick = self.d_spinbox.value()
+        damage = self.damage_spinbox.value()
+
+        if attacker_trick != 0 or defender_trick != 0:
+            tricks = True
+        else:
+            tricks = False
+
+        trick = (tricks, attacker_trick, defender_trick)
+
+        values = ((attacker, defender), damage, trick)
+        return values
 
 app = QtWidgets.QApplication(sys.argv)
 Z.set_up_test()
