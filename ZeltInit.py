@@ -98,7 +98,7 @@ def clear_screen():
         print("")
 
 
-def add_players(f):
+def add_players(f="Players.txt"):
     """Add player names from an external file."""
 
     global character_list
