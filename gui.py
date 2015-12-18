@@ -145,6 +145,13 @@ class decisive_window(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
         self.defender_box.setModel(self.model)
         self.defender_box.setCurrentIndex(1)
 
+        gambit_list = []
+        gambit_list.append("Standard Decisive")
+        for gambit in Z.GAMBITS:
+            gambit_list.append(gambit[0])
+
+        self.gambit_combo.addItems(gambit_list)
+
     def exec(self):
 
         super().exec()
