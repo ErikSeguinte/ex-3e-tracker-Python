@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
-import ZeltInit
+import ZeltInit as Z
 import main_window
 import attack_gui
 
@@ -10,7 +10,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         super().__init__()
 
         self.setupUi(self)
-        self.Withering_btn.clicked.connect(self.print_stuff)
+        self.Withering_btn.clicked.connect(self.open_attack_window)
         self.actionLoad_Players.triggered.connect(self.show_file_dialog)
         self.statusBar()
         # self.Withering_btn.
@@ -34,7 +34,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         print(fname[0])
 
         if fname[0]:
-            ZeltInit.add_players(fname[0])
+            Z.add_players(fname[0])
 
         self.setup_model()
 
@@ -42,11 +42,11 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         Z.set_up_test()
         character_list = Z.character_list
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
-        self.model.setHeaderData(0, QtCore.Qt.Horizontal, "ID")
-        self.model.setHeaderData(1, QtCore.Qt.Horizontal, "name")
-        self.model.setHeaderData(2, QtCore.Qt.Horizontal, "Initiative")
-        self.model.setHeaderData(3, QtCore.Qt.Horizontal, "Crash")
-        self.model.setHeaderData(4, QtCore.Qt.Horizontal, "Has Gone")
+
+        self.model.setHeaderData(0, QtCore.Qt.Horizontal, "name")
+        self.model.setHeaderData(1, QtCore.Qt.Horizontal, "Initiative")
+        self.model.setHeaderData(2, QtCore.Qt.Horizontal, "Crash")
+        self.model.setHeaderData(3, QtCore.Qt.Horizontal, "Has Gone")
 
         self.table = self.tableView
         self.tableView.setModel(self.model)
@@ -55,12 +55,11 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         Z.sort_table()
 
-        self.model.setData(self.model.index(0, 0, QtCore.QModelIndex()), "1")
 
         row = 0
 
         for character in character_list:
-            self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), row)
+            self.model.setHeaderData(row, QtCore.Qt.Vertical, row)
             self.model.setData(self.model.index(row, 0, QtCore.QModelIndex()), character.name)
             self.model.setData(self.model.index(row, 1, QtCore.QModelIndex()), character.initiative)
             self.model.setData(self.model.index(row, 2, QtCore.QModelIndex()), character.crash_state)
