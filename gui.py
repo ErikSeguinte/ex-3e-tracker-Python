@@ -34,8 +34,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def setup_model(self):
         Z.set_up_test()
         character_list = Z.character_list
-        # self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
-        self.model = CharacterModel()
+        self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
         self.model.setHeaderData(0, QtCore.Qt.Horizontal, "ID")
         self.model.setHeaderData(1, QtCore.Qt.Horizontal, "name")
         self.model.setHeaderData(2, QtCore.Qt.Horizontal, "Initiative")
@@ -60,12 +59,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.crash_state)
             self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.has_gone)
             row += 1
-
-
-class CharacterModel(QtGui.QStandardItemModel):
-    def __init__(self):
-        character_list = Z.character_list
-        super().__init__(len(character_list), 5, self)
 
 
 
