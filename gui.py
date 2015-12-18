@@ -2,6 +2,7 @@ import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 import ZeltInit as Z
 import main_window
+import attack_gui
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -9,14 +10,20 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         super().__init__()
 
         self.setupUi(self)
-        self.Withering_btn.clicked.connect(self.print_stuff)
-        self.actionLoad_Players.triggered.connect(self.show_file_dialog)
+        self.Withering_btn.clicked.connect(self.open_attack_window)
+        self.actionLoad_Players.triggered.connect(self.open_attack_window)
         self.statusBar()
         # self.Withering_btn.
         self.setup_model()
+        self.window2 = None
 
 
         # self.model.setData(QtCore.QModelIndex(0,0),1)
+
+    def open_attack_window(self):
+        if self.window2 == None:
+            self.window2 = attack_window(self)
+        self.window2.show()
 
     def print_stuff(self):
         print("OMG")
@@ -61,6 +68,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             row += 1
 
 
+class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
+    def __init__(self, parent=None):
+        super().__init__()
+        self.setupUi(self)
 
 
 
