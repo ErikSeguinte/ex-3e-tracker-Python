@@ -22,7 +22,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def open_attack_window(self):
         if self.window2 == None:
-            self.window2 = attack_window(self)
+            self.window2 = attack_window(self.model)
         self.window2.show()
 
     def print_stuff(self):
@@ -60,18 +60,22 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         row = 0
 
         for character in character_list:
-            self.model.setData(self.model.index(row, 0, QtCore.QModelIndex()), row)
-            self.model.setData(self.model.index(row, 1, QtCore.QModelIndex()), character.name)
-            self.model.setData(self.model.index(row, 2, QtCore.QModelIndex()), character.initiative)
-            self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.crash_state)
-            self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.has_gone)
+            self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), row)
+            self.model.setData(self.model.index(row, 0, QtCore.QModelIndex()), character.name)
+            self.model.setData(self.model.index(row, 1, QtCore.QModelIndex()), character.initiative)
+            self.model.setData(self.model.index(row, 2, QtCore.QModelIndex()), character.crash_state)
+            self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.has_gone)
             row += 1
 
 
 class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
-    def __init__(self, parent=None):
+    def __init__(self, model, parent=None, ):
         super().__init__()
+        self.model = model
         self.setupUi(self)
+
+        attacker_box = self.attacker_combo
+        attacker_box.setModel(self.model)
 
 
 
