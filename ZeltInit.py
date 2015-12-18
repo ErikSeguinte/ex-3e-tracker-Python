@@ -180,10 +180,8 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
     attacker_index, defender_index = combatants
     attacker, defender = character_list[attacker_index], character_list[defender_index]
 
-    if __name__ == '__main__':
-        print(character_list[attacker_index].name + " is attacking " + character_list[
-            defender_index].name + " for " + str(damage) + " damage")
-        time.sleep(1)
+    # if __name__ == '__main__':
+    # debug_print(str(combata/nts, damage, trick))
 
     # Reset Crash Counter at the beginning of the 4th turn if survives
     reset_crash_check(attacker)

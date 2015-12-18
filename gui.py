@@ -15,20 +15,26 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionLoad_Players.triggered.connect(self.show_file_dialog)
         self.statusBar()
         # self.Withering_btn.
+        character_list = Z.character_list
+        Z.sort_table()
+        self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
         self.setup_model()
         self.window2 = None
+
+
 
 
         # self.model.setData(QtCore.QModelIndex(0,0),1)
 
     def open_attack_window(self):
-        if self.window2 == None:
-            self.window2 = attack_window(self.model)
+
+        self.window2 = attack_window(self.model)
         values = self.window2.exec()
 
         if values:
             Z.handle_withering(*values)
             Z.sort_table()
+            self.setup_model()
 
     def print_stuff(self):
         print("OMG")
@@ -44,8 +50,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.setup_model()
 
     def setup_model(self):
-        Z.set_up_test()
+
         character_list = Z.character_list
+        Z.sort_table()
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
 
         self.model.setHeaderData(0, QtCore.Qt.Horizontal, "name")
@@ -76,6 +83,7 @@ class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         super().__init__()
         self.model = model
         self.setupUi(self)
+        print("Setup!")
 
         self.attacker_box = self.attacker_combo
         self.attacker_box.setModel(self.model)
@@ -85,6 +93,7 @@ class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         self.defender_box.setCurrentIndex(1)
 
     def exec(self):
+
         super().exec()
         print(self.result())
 
@@ -112,6 +121,7 @@ class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
 
 
 app = QtWidgets.QApplication(sys.argv)
+Z.set_up_test()
 
 window = MainWindow()
 
