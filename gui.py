@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 import ZeltInit as Z
@@ -23,12 +24,11 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def open_attack_window(self):
         if self.window2 == None:
             self.window2 = attack_window(self.model)
-        attacker, defender = self.window2.exec()
+        values = self.window2.exec()
 
-        attacker_name = Z.character_list[attacker].name
-        defender_name = Z.character_list[defender].name
-
-        print(attacker_name + " is attacking " + defender_name)
+        if values:
+            Z.handle_withering(*values)
+            Z.sort_table()
 
     def print_stuff(self):
         print("OMG")
@@ -60,7 +60,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         Z.sort_table()
 
-
         row = 0
 
         for character in character_list:
@@ -80,23 +79,36 @@ class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
 
         self.attacker_box = self.attacker_combo
         self.attacker_box.setModel(self.model)
-        self.attacker = None
 
         self.defender_box = self.defender_combobox
         self.defender_box.setModel(self.model)
         self.defender_box.setCurrentIndex(1)
-        self.defender = None
 
     def exec(self):
-        self.attacker = self.attacker_box.currentIndex()
-        self.defender = self.defender_box.currentIndex()
         super().exec()
+        print(self.result())
 
-        return self.attacker, self.defender
+        if self.result():
+            return self.get_values()
+        else:
+            return None
 
+    def get_values(self):
+        attacker = self.attacker_box.currentIndex()
+        defender = self.defender_box.currentIndex()
+        attacker_trick = self.a_spinBox.value()
+        defender_trick = self.d_spinbox.value()
+        damage = self.damage_spinbox.value()
 
+        if attacker_trick != 0 or defender_trick != 0:
+            tricks = True
+        else:
+            tricks = False
 
+        trick = (tricks, attacker_trick, defender_trick)
 
+        values = ((attacker, defender), damage, trick)
+        return values
 
 
 app = QtWidgets.QApplication(sys.argv)
