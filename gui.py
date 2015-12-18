@@ -23,7 +23,12 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def open_attack_window(self):
         if self.window2 == None:
             self.window2 = attack_window(self.model)
-        self.window2.show()
+        attacker, defender = self.window2.exec()
+
+        attacker_name = Z.character_list[attacker].name
+        defender_name = Z.character_list[defender].name
+
+        print(attacker_name + " is attacking " + defender_name)
 
     def print_stuff(self):
         print("OMG")
@@ -73,12 +78,22 @@ class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         self.model = model
         self.setupUi(self)
 
-        attacker_box = self.attacker_combo
-        attacker_box.setModel(self.model)
+        self.attacker_box = self.attacker_combo
+        self.attacker_box.setModel(self.model)
+        self.attacker = None
 
-        defender_box = self.defender_combobox
-        defender_box.setModel(self.model)
-        defender_box.setCurrentIndex(1)
+        self.defender_box = self.defender_combobox
+        self.defender_box.setModel(self.model)
+        self.defender_box.setCurrentIndex(1)
+        self.defender = None
+
+    def exec(self):
+        self.attacker = self.attacker_box.currentIndex()
+        self.defender = self.defender_box.currentIndex()
+        super().exec()
+
+        return self.attacker, self.defender
+
 
 
 
