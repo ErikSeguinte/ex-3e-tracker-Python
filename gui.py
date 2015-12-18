@@ -3,7 +3,7 @@ import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 import ZeltInit as Z
 import main_window
-import attack_gui,decisive_gui
+import attack_gui, decisive_gui
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -41,17 +41,17 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def open_decisive_window(self):
 
-            self.window2 = decisive_window(self.model)
-            values = self.window2.exec()
+        self.window2 = decisive_window(self.model)
+        values = self.window2.exec()
 
-            if values:
-                if len(values) == 3:
-                    Z.handle_decisive(*values)
+        if values:
+            if len(values) == 3:
+                Z.handle_decisive(*values)
 
-                else:
-                    Z.handle_gambits(*values)
-                Z.sort_table()
-                self.setup_model()
+            else:
+                Z.handle_gambits(*values)
+            Z.sort_table()
+            self.setup_model()
 
     def print_stuff(self):
         print("OMG")
@@ -158,6 +158,9 @@ class decisive_window(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
 
         self.gambit_combo.addItems(gambit_list)
 
+        self.gambit_combo.activated.connect(self.set_cost_text)
+        self.set_cost_text()
+
     def exec(self):
 
         super().exec()
@@ -185,14 +188,23 @@ class decisive_window(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
             # prepare for handle_decisive
             values = ((attacker, defender), success, trick)
         else:
+            # prepare for handle_gambit
             values = ((attacker, defender), success, gambit_type, trick)
 
-
-
-
-
-
         return values
+
+    def set_cost_text(self):
+        gambit = self.gambit_combo.currentText()
+
+        if gambit != "Standard Decisive":
+            cost = Z.gambit_dict[gambit]
+            text = str(cost) + " initiative"
+        else:
+            text = ""
+        self.init_cost_label.setText(text)
+
+
+
 
 app = QtWidgets.QApplication(sys.argv)
 Z.set_up_test()
