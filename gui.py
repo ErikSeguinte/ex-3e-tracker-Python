@@ -127,6 +127,7 @@ class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         attacker_trick = self.a_spinBox.value()
         defender_trick = self.d_spinbox.value()
         damage = self.damage_spinbox.value()
+        rout = self.spinBox.value()
 
         if attacker_trick != 0 or defender_trick != 0:
             tricks = True
@@ -135,7 +136,7 @@ class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
 
         trick = (tricks, attacker_trick, defender_trick)
 
-        values = ((attacker, defender), damage, trick)
+        values = (((attacker, defender), damage, trick), rout)
         return values
 
 

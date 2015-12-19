@@ -36,6 +36,7 @@ for gambit in GAMBITS:
     gambit_names.append(name)
     gambit_dict[name] = cost
 
+
 def debug_print(string):
     """ Prints string. Used in debugging so it can be found easier later.
 
@@ -184,7 +185,7 @@ def check_for_crash(defender, init_damage):
         return False
 
 
-def handle_withering(combatants, damage, trick=(False, 0, 0)):
+def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0):
     global character_list
     attacker_index, defender_index = combatants
     attacker, defender = character_list[attacker_index], character_list[defender_index]
@@ -198,33 +199,37 @@ def handle_withering(combatants, damage, trick=(False, 0, 0)):
     handle_tricks(combatants, *trick)
 
     attacker.has_gone = True
-    if damage != 0:
-        shifting = False
-        if check_for_crash(defender_index, damage):
-            if attacker.shift_target is defender:  # Initiative Shift!
-                shifting = True
-            attacker.initiative += 5
-            defender.crash_state = True
-            defender.shift_target = attacker
+    if not defender.inert_initiative:
+        if damage != 0:
+            shifting = False
+            if check_for_crash(defender_index, damage):
+                if attacker.shift_target is defender:  # Initiative Shift!
+                    shifting = True
+                attacker.initiative += 5
+                defender.crash_state = True
+                defender.shift_target = attacker
 
-        # Successful Attack
-        attacker.initiative += damage + 1
-        if shifting:
-            attacker.has_gone = False
-            if attacker.initiative < 3:
-                attacker.initiative = 3
-            attacker.initiative += attacker.join_battle()
+            # Successful Attack
+            attacker.initiative += damage + 1
+            if shifting:
+                attacker.has_gone = False
+                if attacker.initiative < 3:
+                    attacker.initiative = 3
+                attacker.initiative += attacker.join_battle()
 
-        defender.initiative -= damage
-        if attacker.initiative > 0:
-            if attacker.crash_state:
-                attacker.recently_crashed = True
-            attacker.crash_state = False
-            attacker.crash_counter = 0
-            attacker.shift_target = None
-        else:
-            attacker.crash_state = True
-            attacker.recently_crashed = False
+            defender.initiative -= damage
+            if attacker.initiative > 0:
+                if attacker.crash_state:
+                    attacker.recently_crashed = True
+                attacker.crash_state = False
+                attacker.crash_counter = 0
+                attacker.shift_target = None
+            else:
+                attacker.crash_state = True
+                attacker.recently_crashed = False
+    else:
+        bonus = (rout * 5) + 1
+        attacker.initiative += bonus
 
     if attacker.crash_state:
         attacker.crash_counter += 1
@@ -301,7 +306,7 @@ def handle_tricks(combatants, trick_status=False, att_trick=0, def_trick=0):
         defender.initiative += def_trick
 
 
-def handle_decisive(combatants, success, trick=(False, 0, 0)):
+def handle_decisive(combatants, success, trick=(False, 0, 0), rout=0):
     attacker = combatants[0]
 
     a = character_list[attacker]
@@ -310,7 +315,7 @@ def handle_decisive(combatants, success, trick=(False, 0, 0)):
     handle_tricks(combatants, *trick)
 
     if success:
-        a.initiative = 3
+        a.initiative = (rout * 5) + 3
     else:
         if a.initiative <= 10:
             a.initiative -= 2
@@ -350,7 +355,6 @@ def handle_gambits(combatants, success, gambit, trick=(False, 0, 0), ):
             attacker.initiative -= 3
 
     attacker.has_gone = True
-
 
 
 def reset_crash_check(attacker):
