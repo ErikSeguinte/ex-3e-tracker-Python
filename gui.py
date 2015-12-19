@@ -36,7 +36,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def open_attack_window(self):
 
-        self.window2 = attack_window(self.model)
+        self.window2 = AttackWindow(self.model)
         values = self.window2.exec()
 
         if values:
@@ -46,7 +46,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def open_decisive_window(self):
 
-        self.window2 = decisive_window(self.model)
+        self.window2 = DecisiveWindow(self.model)
         values = self.window2.exec()
 
         if values:
@@ -60,20 +60,13 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def open_new_character_window(self):
 
-        self.window2 = add_character_window(self.model)
-        self.window2.exec()
+        self.window2 = AddCharacterWindow(self.model)
+        values = self.window2.exec()
 
-        # if values:
-        #     if len(values) == 3:
-        #         Z.handle_decisive(*values)
-        #
-        #     else:
-        #         Z.handle_gambits(*values)
-        #     Z.sort_table()
-        #     self.setup_model()
-
-    def print_stuff(self):
-        print("OMG")
+        if values:
+            Z.add_npc(*values)
+            Z.sort_table()
+            self.setup_model()
 
     def show_file_dialog(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', )
@@ -116,7 +109,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.tableView.resizeColumnsToContents()
 
 
-class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
+class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
     def __init__(self, model, parent=None, ):
         super().__init__()
         self.model = model
@@ -158,7 +151,7 @@ class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         return values
 
 
-class decisive_window(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
+class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
     def __init__(self, model, parent=None, ):
         super().__init__()
         self.model = model
@@ -224,24 +217,14 @@ class decisive_window(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
         self.init_cost_label.setText(text)
 
 
-class add_character_window(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
-    def __init__(self, model, parent=None, ):
+class AddCharacterWindow(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
+    def __init__(self, parent=None, ):
         super().__init__()
-        self.model = model
         self.setupUi(self)
-
-
-        # self.attacker_box = self.attacker_combo
-        # self.attacker_box.setModel(self.model)
-        #
-        # self.defender_box = self.defender_combobox
-        # self.defender_box.setModel(self.model)
-        # self.defender_box.setCurrentIndex(1)
 
     def exec(self):
 
         super().exec()
-        print(self.result())
 
         if self.result():
             return self.get_values()
@@ -249,22 +232,10 @@ class add_character_window(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
             return None
 
     def get_values(self):
-        # attacker = self.attacker_box.currentIndex()
-        # defender = self.defender_box.currentIndex()
-        # attacker_trick = self.a_spinBox.value()
-        # defender_trick = self.d_spinbox.value()
-        # damage = self.damage_spinbox.value()
-        # rout = self.spinBox.value()
-        #
-        # if attacker_trick != 0 or defender_trick != 0:
-        #     tricks = True
-        # else:
-        #     tricks = False
-        #
-        # trick = (tricks, attacker_trick, defender_trick)
-        #
-        # values = (((attacker, defender), damage, trick), rout)
-        values = None
+        name = self.name_edit.text()
+        inert_init = self.checkBox.isChecked()
+        join_battle = self.Join_battle_box.value()
+        values = name, inert_init, join_battle
         return values
 
 

@@ -148,12 +148,12 @@ def sort_table():
     character_list = sorted(character_list, key=lambda character: character.has_gone)
 
 
-def add_npc(name):
+def add_npc(name, inert, join_battle):
     global character_list
     new_character = Character()
     new_character.name = name
-    join_battle = input_validation.integer("Join Battle Dice Pool: ")
     new_character.join_battle_pool = join_battle
+    new_character.inert_initiative = inert
     character_list.append(new_character)
 
 
