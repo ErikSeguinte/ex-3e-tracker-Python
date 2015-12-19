@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>457</width>
-    <height>331</height>
+    <height>391</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -111,7 +111,7 @@
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <layout class="QFormLayout" name="formLayout_4">
+        <layout class="QFormLayout" name="formLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="label_5">
            <property name="text">
@@ -126,6 +126,16 @@
           <widget class="QLabel" name="init_cost_label">
            <property name="text">
             <string>TextLabel</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="spinBox"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Rout Check</string>
            </property>
           </widget>
          </item>

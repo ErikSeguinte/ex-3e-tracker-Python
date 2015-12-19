@@ -71,7 +71,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         character_list = Z.character_list
         Z.sort_table()
-        self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
+        self.model = QtGui.QStandardItemModel(len(character_list), 4, self)
 
         self.model.setHeaderData(0, QtCore.Qt.Horizontal, "name")
         self.model.setHeaderData(1, QtCore.Qt.Horizontal, "Initiative")
@@ -95,6 +95,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.has_gone)
             row += 1
 
+        self.tableView.resizeColumnsToContents()
 
 class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
     def __init__(self, model, parent=None, ):
