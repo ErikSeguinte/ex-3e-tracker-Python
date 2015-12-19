@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 import sys
+
 from PyQt5 import QtGui, QtCore, QtWidgets
+
 import ZeltInit as Z
-import main_window
-import attack_gui, decisive_gui
+from lib import attack_gui, decisive_gui, main_window
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
