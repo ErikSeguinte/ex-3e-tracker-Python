@@ -28,12 +28,17 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.Decisive_btn.clicked.connect(self.open_decisive_window)
         self.join_battle_btn.clicked.connect(self.join_battle)
         self.add_npc_btn.clicked.connect(self.open_new_character_window)
+        self.modify_init_btn.clicked.connect(self.modify_character)
 
 
 
 
 
         # self.model.setData(QtCore.QModelIndex(0,0),1)
+
+    def modify_character(self):
+        print(self.tableView.currentIndex())
+        self.tableView.
 
     def join_battle(self):
         c_list = Z.character_list
@@ -94,7 +99,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def show_file_dialog(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', )
-
         print(fname[0])
 
         if fname[0]:

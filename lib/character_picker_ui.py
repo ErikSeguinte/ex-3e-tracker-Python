@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\Primefactorx01\Documents\Python\ex-3e-init-tracker\lib\join_battle_gui.ui'
+# Form implementation generated from reading ui file 'C:\Users\Primefactorx01\Documents\Python\ex-3e-init-tracker\lib\character_picker_ui.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -8,24 +8,20 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(236, 70)
+        Dialog.resize(240, 70)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.groupBox = QtWidgets.QGroupBox(Dialog)
-        self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
-        self.formLayout = QtWidgets.QFormLayout(self.groupBox)
-        self.formLayout.setObjectName("formLayout")
-        self.label = QtWidgets.QLabel(self.groupBox)
-        self.label.setObjectName("label")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label)
-        self.spinBox = QtWidgets.QSpinBox(self.groupBox)
-        self.spinBox.setMinimum(-99)
-        self.spinBox.setObjectName("spinBox")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.spinBox)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.comboBox = QtWidgets.QComboBox(self.groupBox)
+        self.comboBox.setObjectName("comboBox")
+        self.verticalLayout.addWidget(self.comboBox)
         self.horizontalLayout.addWidget(self.groupBox)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
@@ -40,5 +36,5 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Join Battle!"))
-        self.label.setText(_translate("Dialog", "Join Battle!"))
+        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        self.groupBox.setTitle(_translate("Dialog", "Character"))
