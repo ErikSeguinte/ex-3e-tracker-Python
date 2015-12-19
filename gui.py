@@ -4,7 +4,7 @@ import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 
 import ZeltInit as Z
-from lib import attack_gui, decisive_gui, main_window
+from lib import attack_gui, decisive_gui, main_window, new_character_ui
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -12,9 +12,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         super().__init__()
 
         self.setupUi(self)
-        self.Withering_btn.clicked.connect(self.open_attack_window)
+        self.setup_buttons()
         self.actionLoad_Players.triggered.connect(self.show_file_dialog)
-        self.Decisive_btn.clicked.connect(self.open_decisive_window)
+
         self.statusBar()
         # self.Withering_btn.
         character_list = Z.character_list
@@ -23,6 +23,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.setup_model()
         self.window2 = None
 
+    def setup_buttons(self):
+        self.Withering_btn.clicked.connect(self.open_attack_window)
+        self.Decisive_btn.clicked.connect(self.open_decisive_window)
+        self.add_npc_btn.clicked.connect(self.open_new_character_window)
 
 
 
@@ -53,6 +57,20 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
                 Z.handle_gambits(*values)
             Z.sort_table()
             self.setup_model()
+
+    def open_new_character_window(self):
+
+        self.window2 = add_character_window(self.model)
+        self.window2.exec()
+
+        # if values:
+        #     if len(values) == 3:
+        #         Z.handle_decisive(*values)
+        #
+        #     else:
+        #         Z.handle_gambits(*values)
+        #     Z.sort_table()
+        #     self.setup_model()
 
     def print_stuff(self):
         print("OMG")
@@ -97,12 +115,12 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         self.tableView.resizeColumnsToContents()
 
+
 class attack_window(QtWidgets.QDialog, attack_gui.Ui_Dialog):
     def __init__(self, model, parent=None, ):
         super().__init__()
         self.model = model
         self.setupUi(self)
-        print("Setup!")
 
         self.attacker_box = self.attacker_combo
         self.attacker_box.setModel(self.model)
@@ -145,7 +163,6 @@ class decisive_window(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
         super().__init__()
         self.model = model
         self.setupUi(self)
-        print("Setup!")
 
         self.attacker_box = self.attacker_combo
         self.attacker_box.setModel(self.model)
@@ -207,6 +224,48 @@ class decisive_window(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
         self.init_cost_label.setText(text)
 
 
+class add_character_window(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
+    def __init__(self, model, parent=None, ):
+        super().__init__()
+        self.model = model
+        self.setupUi(self)
+
+
+        # self.attacker_box = self.attacker_combo
+        # self.attacker_box.setModel(self.model)
+        #
+        # self.defender_box = self.defender_combobox
+        # self.defender_box.setModel(self.model)
+        # self.defender_box.setCurrentIndex(1)
+
+    def exec(self):
+
+        super().exec()
+        print(self.result())
+
+        if self.result():
+            return self.get_values()
+        else:
+            return None
+
+    def get_values(self):
+        # attacker = self.attacker_box.currentIndex()
+        # defender = self.defender_box.currentIndex()
+        # attacker_trick = self.a_spinBox.value()
+        # defender_trick = self.d_spinbox.value()
+        # damage = self.damage_spinbox.value()
+        # rout = self.spinBox.value()
+        #
+        # if attacker_trick != 0 or defender_trick != 0:
+        #     tricks = True
+        # else:
+        #     tricks = False
+        #
+        # trick = (tricks, attacker_trick, defender_trick)
+        #
+        # values = (((attacker, defender), damage, trick), rout)
+        values = None
+        return values
 
 
 app = QtWidgets.QApplication(sys.argv)
