@@ -76,7 +76,7 @@ class Character:
         self.crash_counter = 0  # Number of turns in crash
         self.crash_return_counter = 0  # Number of turns after returning from crash
         self.has_gone = False
-        self.join_battle_pool = None
+        self.join_battle_pool = 0
         self.shift_target = None  # Character who crashed this character, for init shift.
         self.recently_crashed = False
 
@@ -99,7 +99,7 @@ class Character:
         return str(self.name).rstrip()
 
     def join_battle(self):
-        return dice_roller(self.join_battle_pool)
+        self.initiative = dice_roller(self.join_battle_pool)
 
 
 def clear_screen():
@@ -215,7 +215,7 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0):
                 attacker.has_gone = False
                 if attacker.initiative < 3:
                     attacker.initiative = 3
-                attacker.initiative += attacker.join_battle()
+                attacker.initiative += dice_roller(attacker.join_battle_pool)
 
             defender.initiative -= damage
             if attacker.initiative > 0:

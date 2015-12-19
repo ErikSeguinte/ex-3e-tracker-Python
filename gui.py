@@ -4,7 +4,7 @@ import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 
 import ZeltInit as Z
-from lib import attack_gui, decisive_gui, main_window, new_character_ui
+from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -26,6 +26,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def setup_buttons(self):
         self.Withering_btn.clicked.connect(self.open_attack_window)
         self.Decisive_btn.clicked.connect(self.open_decisive_window)
+        self.join_battle_btn.clicked.connect(self.join_battle)
         self.add_npc_btn.clicked.connect(self.open_new_character_window)
 
 
@@ -33,6 +34,29 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
 
         # self.model.setData(QtCore.QModelIndex(0,0),1)
+
+    def join_battle(self):
+        c_list = Z.character_list
+        print("Joinning Battle!")
+
+        for character in c_list:
+            if character.join_battle_pool == 0:
+                # Ask for Initiative
+                self.window2 = JoinBattleWindow(character.name)
+
+                values = self.window2.exec()
+                if values:
+                    character.initiative = values
+                else:
+                    break
+
+            else:
+                character.join_battle()
+                print("Rolling for" + character.name)
+
+        self.setup_model()
+
+
 
     def open_attack_window(self):
 
@@ -82,12 +106,13 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         character_list = Z.character_list
         Z.sort_table()
-        self.model = QtGui.QStandardItemModel(len(character_list), 4, self)
+        self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
 
         self.model.setHeaderData(0, QtCore.Qt.Horizontal, "name")
         self.model.setHeaderData(1, QtCore.Qt.Horizontal, "Initiative")
         self.model.setHeaderData(2, QtCore.Qt.Horizontal, "Crash")
         self.model.setHeaderData(3, QtCore.Qt.Horizontal, "Has Gone")
+        self.model.setHeaderData(4, QtCore.Qt.Horizontal, "Shift Target")
 
         self.table = self.tableView
         self.tableView.setModel(self.model)
@@ -104,9 +129,32 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.model.setData(self.model.index(row, 1, QtCore.QModelIndex()), character.initiative)
             self.model.setData(self.model.index(row, 2, QtCore.QModelIndex()), character.crash_state)
             self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.has_gone)
+            # if character.shift_target:
+            #     self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.shift_target.name)
             row += 1
 
         self.tableView.resizeColumnsToContents()
+
+
+class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
+    def __init__(self, name, parent=None, ):
+        super().__init__()
+        self.setupUi(self)
+        self.groupBox.setTitle(name)
+
+    def exec(self):
+
+        super().exec()
+
+        if self.result():
+            return self.get_values()
+        else:
+            return None
+
+    def get_values(self):
+        join_battle = self.spinBox.value()
+
+        return join_battle
 
 
 class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
@@ -147,7 +195,7 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
 
         trick = (tricks, attacker_trick, defender_trick)
 
-        values = (((attacker, defender), damage, trick), rout)
+        values = (attacker, defender), damage, trick, rout
         return values
 
 
@@ -240,7 +288,7 @@ class AddCharacterWindow(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
 
 
 app = QtWidgets.QApplication(sys.argv)
-Z.set_up_test()
+# Z.set_up_test()
 
 window = MainWindow()
 
