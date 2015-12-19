@@ -4,7 +4,7 @@ import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 
 import ZeltInit as Z
-from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui
+from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui, character_picker_ui
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -38,7 +38,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def modify_character(self):
         print(self.tableView.currentIndex())
-        self.tableView.
+        window2 = CharacterPickerWindow(self.model)
+        values = window2.exec()
 
     def join_battle(self):
         c_list = Z.character_list
@@ -60,8 +61,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
                 print("Rolling for" + character.name)
 
         self.setup_model()
-
-
 
     def open_attack_window(self):
 
@@ -289,6 +288,29 @@ class AddCharacterWindow(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
         join_battle = self.Join_battle_box.value()
         values = name, inert_init, join_battle
         return values
+
+
+class CharacterPickerWindow(QtWidgets.QDialog, character_picker_ui.Ui_Dialog):
+    def __init__(self, model, parent=None, ):
+        super().__init__()
+        self.model = model
+        self.setupUi(self)
+        self.comboBox.setModel(self.model)
+
+    def exec(self):
+
+        super().exec()
+
+        if self.result():
+            return self.get_values()
+        else:
+            return None
+
+    def get_values(self):
+        return self.comboBox.currentIndex()
+
+
+class ModifyCharacterWindow(QtWidgets.QDialog, )
 
 
 app = QtWidgets.QApplication(sys.argv)
