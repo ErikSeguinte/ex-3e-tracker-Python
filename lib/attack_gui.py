@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'attack_gui.ui'
+# Form implementation generated from reading ui file '/Users/HornetBookstoreImac/Documents/Python/ex-3e-init-tracker/lib/attack_gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(340, 248)
+        Dialog.resize(374, 313)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(Dialog)
@@ -56,19 +56,17 @@ class Ui_Dialog(object):
         self.d_spinbox.setObjectName("d_spinbox")
         self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.d_spinbox)
         self.verticalLayout.addWidget(self.groupBox_2)
-        self.frame_2 = QtWidgets.QFrame(self.frame)
-        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_2.setObjectName("frame_2")
-        self.formLayout_4 = QtWidgets.QFormLayout(self.frame_2)
+        self.groupBox_21 = QtWidgets.QGroupBox(self.frame)
+        self.groupBox_21.setObjectName("groupBox_21")
+        self.formLayout_4 = QtWidgets.QFormLayout(self.groupBox_21)
         self.formLayout_4.setObjectName("formLayout_4")
-        self.label_5 = QtWidgets.QLabel(self.frame_2)
+        self.label_5 = QtWidgets.QLabel(self.groupBox_21)
         self.label_5.setObjectName("label_5")
         self.formLayout_4.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_5)
-        self.damage_spinbox = QtWidgets.QSpinBox(self.frame_2)
+        self.damage_spinbox = QtWidgets.QSpinBox(self.groupBox_21)
         self.damage_spinbox.setObjectName("damage_spinbox")
         self.formLayout_4.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.damage_spinbox)
-        self.verticalLayout.addWidget(self.frame_2)
+        self.verticalLayout.addWidget(self.groupBox_21)
         self.horizontalLayout.addWidget(self.frame)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
@@ -91,3 +89,4 @@ class Ui_Dialog(object):
         self.label_3.setText(_translate("Dialog", "Name"))
         self.label_4.setText(_translate("Dialog", "Initiative Modifier"))
         self.label_5.setText(_translate("Dialog", "Damage"))
+

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'decisive_gui.ui'
+# Form implementation generated from reading ui file '/Users/HornetBookstoreImac/Documents/Python/ex-3e-init-tracker/lib/decisive_gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
