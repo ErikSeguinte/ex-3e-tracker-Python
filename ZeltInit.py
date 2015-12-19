@@ -99,7 +99,36 @@ class Character:
         return str(self.name).rstrip()
 
     def join_battle(self):
-        self.initiative = dice_roller(self.join_battle_pool)
+        self.initiative = dice_roller(self.join_battle_pool) + 3
+
+    def get_values(self):
+        values = (
+            self.name,
+            self.initiative,
+            self.inert_initiative,
+            self.crash_state,
+            self.crash_counter,
+            self.crash_return_counter,
+            self.has_gone,
+            self.join_battle_pool,
+            self.shift_target,
+            self.recently_crashed,
+        )
+
+        return values
+
+    def set_values(self, values):
+        new_values = value_generator(values)
+        self.name = next(new_values)
+        self.initiative = next(new_values)
+        self.inert_initiative = next(new_values)
+        self.crash_state = next(new_values)
+        self.crash_counter = next(new_values)
+        self.crash_return_counter = next(new_values)
+        self.has_gone = next(new_values)
+        self.join_battle_pool = next(new_values)
+        self.shift_target = next(new_values)
+        self.recently_crashed = next(new_values)
 
 
 def clear_screen():
@@ -266,6 +295,14 @@ def name_generator():
              "Earl")
     for name in names:
         yield name
+
+
+def value_generator(values):
+    print("Generating Values")
+    print(str(values))
+    for value in values:
+        print(value)
+        yield value
 
 
 def set_up_test():

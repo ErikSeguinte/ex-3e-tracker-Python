@@ -36,9 +36,14 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             return
         window2 = CharacterPickerWindow(self.model)
         character_index = window2.exec()
-        print("Return Successful")
-        window3 = ModifyCharacterWindow(character_index)
+        character = Z.character_list[character_index]
+
+        window3 = ModifyCharacterWindow(character_index, self.model)
         values = window3.exec()
+
+        character.set_values(values)
+        self.setup_model()
+
 
     def join_battle(self):
         c_list = Z.character_list
@@ -52,8 +57,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
                 self.window2 = JoinBattleWindow(character.name)
 
                 values = self.window2.exec()
-                if values:
-                    character.initiative = values
+                if values != None:
+                    join_battle = values + 3
+                    character.initiative = join_battle
                 else:
                     break
 
@@ -311,12 +317,31 @@ class CharacterPickerWindow(QtWidgets.QDialog, character_picker_ui.Ui_Dialog):
 
 
 class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
-    def __init__(self, character_index):
+    def __init__(self, character_index, model):
 
         super().__init__()
         self.setupUi(self)
-        print("Init!")
-        self.character = Z.character_list[character_index]
+        self.comboBox.setModel(model)
+        c = Z.character_list[character_index]
+        old_values = Z.value_generator(c.get_values())
+        self.name_edit.setText(next(old_values))
+        self.Initiative_box.setValue(next(old_values))
+        self.inertcheckBox.setChecked(next(old_values))
+        self.crashed_check.setChecked(next(old_values))
+        self.crash_counter_box.setValue(next(old_values))
+        self.crash_return_box.setValue(next(old_values))
+        self.has_gone_check.setChecked(next(old_values))
+        self.join_battle_box.setValue(next(old_values))
+        shift_target = next(old_values)
+        if shift_target:
+            shift_index = Z.character_list.index(shift_target)
+        elif character_index == 0:
+            shift_index = 1
+        else:
+            shift_index = 0
+        self.comboBox.setCurrentIndex(shift_index)
+        self.crashed_recentlycheck.setChecked(next(old_values))
+        print("Init Complete")
 
     def exec(self):
         super().exec()
@@ -327,7 +352,26 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
             return None
 
     def get_values(self):
-        pass
+        name = self.name_edit.text()
+        init = self.Initiative_box.value()
+        crash_counter = self.crash_counter_box.value()
+        crash_return = self.crash_return_box.value()
+        join_battle_pool = self.join_battle_box.value()
+
+        crashed = self.crashed_check.isChecked()
+        has_gone = self.has_gone_check.isChecked()
+        crashed_recently = self.crashed_recentlycheck.isChecked()
+        inert_initiative = self.inertcheckBox.isChecked()
+
+        if crashed:
+            shift_target = self.comboBox.currentIndex()
+        else:
+            shift_target = None
+
+        values = (name, init, inert_initiative, crashed, crash_counter, crash_return, has_gone, join_battle_pool,
+                  shift_target, crashed_recently)
+
+        return values
 
 
 app = QtWidgets.QApplication(sys.argv)

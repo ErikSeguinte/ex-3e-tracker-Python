@@ -83,6 +83,13 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
+        <widget class="QCheckBox" name="inertcheckBox">
+         <property name="text">
+          <string>Iniert Initiative</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="crashed_check">
          <property name="text">
           <string>Crashed</string>
