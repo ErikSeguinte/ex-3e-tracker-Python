@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(374, 313)
+        Dialog.resize(374, 347)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(Dialog)
@@ -66,6 +66,12 @@ class Ui_Dialog(object):
         self.damage_spinbox = QtWidgets.QSpinBox(self.groupBox_21)
         self.damage_spinbox.setObjectName("damage_spinbox")
         self.formLayout_4.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.damage_spinbox)
+        self.label_6 = QtWidgets.QLabel(self.groupBox_21)
+        self.label_6.setObjectName("label_6")
+        self.formLayout_4.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_6)
+        self.spinBox = QtWidgets.QSpinBox(self.groupBox_21)
+        self.spinBox.setObjectName("spinBox")
+        self.formLayout_4.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.spinBox)
         self.verticalLayout.addWidget(self.groupBox_21)
         self.horizontalLayout.addWidget(self.frame)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
@@ -89,4 +95,4 @@ class Ui_Dialog(object):
         self.label_3.setText(_translate("Dialog", "Name"))
         self.label_4.setText(_translate("Dialog", "Initiative Modifier"))
         self.label_5.setText(_translate("Dialog", "Damage"))
-
+        self.label_6.setText(_translate("Dialog", "Rout Checks"))
