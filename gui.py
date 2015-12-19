@@ -4,7 +4,8 @@ import sys
 from PyQt5 import QtGui, QtCore, QtWidgets
 
 import ZeltInit as Z
-from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui, character_picker_ui
+from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui, character_picker_ui, \
+    Modification_Window
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -30,20 +31,20 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.add_npc_btn.clicked.connect(self.open_new_character_window)
         self.modify_init_btn.clicked.connect(self.modify_character)
 
-
-
-
-
-        # self.model.setData(QtCore.QModelIndex(0,0),1)
-
     def modify_character(self):
-        print(self.tableView.currentIndex())
+        if len(Z.character_list) == 0:
+            return
         window2 = CharacterPickerWindow(self.model)
-        values = window2.exec()
+        character_index = window2.exec()
+        print("Return Successful")
+        window3 = ModifyCharacterWindow(character_index)
+        values = window3.exec()
 
     def join_battle(self):
         c_list = Z.character_list
-        print("Joinning Battle!")
+
+        if len(c_list) == 0:
+            return
 
         for character in c_list:
             if character.join_battle_pool == 0:
@@ -58,11 +59,13 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
             else:
                 character.join_battle()
-                print("Rolling for" + character.name)
 
         self.setup_model()
 
     def open_attack_window(self):
+        if len(Z.character_list) == 0:
+            print('\a')
+            return
 
         self.window2 = AttackWindow(self.model)
         values = self.window2.exec()
@@ -73,7 +76,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.setup_model()
 
     def open_decisive_window(self):
-
+        if len(Z.character_list) == 0:
+            return
         self.window2 = DecisiveWindow(self.model)
         values = self.window2.exec()
 
@@ -98,7 +102,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def show_file_dialog(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', )
-        print(fname[0])
 
         if fname[0]:
             Z.add_players(fname[0])
@@ -120,7 +123,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.table = self.tableView
         self.tableView.setModel(self.model)
         character_list = Z.character_list
-        print(character_list)
 
         Z.sort_table()
 
@@ -176,7 +178,6 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
     def exec(self):
 
         super().exec()
-        print(self.result())
 
         if self.result():
             return self.get_values()
@@ -298,7 +299,6 @@ class CharacterPickerWindow(QtWidgets.QDialog, character_picker_ui.Ui_Dialog):
         self.comboBox.setModel(self.model)
 
     def exec(self):
-
         super().exec()
 
         if self.result():
@@ -310,7 +310,24 @@ class CharacterPickerWindow(QtWidgets.QDialog, character_picker_ui.Ui_Dialog):
         return self.comboBox.currentIndex()
 
 
-class ModifyCharacterWindow(QtWidgets.QDialog, )
+class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
+    def __init__(self, character_index):
+
+        super().__init__()
+        self.setupUi(self)
+        print("Init!")
+        self.character = Z.character_list[character_index]
+
+    def exec(self):
+        super().exec()
+
+        if self.result():
+            return self.get_values()
+        else:
+            return None
+
+    def get_values(self):
+        pass
 
 
 app = QtWidgets.QApplication(sys.argv)

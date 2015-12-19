@@ -26,7 +26,7 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLineEdit" name="lineEdit"/>
+        <widget class="QLineEdit" name="name_edit"/>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_2">
@@ -36,7 +36,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QSpinBox" name="spinBox"/>
+        <widget class="QSpinBox" name="Initiative_box"/>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_4">
@@ -46,7 +46,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QSpinBox" name="spinBox_2"/>
+        <widget class="QSpinBox" name="crash_counter_box"/>
        </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_5">
@@ -56,7 +56,7 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QSpinBox" name="spinBox_3"/>
+        <widget class="QSpinBox" name="crash_return_box"/>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label_7">
@@ -66,7 +66,7 @@
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QSpinBox" name="spinBox_4"/>
+        <widget class="QSpinBox" name="join_battle_box"/>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="label_8">
@@ -83,21 +83,21 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QCheckBox" name="checkBox_6">
+        <widget class="QCheckBox" name="crashed_check">
          <property name="text">
           <string>Crashed</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox_5">
+        <widget class="QCheckBox" name="has_gone_check">
          <property name="text">
           <string>Has Gone</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox_4">
+        <widget class="QCheckBox" name="crashed_recentlycheck">
          <property name="text">
           <string>Crashed Recently</string>
          </property>
