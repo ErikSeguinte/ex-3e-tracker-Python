@@ -120,6 +120,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>defender_combobox</tabstop>
+  <tabstop>damage_spinbox</tabstop>
+  <tabstop>attacker_combo</tabstop>
+  <tabstop>a_spinBox</tabstop>
+  <tabstop>d_spinbox</tabstop>
+  <tabstop>spinBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
