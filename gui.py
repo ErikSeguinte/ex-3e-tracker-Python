@@ -31,6 +31,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.add_npc_btn.clicked.connect(self.open_new_character_window)
         self.modify_init_btn.clicked.connect(self.modify_character)
         self.other_action_btn.clicked.connect(self.other_action_window)
+        self.remove_from_combat_btn.clicked.connect(self.remove_character)
+        self.reset_btn.clicked.connect(self.reset_tracker)
 
     def modify_character(self):
         if len(Z.character_list) == 0:
@@ -169,6 +171,12 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         progress.setMinimum(0)
         progress.setValue(number_gone)
 
+    def reset_tracker(self):
+        pass
+
+    def remove_character(self):
+        pass
+
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
     def __init__(self, name, parent=None, ):
@@ -177,7 +185,6 @@ class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
         self.groupBox.setTitle(name)
 
     def exec(self):
-
         super().exec()
 
         if self.result():
@@ -187,7 +194,6 @@ class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
 
     def get_values(self):
         join_battle = self.spinBox.value()
-
         return join_battle
 
 
@@ -200,6 +206,20 @@ class OtherActionWindow(QtWidgets.QDialog, other_action_gui.Ui_Dialog):
 
         for action in Z.action_names:
             self.Action_box.addItem(action)
+
+    def exec(self):
+        super().exec()
+
+        if self.result():
+            return self.get_values()
+        else:
+            return None
+
+    def get_values(self):
+        action = self.Action_box.currentText()
+        character_index = self.character_box.currentIndex()
+
+        return action, character_index
 
 
 class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
@@ -375,7 +395,6 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
             shift_index = 0
         self.comboBox.setCurrentIndex(shift_index)
         self.crashed_recentlycheck.setChecked(next(old_values))
-        print("Init Complete")
 
     def exec(self):
         super().exec()
