@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(304, 166)
+        Dialog.resize(314, 211)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
@@ -41,6 +41,12 @@ class Ui_Dialog(object):
         self.label_2 = QtWidgets.QLabel(self.groupBox_3)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_2.addWidget(self.label_2)
+        self.label_4 = QtWidgets.QLabel(self.groupBox_3)
+        self.label_4.setObjectName("label_4")
+        self.verticalLayout_2.addWidget(self.label_4)
+        self.current_init_spinbox = QtWidgets.QSpinBox(self.groupBox_3)
+        self.current_init_spinbox.setObjectName("current_init_spinbox")
+        self.verticalLayout_2.addWidget(self.current_init_spinbox)
         self.verticalLayout_3.addWidget(self.groupBox_3)
         self.horizontalLayout.addLayout(self.verticalLayout_3)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
@@ -61,3 +67,4 @@ class Ui_Dialog(object):
         self.checkBox.setText(_translate("Dialog", "Inert Initiative"))
         self.label_3.setText(_translate("Dialog", "Join Battle Pool"))
         self.label_2.setText(_translate("Dialog", "Used for automatically rolling for NPCs"))
+        self.label_4.setText(_translate("Dialog", "Current Initiative"))

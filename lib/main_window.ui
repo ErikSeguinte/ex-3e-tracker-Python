@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>588</width>
-    <height>244</height>
+    <height>307</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="progress_bar_lbl">
           <property name="text">
-           <string>TextLabel</string>
+           <string>Round Progress</string>
           </property>
          </widget>
         </item>
@@ -45,49 +45,49 @@
       <item>
        <widget class="QPushButton" name="Withering_btn">
         <property name="text">
-         <string>Withering Attack</string>
+         <string>&amp;Withering Attack</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="Decisive_btn">
         <property name="text">
-         <string>&quot;Decisive / Gambits&quot;</string>
+         <string>&amp;Decisive &amp;&amp; Gambits</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="other_action_btn">
         <property name="text">
-         <string>Other Actions</string>
+         <string>&amp;Other Actions</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="add_npc_btn">
         <property name="text">
-         <string>Add NPCs</string>
+         <string>&amp;Add NPCs</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="join_battle_btn">
         <property name="text">
-         <string>Join Battle!</string>
+         <string>&amp;Join Battle!</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="modify_init_btn">
         <property name="text">
-         <string>Modify Initiative</string>
+         <string>&amp;Modify Character</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="remove_from_combat_btn">
         <property name="text">
-         <string>Remove from Combat</string>
+         <string>&amp;Remove from Combat</string>
         </property>
        </widget>
       </item>
@@ -103,6 +103,22 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="reset_btn">
+        <property name="toolTip">
+         <string>Resets tracker, removing all characters</string>
+        </property>
+        <property name="text">
+         <string>Reset</string>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
