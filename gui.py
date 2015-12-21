@@ -23,6 +23,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
         self.setup_model()
         self.window2 = None
+        self.current_player_file = None
 
     def setup_buttons(self):
         self.Withering_btn.clicked.connect(self.open_attack_window)
@@ -32,7 +33,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.modify_init_btn.clicked.connect(self.modify_character)
         self.other_action_btn.clicked.connect(self.other_action_window)
         self.remove_from_combat_btn.clicked.connect(self.remove_character)
-        self.reset_btn.clicked.connect(self.reset_tracker)
+        self.reset_btn.clicked.connect(self.reset)
 
     def modify_character(self):
         if len(Z.character_list) == 0:
@@ -127,8 +128,13 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         if fname[0]:
             Z.add_players(fname[0])
-
+            self.current_player_file = fname
         self.setup_model()
+
+    def reset(self):
+        Z.reset_combat()
+        self.setup_model()
+
 
     def setup_model(self):
 
@@ -175,7 +181,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         progress.setValue(number_gone)
 
     def reset_tracker(self):
-        pass
+        self.reset()
 
     def remove_character(self):
         pass

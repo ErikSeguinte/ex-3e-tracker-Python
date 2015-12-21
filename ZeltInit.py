@@ -31,7 +31,11 @@ OTHER_ACTIONS = (
     ("Other", 0),
 )
 
+global character_list
 character_list = []
+
+global player_names
+player_names = []
 
 # set up gambits
 gambit_dict = {}
@@ -160,8 +164,12 @@ def add_players(f="Players.txt"):
     with open(f, encoding='utf-8') as player_file:
         for a_line in player_file:
             character = Character()
-            character.name = a_line.rstrip()
+            name = a_line.rstrip()
+            character.name = name
             character_list.append(character)
+            player_names.append(name)
+
+
 
 
 def print_table():
@@ -471,6 +479,13 @@ def handle_other_actions(character_index, cost, delay=False):
 
     if not delay:
         character.has_gone = True
+
+
+def reset_combat():
+    global character_list
+    global player_names
+    character_list[:] = [character for character in character_list if character.name in player_names]
+
 
 
 if __name__ == '__main__':
