@@ -78,6 +78,11 @@ class Ui_Dialog(object):
         self.buttonBox.accepted.connect(Dialog.accept)
         self.buttonBox.rejected.connect(Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
+        Dialog.setTabOrder(self.defender_combobox, self.damage_spinbox)
+        Dialog.setTabOrder(self.damage_spinbox, self.attacker_combo)
+        Dialog.setTabOrder(self.attacker_combo, self.a_spinBox)
+        Dialog.setTabOrder(self.a_spinBox, self.d_spinbox)
+        Dialog.setTabOrder(self.d_spinbox, self.spinBox)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate

@@ -24,6 +24,12 @@ GAMBITS = (
     ("Grapple", 2),
 )
 
+OTHER_ACTIONS = (
+    ("Delay", 2),
+    ("Disengage", 2),
+    ("Withdraw", 10),
+)
+
 character_list = []
 
 # set up gambits
@@ -35,6 +41,15 @@ for gambit in GAMBITS:
     cost = gambit[1]
     gambit_names.append(name)
     gambit_dict[name] = cost
+
+action_dict = {}
+action_names = []
+
+for action in OTHER_ACTIONS:
+    name = action[0]
+    cost = action[1]
+    action_names.append(name)
+    action_dict[name] = cost
 
 
 def debug_print(string):
