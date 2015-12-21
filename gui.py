@@ -5,7 +5,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 
 import ZeltInit as Z
 from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui, character_picker_ui, \
-    Modification_Window
+    Modification_Window, other_action_gui
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -30,6 +30,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.join_battle_btn.clicked.connect(self.join_battle)
         self.add_npc_btn.clicked.connect(self.open_new_character_window)
         self.modify_init_btn.clicked.connect(self.modify_character)
+        self.other_action_btn.clicked.connect(self.other_action_window)
 
     def modify_character(self):
         if len(Z.character_list) == 0:
@@ -44,6 +45,11 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         character.set_values(values)
         self.setup_model()
 
+    def other_action_window(self):
+        if len(Z.character_list) == 0:
+            return
+        window2 = OtherActionWindow(self.model)
+        values = window2.exec()
 
     def join_battle(self):
         c_list = Z.character_list
@@ -149,7 +155,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             if character.has_gone:
                 number_gone += 1
 
-
         self.tableView.resizeColumnsToContents()
 
         progress.setMaximum(row)
@@ -176,6 +181,17 @@ class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
         join_battle = self.spinBox.value()
 
         return join_battle
+
+
+class OtherActionWindow(QtWidgets.QDialog, other_action_gui.Ui_Dialog):
+    def __init__(self, model, parent=None):
+        super().__init__()
+        self.setupUi(self)
+        self.model = model
+        self.character_box.setModel(self.model)
+
+        for action in Z.action_names:
+            self.Action_box.addItem(action)
 
 
 class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
