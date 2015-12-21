@@ -143,8 +143,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.model.setData(self.model.index(row, 1, QtCore.QModelIndex()), character.initiative)
             self.model.setData(self.model.index(row, 2, QtCore.QModelIndex()), character.crash_state)
             self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.has_gone)
-            # if character.shift_target:
-            #     self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.shift_target.name)
+            if character.shift_target:
+                self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.shift_target.name)
             row += 1
             if character.has_gone:
                 number_gone += 1
