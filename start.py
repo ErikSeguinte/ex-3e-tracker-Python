@@ -166,6 +166,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.has_gone)
             if character.shift_target:
                 self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.shift_target.name)
+            self.model.setData(self.model.index(row, 6, QtCore.QModelIndex()), character)
             row += 1
             if character.has_gone:
                 number_gone += 1
