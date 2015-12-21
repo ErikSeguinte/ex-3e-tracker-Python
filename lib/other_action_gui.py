@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\Primefactorx01\Documents\Python\ex-3e-init-tracker\lib\other_action_gui.ui'
+# Form implementation generated from reading ui file '/Users/HornetBookstoreImac/Documents/Python/ex-3e-init-tracker/lib/other_action_gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -8,11 +8,10 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(267, 70)
+        Dialog.resize(358, 110)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.formLayout = QtWidgets.QFormLayout()
@@ -29,6 +28,12 @@ class Ui_Dialog(object):
         self.Action_box = QtWidgets.QComboBox(Dialog)
         self.Action_box.setObjectName("Action_box")
         self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.Action_box)
+        self.label_3 = QtWidgets.QLabel(Dialog)
+        self.label_3.setObjectName("label_3")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.label_3)
+        self.cost_spinbox = QtWidgets.QSpinBox(Dialog)
+        self.cost_spinbox.setObjectName("cost_spinbox")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.cost_spinbox)
         self.horizontalLayout.addLayout(self.formLayout)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
@@ -46,3 +51,4 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Other Action Dialog"))
         self.label.setText(_translate("Dialog", "Character"))
         self.label_2.setText(_translate("Dialog", "Action"))
+        self.label_3.setText(_translate("Dialog", "Initiative Cost"))

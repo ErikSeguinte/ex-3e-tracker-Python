@@ -55,6 +55,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         window2 = OtherActionWindow(self.model)
         values = window2.exec()
 
+        Z.handle_other_actions(*values)
+        self.setup_model()
+
     def join_battle(self):
         c_list = Z.character_list
 
@@ -206,6 +209,8 @@ class OtherActionWindow(QtWidgets.QDialog, other_action_gui.Ui_Dialog):
 
         for action in Z.action_names:
             self.Action_box.addItem(action)
+        self.cost_spinbox.setValue(Z.action_dict[self.Action_box.currentText()])
+        self.Action_box.activated.connect(self.change_cost)
 
     def exec(self):
         super().exec()
@@ -216,10 +221,15 @@ class OtherActionWindow(QtWidgets.QDialog, other_action_gui.Ui_Dialog):
             return None
 
     def get_values(self):
-        action = self.Action_box.currentText()
+        cost = self.cost_spinbox.value()
         character_index = self.character_box.currentIndex()
+        if self.Action_box.currentText() == "Delay":
+            delay = True
 
-        return action, character_index
+        return character_index, cost, delay
+
+    def change_cost(self):
+        self.cost_spinbox.setValue(Z.action_dict[self.Action_box.currentText()])
 
 
 class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):

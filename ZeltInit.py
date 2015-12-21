@@ -28,6 +28,7 @@ OTHER_ACTIONS = (
     ("Delay", 2),
     ("Disengage", 2),
     ("Withdraw", 10),
+    ("Other", 0),
 )
 
 character_list = []
@@ -462,6 +463,14 @@ def main():
 
         elif command == "Modify Initiative":
             pass
+
+
+def handle_other_actions(character_index, cost, delay=False):
+    character = character_list[character_index]
+    character.initiative -= cost
+
+    if not delay:
+        character.has_gone = True
 
 
 if __name__ == '__main__':
