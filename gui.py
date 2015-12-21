@@ -135,7 +135,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         Z.reset_combat()
         self.setup_model()
 
-
     def setup_model(self):
 
         character_list = Z.character_list
@@ -184,7 +183,15 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.reset()
 
     def remove_character(self):
-        pass
+        if len(Z.character_list) == 0:
+            QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
+            return
+        window2 = CharacterPickerWindow(self.model)
+        character_index = window2.exec()
+        character = Z.character_list[character_index]
+
+        Z.character_list.remove(character)
+        self.setup_model()
 
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
