@@ -157,7 +157,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         self.tableView.resizeColumnsToContents()
 
-        progress.setMaximum(row)
+        if row == 0:
+            progress.setMaximum(1)
+        else:
+            progress.setMaximum(row)
         progress.setMinimum(0)
         progress.setValue(number_gone)
 
