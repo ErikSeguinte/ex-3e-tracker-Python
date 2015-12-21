@@ -34,6 +34,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def modify_character(self):
         if len(Z.character_list) == 0:
+            QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
         window2 = CharacterPickerWindow(self.model)
         character_index = window2.exec()
@@ -47,6 +48,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def other_action_window(self):
         if len(Z.character_list) == 0:
+            QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
         window2 = OtherActionWindow(self.model)
         values = window2.exec()
@@ -55,6 +57,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         c_list = Z.character_list
 
         if len(c_list) == 0:
+            QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
 
         for character in c_list:
@@ -76,7 +79,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def open_attack_window(self):
         if len(Z.character_list) == 0:
-            print('\a')
+            QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
+
             return
 
         self.window2 = AttackWindow(self.model)
@@ -89,6 +93,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def open_decisive_window(self):
         if len(Z.character_list) == 0:
+            QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
         self.window2 = DecisiveWindow(self.model)
         values = self.window2.exec()
