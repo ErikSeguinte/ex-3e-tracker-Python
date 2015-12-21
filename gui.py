@@ -132,7 +132,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         Z.sort_table()
 
+        progress = self.progressBar
+
         row = 0
+        number_gone = 0
 
         for character in character_list:
             self.model.setHeaderData(row, QtCore.Qt.Vertical, row)
@@ -143,8 +146,15 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             # if character.shift_target:
             #     self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.shift_target.name)
             row += 1
+            if character.has_gone:
+                number_gone += 1
+
 
         self.tableView.resizeColumnsToContents()
+
+        progress.setMaximum(row)
+        progress.setMinimum(0)
+        progress.setValue(number_gone)
 
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
