@@ -201,12 +201,13 @@ def sort_table():
     character_list = sorted(character_list, key=lambda character: character.has_gone)
 
 
-def add_npc(name, inert, join_battle):
+def add_npc(name, inert, join_battle, initiative):
     global character_list
     new_character = Character()
     new_character.name = name
     new_character.join_battle_pool = join_battle
     new_character.inert_initiative = inert
+    new_character.initiative = initiative
     character_list.append(new_character)
 
 

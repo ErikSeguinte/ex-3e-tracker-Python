@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>588</width>
-    <height>307</height>
+    <height>337</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,17 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QTableView" name="tableView"/>
+       <widget class="QTableView" name="tableView">
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QFormLayout" name="formLayout">

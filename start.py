@@ -23,7 +23,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
         self.setup_model()
         self.window2 = None
-        self.current_player_file = None
 
     def setup_buttons(self):
         self.Withering_btn.clicked.connect(self.open_attack_window)
@@ -371,7 +370,8 @@ class AddCharacterWindow(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
         name = self.name_edit.text()
         inert_init = self.checkBox.isChecked()
         join_battle = self.Join_battle_box.value()
-        values = name, inert_init, join_battle
+        initiative = self.current_init_spinbox
+        values = name, inert_init, join_battle, initiative
         return values
 
 

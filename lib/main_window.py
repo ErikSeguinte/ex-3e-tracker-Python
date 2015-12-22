@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/Users/HornetBookstoreImac/Documents/Python/ex-3e-init-tracker/lib/main_window.ui'
+# Form implementation generated from reading ui file 'C:\Users\Primefactorx01\Documents\Python\ex-3e-init-tracker\lib\main_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(588, 307)
+        MainWindow.resize(588, 337)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -19,6 +19,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.tableView = QtWidgets.QTableView(self.centralwidget)
+        self.tableView.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.tableView.setAlternatingRowColors(True)
+        self.tableView.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
         self.tableView.setObjectName("tableView")
         self.verticalLayout_2.addWidget(self.tableView)
         self.formLayout = QtWidgets.QFormLayout()
