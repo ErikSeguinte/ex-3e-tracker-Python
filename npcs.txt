@@ -1,0 +1,5 @@
+John, 5, True
+Billy, 3
+Carol
+Karen,8,1
+sam,10,true

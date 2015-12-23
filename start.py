@@ -5,7 +5,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 
 import ZeltInit as Z
 from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui, character_picker_ui, \
-    Modification_Window, other_action_gui
+    Modification_Window, other_action_gui, About_gui
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -28,9 +28,18 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionLoad_Players.triggered.connect(self.show_file_dialog)
         self.actionQuit.triggered.connect(sys.exit)
         self.actionAbout.triggered.connect(self.about_window)
+        self.actionLoad_NPCs.triggered.connect(self.load_npcs)
 
     def about_window(self):
-        pass
+        window2 = AboutWindow()
+        window2.exec()
+
+    def load_npcs(self):
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', )
+
+        if fname[0]:
+            Z.add_npcs(fname[0])
+        self.setup_model()
 
     def setup_buttons(self):
         self.Withering_btn.clicked.connect(self.open_attack_window)
@@ -48,13 +57,14 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             return
         window2 = CharacterPickerWindow(self.model)
         character_index = window2.exec()
-        character = Z.character_list[character_index]
+        if character_index:
+            character = Z.character_list[character_index]
 
-        window3 = ModifyCharacterWindow(character_index, self.model)
-        values = window3.exec()
-
-        character.set_values(values)
-        self.setup_model()
+            window3 = ModifyCharacterWindow(character_index, self.model)
+            values = window3.exec()
+            if values:
+                character.set_values(values)
+                self.setup_model()
 
     def other_action_window(self):
         if len(Z.character_list) == 0:
@@ -456,6 +466,15 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
                   shift_target, crashed_recently)
 
         return values
+
+
+class AboutWindow(QtWidgets.QDialog, About_gui.Ui_Dialog):
+    def __init__(self, parent=None, ):
+        super().__init__()
+        self.setupUi(self)
+
+    def exec(self):
+        super().exec()
 
 
 app = QtWidgets.QApplication(sys.argv)
