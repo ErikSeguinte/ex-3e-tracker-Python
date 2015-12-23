@@ -170,6 +170,42 @@ def add_players(f="Players.txt"):
             player_names.append(name)
 
 
+def add_npcs(f="Players.txt"):
+    """Add player names from an external file."""
+
+    global character_list
+    with open(f, encoding='utf-8') as player_file:
+        for a_line in player_file:
+            name = None
+            jb = None
+            inert = None
+            try:
+                name, jb, inert = a_line.split(",")
+            except ValueError:
+                try:
+                    name, jb = a_line.split(",")
+                except ValueError:
+                    try:
+                        name = a_line
+                    except ValueError:
+                        break
+
+            character = Character()
+            print(name)
+            character.name = name.strip()
+            if jb:
+                try:
+                    jb_int = int(jb.strip())
+
+                except ValueError:
+                    pass
+                else:
+                    character.join_battle_pool = jb_int
+            if inert:
+                inert = str(inert).lower().strip()
+                if inert == "true" or inert == "1":
+                    character.inert_initiative = True
+            character_list.append(character)
 
 
 def print_table():
@@ -486,7 +522,6 @@ def reset_combat():
     global character_list
     global player_names
     character_list[:] = [character for character in character_list if character.name in player_names]
-
 
 
 if __name__ == '__main__':
