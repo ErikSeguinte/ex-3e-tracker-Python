@@ -14,9 +14,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         self.setupUi(self)
         self.setup_buttons()
-        self.actionLoad_Players.triggered.connect(self.show_file_dialog)
-        self.actionQuit.triggered.connect(sys.exit)
-        self.actionAbout.triggered.connect(self.about_window)
+        self.setup_menu_items()
 
         self.statusBar()
         # self.Withering_btn.
@@ -25,6 +23,11 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
         self.setup_model()
         self.window2 = None
+
+    def setup_menu_items(self):
+        self.actionLoad_Players.triggered.connect(self.show_file_dialog)
+        self.actionQuit.triggered.connect(sys.exit)
+        self.actionAbout.triggered.connect(self.about_window)
 
     def about_window(self):
         pass
