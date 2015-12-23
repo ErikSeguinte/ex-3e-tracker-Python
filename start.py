@@ -15,6 +15,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.setupUi(self)
         self.setup_buttons()
         self.actionLoad_Players.triggered.connect(self.show_file_dialog)
+        self.actionQuit.triggered.connect(sys.exit)
+        self.actionAbout.triggered.connect(self.about_window)
 
         self.statusBar()
         # self.Withering_btn.
@@ -23,6 +25,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
         self.setup_model()
         self.window2 = None
+
+    def about_window(self):
+        pass
 
     def setup_buttons(self):
         self.Withering_btn.clicked.connect(self.open_attack_window)
@@ -127,7 +132,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         if fname[0]:
             Z.add_players(fname[0])
-            self.current_player_file = fname
         self.setup_model()
 
     def reset(self):

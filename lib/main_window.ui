@@ -154,12 +154,14 @@
      <string>Edit</string>
     </property>
     <addaction name="actionLoad_Players"/>
+    <addaction name="actionLoad_NPCs"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
     <addaction name="actionAbout"/>
+    <addaction name="actionReadme"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -178,6 +180,16 @@
   <action name="actionLoad_Players">
    <property name="text">
     <string>Load Players</string>
+   </property>
+  </action>
+  <action name="actionLoad_NPCs">
+   <property name="text">
+    <string>Load NPCs</string>
+   </property>
+  </action>
+  <action name="actionReadme">
+   <property name="text">
+    <string>Readme</string>
    </property>
   </action>
  </widget>
