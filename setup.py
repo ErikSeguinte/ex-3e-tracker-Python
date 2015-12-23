@@ -4,7 +4,7 @@ from cx_Freeze import setup, Executable
 # Dependencies are automatically detected, but it might need fine tuning.
 build_exe_options = {
     'compressed': True,
-    'include_files':   [
+    'include_files': [
         'LICENSE.txt'
     ],}
 
