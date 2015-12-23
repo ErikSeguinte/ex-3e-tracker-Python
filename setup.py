@@ -18,4 +18,4 @@ setup(name="Exalted 3e Initiative Tracker",
       version="0.1",
       description="Tracker for Exalted",
       options={"build_exe": build_exe_options},
-      executables=[Executable("start.py", base=base)])
+      executables=[Executable("Ex3-Tracker.py", base=base)])
