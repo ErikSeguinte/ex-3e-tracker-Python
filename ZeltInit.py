@@ -200,7 +200,8 @@ def add_npcs(f="Players.txt"):
                 except ValueError:
                     pass
                 else:
-                    character.join_battle_pool = jb_int
+                    if jb_int > 0:
+                        character.join_battle_pool = jb_int
             if inert:
                 inert = str(inert).lower().strip()
                 if inert == "true" or inert == "1":
