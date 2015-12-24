@@ -200,7 +200,8 @@ def add_npcs(f="Players.txt"):
                 except ValueError:
                     pass
                 else:
-                    character.join_battle_pool = jb_int
+                    if jb_int > 0:
+                        character.join_battle_pool = jb_int
             if inert:
                 inert = str(inert).lower().strip()
                 if inert == "true" or inert == "1":
@@ -432,7 +433,7 @@ def remove_from_combat(character_index):
 def handle_gambits(combatants, success, gambit, trick=(False, 0, 0), ):
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
-    cost = gambit_dict[gambit]
+    cost = gambit_dict[gambit] + 1
 
     reset_crash_check(attacker)
     handle_tricks(combatants, *trick)
@@ -444,7 +445,7 @@ def handle_gambits(combatants, success, gambit, trick=(False, 0, 0), ):
     if success:
         attacker.initiative -= cost
         if re.search(r"Distract", gambit):
-            defender.initiative += cost
+            defender.initiative += cost - 1
             print("Distracted!")
     else:
         if attacker.initiative <= 10:
