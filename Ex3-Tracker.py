@@ -85,7 +85,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
                 # Ask for Initiative
 
                 values = JoinBattleWindow(character.name).exec()
-                if values != None:
+                if values is not None:
                     join_battle = values + 3
                     character.initiative = join_battle
                 else:
@@ -356,8 +356,8 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
         gambit = self.gambit_combo.currentText()
 
         if gambit != "Standard Decisive":
-            cost = Z.gambit_dict[gambit]
-            text = str(cost) + " initiative"
+            difficulty = Z.gambit_dict[gambit]
+            text = "Difficulty: " + str(difficulty)
         else:
             text = ""
         self.init_cost_label.setText(text)
