@@ -200,8 +200,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if character_index is not None:
             character = Z.character_list[character_index]
 
-        Z.character_list.remove(character)
-        self.setup_model()
+            Z.character_list.remove(character)
+            self.setup_model()
 
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
