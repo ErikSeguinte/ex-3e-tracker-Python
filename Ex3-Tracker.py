@@ -69,8 +69,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             return
         values = OtherActionWindow(self.model).exec()
 
-        Z.handle_other_actions(*values)
-        self.setup_model()
+        if values is not None:
+            Z.handle_other_actions(*values)
+            self.setup_model()
 
     def join_battle(self):
         c_list = Z.character_list
