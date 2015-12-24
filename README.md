@@ -13,11 +13,11 @@ This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written 
 	round or the one before it.
 *	Keeps track of who crashed whom for Shift purposes
 *	Initiative shift keeps a character at the top of the initiative.
-	`todo: Rolls join battle for NPCs. currently does not ask for JB from playes, has to be added manually.'
+	`todo: Rolls join battle for NPCs. currently does not ask for JB from player, has to be added manually.'
 *	Characters that have gone this round will always be beneath those that have not,
 	but are otherwise everyone is kept in initiative order.
 *	Delaying keeps a character at the top of the initiative.
-	`todo: some sort of reminder to prevent a delaying chracter from wasting a round`
+	`todo: some sort of reminder to prevent a delaying character from wasting a round`
 *	Players and NPCs can be added from a text file.
 *	Can automatically roll Join Battle for NPCs, given a JB pool.
 *	Players persist through combat reset. `todo: Option to reset them too.`
