@@ -31,8 +31,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionLoad_NPCs.triggered.connect(self.load_npcs)
 
     def about_window(self):
-        window2 = AboutWindow()
-        window2.exec()
+        AboutWindow().exec()
 
     def load_npcs(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', )
@@ -55,13 +54,11 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if len(Z.character_list) == 0:
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
-        window2 = CharacterPickerWindow(self.model)
-        character_index = window2.exec()
-        if character_index:
+        character_index = CharacterPickerWindow(self.model).exec()
+        if character_index is not None:
             character = Z.character_list[character_index]
 
-            window3 = ModifyCharacterWindow(character_index, self.model)
-            values = window3.exec()
+            values = ModifyCharacterWindow(character_index, self.model).exec()
             if values:
                 character.set_values(values)
                 self.setup_model()
@@ -70,8 +67,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if len(Z.character_list) == 0:
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
-        window2 = OtherActionWindow(self.model)
-        values = window2.exec()
+        values = OtherActionWindow(self.model).exec()
 
         Z.handle_other_actions(*values)
         self.setup_model()
@@ -86,9 +82,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         for character in c_list:
             if character.join_battle_pool == 0:
                 # Ask for Initiative
-                self.window2 = JoinBattleWindow(character.name)
 
-                values = self.window2.exec()
+                values = JoinBattleWindow(character.name).exec()
                 if values != None:
                     join_battle = values + 3
                     character.initiative = join_battle
@@ -106,8 +101,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
             return
 
-        self.window2 = AttackWindow(self.model)
-        values = self.window2.exec()
+        values = AttackWindow(self.model).exec()
 
         if values:
             Z.handle_withering(*values)
@@ -118,8 +112,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if len(Z.character_list) == 0:
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
-        self.window2 = DecisiveWindow(self.model)
-        values = self.window2.exec()
+        values = DecisiveWindow(self.model).exec()
 
         if values:
             if len(values) == 3:
@@ -132,8 +125,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def open_new_character_window(self):
 
-        self.window2 = AddCharacterWindow(self.model)
-        values = self.window2.exec()
+        values = AddCharacterWindow(self.model).exec()
 
         if values:
             Z.add_npc(*values)
@@ -203,8 +195,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if len(Z.character_list) == 0:
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
-        window2 = CharacterPickerWindow(self.model)
-        character_index = window2.exec()
+        character_index = CharacterPickerWindow(self.model).exec()
         character = Z.character_list[character_index]
 
         Z.character_list.remove(character)
@@ -387,7 +378,7 @@ class AddCharacterWindow(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
         name = self.name_edit.text()
         inert_init = self.checkBox.isChecked()
         join_battle = self.Join_battle_box.value()
-        initiative = self.current_init_spinbox
+        initiative = self.current_init_spinbox.value()
         values = name, inert_init, join_battle, initiative
         return values
 
