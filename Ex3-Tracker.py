@@ -25,7 +25,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.window2 = None
 
     def setup_menu_items(self):
-        self.actionLoad_Players.triggered.connect(self.show_file_dialog)
+        self.actionLoad_Players.triggered.connect(self.add_players_from_file)
         self.actionQuit.triggered.connect(sys.exit)
         self.actionAbout.triggered.connect(self.about_window)
         self.actionLoad_NPCs.triggered.connect(self.load_npcs)
@@ -34,7 +34,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         AboutWindow().exec()
 
     def load_npcs(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', )
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', "", "*.txt")
 
         if fname[0]:
             Z.add_npcs(fname[0])
@@ -132,8 +132,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             Z.sort_table()
             self.setup_model()
 
-    def show_file_dialog(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', )
+    def add_players_from_file(self):
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', "", "*.txt")
 
         if fname[0]:
             Z.add_players(fname[0])
