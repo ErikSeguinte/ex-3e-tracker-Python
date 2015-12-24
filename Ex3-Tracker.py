@@ -195,8 +195,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if len(Z.character_list) == 0:
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
+
         character_index = CharacterPickerWindow(self.model).exec()
-        character = Z.character_list[character_index]
+        if character_index is not None:
+            character = Z.character_list[character_index]
 
         Z.character_list.remove(character)
         self.setup_model()
