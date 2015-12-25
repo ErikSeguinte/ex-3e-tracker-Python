@@ -412,7 +412,7 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         self.setupUi(self)
         self.comboBox.setModel(model)
         c = Z.character_list[character_index]
-        old_values = Z.value_generator(c.get_values())
+        old_values = c.get_values()
         self.name_edit.setText(next(old_values))
         self.Initiative_box.setValue(next(old_values))
         self.inertcheckBox.setChecked(next(old_values))

@@ -122,20 +122,17 @@ class Character:
         self.initiative = dice_roller(self.join_battle_pool) + 3
 
     def get_values(self):
-        values = (
-            self.name,
-            self.initiative,
-            self.inert_initiative,
-            self.crash_state,
-            self.crash_counter,
-            self.crash_return_counter,
-            self.has_gone,
-            self.join_battle_pool,
-            self.shift_target,
-            self.recently_crashed,
-        )
+        yield self.name
+        yield self.initiative
+        yield self.inert_initiative
+        yield self.crash_state
+        yield self.crash_counter
+        yield self.crash_return_counter
+        yield self.has_gone
+        yield self.join_battle_pool
+        yield self.shift_target
+        yield self.recently_crashed
 
-        return values
 
     def set_values(self, values):
         new_values = value_generator(values)
