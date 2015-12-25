@@ -411,8 +411,8 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         super().__init__()
         self.setupUi(self)
         self.comboBox.setModel(model)
-        c = Z.character_list[character_index]
-        old_values = c.get_values()
+        self.c = Z.character_list[character_index]
+        old_values = self.c.get_values()
         self.name_edit.setText(next(old_values))
         self.Initiative_box.setValue(next(old_values))
         self.inertcheckBox.setChecked(next(old_values))
@@ -422,14 +422,16 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         self.has_gone_check.setChecked(next(old_values))
         self.join_battle_box.setValue(next(old_values))
         shift_target = next(old_values)
-        if shift_target:
+        self.comboBox.setEnabled(self.crashed_check.isChecked())
+        if self.crashed_check.isChecked():
             shift_index = Z.character_list.index(shift_target)
-        elif character_index == 0:
-            shift_index = 1
-        else:
-            shift_index = 0
-        self.comboBox.setCurrentIndex(shift_index)
+            self.comboBox.setCurrentIndex(shift_index)
         self.crashed_recentlycheck.setChecked(next(old_values))
+
+        self.crashed_check.clicked.connect(self.disable_shift)
+
+    def disable_shift(self):
+        self.comboBox.setEnabled(self.crashed_check.isChecked())
 
     def exec(self):
         super().exec()
