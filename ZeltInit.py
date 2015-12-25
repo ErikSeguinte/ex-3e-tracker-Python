@@ -357,8 +357,6 @@ def name_generator():
 
 
 def value_generator(values):
-    print("Generating Values")
-    print(str(values))
     for value in values:
         print(value)
         yield value

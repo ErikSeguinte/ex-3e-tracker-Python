@@ -412,6 +412,10 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         self.setupUi(self)
         self.comboBox.setModel(model)
         self.c = Z.character_list[character_index]
+        self.setup_old_values()
+
+    def setup_old_values(self):
+
         old_values = self.c.get_values()
         self.name_edit.setText(next(old_values))
         self.Initiative_box.setValue(next(old_values))
@@ -457,6 +461,48 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
             shift_target = self.comboBox.currentIndex()
         else:
             shift_target = None
+
+        old_values = self.c.get_values()
+        kwargs = {}
+        # yield self.name
+        # yield self.initiative
+        # yield self.inert_initiative
+        # yield self.crash_state
+        # yield self.crash_counter
+        # yield self.crash_return_counter
+        # yield self.has_gone
+        # yield self.join_battle_pool
+        # yield self.shift_target
+        # yield self.recently_crashed
+        if name != next(old_values):
+            kwargs["name"] = name
+        if init != next(old_values):
+            kwargs["init"] = init
+        if inert_initiative != next(old_values):
+            kwargs["inert"] = inert_initiative
+        if crashed != next(old_values):
+            kwargs["crashed"] = crashed
+        if crash_counter != next(old_values):
+            kwargs["crash_counter"] = crash_counter
+        if crash_return != next(old_values):
+            kwargs["crash_return"] = crash_return
+        if has_gone != next(old_values):
+            kwargs["has_gone"] = has_gone
+        if join_battle_pool != next(old_values):
+            kwargs["jb_pool"] = join_battle_pool
+        if shift_target != next(old_values):
+            kwargs["shift_target"] = shift_target
+        if crashed_recently != next(old_values):
+            kwargs["recently_crashed"] = crashed_recently
+
+        print(kwargs)
+
+
+
+
+
+
+
 
         values = (name, init, inert_initiative, crashed, crash_counter, crash_return, has_gone, join_battle_pool,
                   shift_target, crashed_recently)
