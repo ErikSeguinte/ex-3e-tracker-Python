@@ -495,19 +495,7 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         if crashed_recently != next(old_values):
             kwargs["recently_crashed"] = crashed_recently
 
-        print(kwargs)
-
-
-
-
-
-
-
-
-        values = (name, init, inert_initiative, crashed, crash_counter, crash_return, has_gone, join_battle_pool,
-                  shift_target, crashed_recently)
-
-        return values
+        return kwargs
 
 
 class AboutWindow(QtWidgets.QDialog, About_gui.Ui_Dialog):
