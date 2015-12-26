@@ -91,7 +91,7 @@ class Ui_Dialog(object):
         self.label_5.setText(_translate("Dialog", "Crash Return"))
         self.label_7.setText(_translate("Dialog", "Join Battle Pool"))
         self.label_8.setText(_translate("Dialog", "Shift Target"))
-        self.inertcheckBox.setText(_translate("Dialog", "Iniert Initiative"))
+        self.inertcheckBox.setText(_translate("Dialog", "Inert Initiative"))
         self.crashed_check.setText(_translate("Dialog", "Crashed"))
         self.has_gone_check.setText(_translate("Dialog", "Has Gone"))
         self.crashed_recentlycheck.setText(_translate("Dialog", "Crashed Recently"))
