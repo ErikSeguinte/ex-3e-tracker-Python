@@ -134,7 +134,7 @@ class Character:
         yield self.recently_crashed
 
 
-    def set_values(self, values):
+    def set_values(self, **kwarg):
         new_values = value_generator(values)
         self.name = next(new_values)
         self.initiative = next(new_values)

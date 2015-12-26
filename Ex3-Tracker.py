@@ -60,7 +60,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
             values = ModifyCharacterWindow(character_index, self.model).exec()
             if values:
-                character.set_values(values)
+                character.set_values(**values)
                 self.setup_model()
 
     def other_action_window(self):
