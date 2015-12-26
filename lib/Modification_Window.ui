@@ -85,7 +85,7 @@
        <item>
         <widget class="QCheckBox" name="inertcheckBox">
          <property name="text">
-          <string>Iniert Initiative</string>
+          <string>Inert Initiative</string>
          </property>
         </widget>
        </item>
