@@ -60,7 +60,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
             values = ModifyCharacterWindow(character_index, self.model).exec()
             if values:
-                character.set_values(**values)
                 self.setup_model()
 
     def other_action_window(self):
@@ -419,6 +418,7 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         old_values = self.c.get_values()
         self.name_edit.setText(next(old_values))
         self.Initiative_box.setValue(next(old_values))
+        # print(next(old_values))
         self.inertcheckBox.setChecked(next(old_values))
         self.crashed_check.setChecked(next(old_values))
         self.crash_counter_box.setValue(next(old_values))
@@ -441,7 +441,8 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         super().exec()
 
         if self.result():
-            return self.get_values()
+            self.get_values()
+            return True
         else:
             return None
 
@@ -475,27 +476,27 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         # yield self.shift_target
         # yield self.recently_crashed
         if name != next(old_values):
-            kwargs["name"] = name
+            self.c.name = name
         if init != next(old_values):
-            kwargs["init"] = init
+            self.c.initiative = init
         if inert_initiative != next(old_values):
-            kwargs["inert"] = inert_initiative
+            self.c.inert_initiative = inert_initiative
         if crashed != next(old_values):
-            kwargs["crashed"] = crashed
+            self.c.crash_state = crashed
         if crash_counter != next(old_values):
-            kwargs["crash_counter"] = crash_counter
+            self.c.crash_counter = crash_counter
         if crash_return != next(old_values):
-            kwargs["crash_return"] = crash_return
+            self.c.crash_return_counter = crash_return
         if has_gone != next(old_values):
-            kwargs["has_gone"] = has_gone
+            self.c.has_gone = has_gone
         if join_battle_pool != next(old_values):
-            kwargs["jb_pool"] = join_battle_pool
+            self.c.join_battle_pool = join_battle_pool
         if shift_target != next(old_values):
-            kwargs["shift_target"] = shift_target
+            self.c.shift_target = shift_target
         if crashed_recently != next(old_values):
-            kwargs["recently_crashed"] = crashed_recently
+            self.c.recently_crashed = crashed_recently
 
-        return kwargs
+        return
 
 
 class AboutWindow(QtWidgets.QDialog, About_gui.Ui_Dialog):

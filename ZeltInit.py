@@ -88,17 +88,29 @@ def dice_roller(pool=None, doubles=10):
 class Character:
     """Class containing all character related variables."""
 
-    def __init__(self):
-        self.name = ""
-        self.initiative = 0
-        self.inert_initiative = False
-        self.crash_state = False
-        self.crash_counter = 0  # Number of turns in crash
-        self.crash_return_counter = 0  # Number of turns after returning from crash
-        self.has_gone = False
-        self.join_battle_pool = 0
-        self.shift_target = None  # Character who crashed this character, for init shift.
-        self.recently_crashed = False
+    def __init__(
+            self,
+            name="",
+            initiative=0,
+            inert=False,
+            crashed=False,
+            crash_counter=0,
+            crash_return_counter=0,
+            has_gone=False,
+            jb_pool=0,
+            shift_target=None,
+            recently_crashed=False
+    ):
+        self.name = name
+        self.initiative = initiative
+        self.inert_initiative = inert
+        self.crash_state = crashed
+        self.crash_counter = crash_counter  # Number of turns in crash
+        self.crash_return_counter = crash_return_counter  # Number of turns after returning from crash
+        self.has_gone = has_gone
+        self.join_battle_pool = jb_pool
+        self.shift_target = shift_target  # Character who crashed this character, for init shift.
+        self.recently_crashed = recently_crashed
 
     def set_name(self):
         self.name = input("Name: ")
@@ -133,8 +145,7 @@ class Character:
         yield self.shift_target
         yield self.recently_crashed
 
-
-    def set_values(self, **kwarg):
+    def set_values(self, values):
         new_values = value_generator(values)
         self.name = next(new_values)
         self.initiative = next(new_values)
@@ -160,9 +171,8 @@ def add_players(f="Players.txt"):
     global character_list
     with open(f, encoding='utf-8') as player_file:
         for a_line in player_file:
-            character = Character()
             name = a_line.rstrip()
-            character.name = name
+            character = Character(name=name)
             character_list.append(character)
             player_names.append(name)
 
@@ -183,13 +193,11 @@ def add_npcs(f="Players.txt"):
                     name, jb = a_line.split(",")
                 except ValueError:
                     try:
-                        name = a_line
+                        name = a_line.strip()
                     except ValueError:
                         break
-
-            character = Character()
             print(name)
-            character.name = name.strip()
+            kwargs = {"name": name}
             if jb:
                 try:
                     jb_int = int(jb.strip())
@@ -198,11 +206,12 @@ def add_npcs(f="Players.txt"):
                     pass
                 else:
                     if jb_int > 0:
-                        character.join_battle_pool = jb_int
+                        kwargs["jb_pool"] = jb_int
             if inert:
                 inert = str(inert).lower().strip()
                 if inert == "true" or inert == "1":
-                    character.inert_initiative = True
+                    kwargs["inert"] = True
+            character = Character(**kwargs)
             character_list.append(character)
 
 
