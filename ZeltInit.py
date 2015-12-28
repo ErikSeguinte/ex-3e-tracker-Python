@@ -31,10 +31,7 @@ OTHER_ACTIONS = (
     ("Other", 0),
 )
 
-global character_list
-character_list = []
-
-global player_names
+character_list = []  # type: List[Character]
 player_names = []
 
 # set up gambits
@@ -111,6 +108,7 @@ class Character:
         self.join_battle_pool = jb_pool
         self.shift_target = shift_target  # Character who crashed this character, for init shift.
         self.recently_crashed = recently_crashed
+        self.onslaught = 0
 
     def set_name(self):
         self.name = input("Name: ")
@@ -291,11 +289,10 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0):
     # debug_print(str(combata/nts, damage, trick))
 
     # Reset Crash Counter at the beginning of the 4th turn if survives
-    reset_crash_check(attacker)
+    begin_turn(attacker)
 
     handle_tricks(combatants, *trick)
 
-    attacker.has_gone = True
     if not defender.inert_initiative:
         if damage != 0:
             shifting = False
@@ -327,6 +324,8 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0):
     else:
         bonus = (rout * 5) + 1
         attacker.initiative += bonus
+
+    defender.onslaught -= 1
 
     if attacker.crash_state:
         attacker.crash_counter += 1
@@ -411,10 +410,12 @@ def handle_tricks(combatants, trick_status=False, att_trick=0, def_trick=0):
 
 def handle_decisive(combatants, success, trick=(False, 0, 0), rout=0):
     attacker = combatants[0]
+    defender = combatants[1]
 
     a = character_list[attacker]
+    d = character_list[defender]
 
-    reset_crash_check(a)
+    begin_turn(a)
     handle_tricks(combatants, *trick)
 
     if success:
@@ -424,6 +425,8 @@ def handle_decisive(combatants, success, trick=(False, 0, 0), rout=0):
             a.initiative -= 2
         else:
             a.initiative -= 3
+
+    d.onslaught -= 1
     a.has_gone = True
 
 
@@ -434,12 +437,12 @@ def remove_from_combat(character_index):
     del character_list[character_index]
 
 
-def handle_gambits(combatants, success, gambit, trick=(False, 0, 0), ):
+def handle_gambits(combatants, success: bool, gambit: str, trick=(False, 0, 0), ):
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
     cost = gambit_dict[gambit] + 1
 
-    reset_crash_check(attacker)
+    begin_turn(attacker)
     handle_tricks(combatants, *trick)
 
     if check_for_crash(combatants[0], cost):
@@ -457,10 +460,17 @@ def handle_gambits(combatants, success, gambit, trick=(False, 0, 0), ):
         else:
             attacker.initiative -= 3
 
+    defender.onslaught -= 1
+
+
+def begin_turn(attacker: Character):
+    """ Rests crash counter and onslaught penalty.
+
+    :param attacker:
+    :return:
+    """
     attacker.has_gone = True
-
-
-def reset_crash_check(attacker):
+    attacker.onslaught = 0
     if attacker.crash_counter >= 3:
         attacker.crash_counter = 0
         attacker.crash_state = False
@@ -517,10 +527,19 @@ def main():
 
 def handle_other_actions(character_index, cost, delay=False):
     character = character_list[character_index]
+
+    if character.crash_counter >= 3:
+        character.crash_counter = 0
+        character.crash_state = False
+        character.initiative = 3
+
     character.initiative -= cost
 
-    if not delay:
+    if delay:
+        character.has_gone = False
+    else:
         character.has_gone = True
+        character.onslaught = 0
 
 
 def reset_combat():

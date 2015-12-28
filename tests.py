@@ -252,7 +252,7 @@ class MyTest(unittest.TestCase):
         for c in c_list:
             still_in_play.append(c)
 
-        Z.print_table()
+        # Z.print_table()
 
         for character in still_in_play:
             self.assertIn(character, c_list)
@@ -267,7 +267,7 @@ class MyTest(unittest.TestCase):
             self.assertNotIn(character, c_list)
 
         Z.sort_table()
-        Z.print_table()
+        # Z.print_table()
 
         still_in_play = []
         for c in c_list:
@@ -279,10 +279,75 @@ class MyTest(unittest.TestCase):
             self.assertIn(character, c_list)
 
         Z.sort_table()
-        Z.print_table()
+        # Z.print_table()
 
         for character in removed_from_play:
             self.assertNotIn(character, Z.character_list)
+
+    def test_onslaught_penalty(self):
+        Z.character_list = []
+        Z.add_npc("Amber", False, 0, initiative=10)
+        Z.add_npc("Billy", False, 0, initiative=8)
+        Z.add_npc("Carol", False, 0, initiative=6)
+        Z.add_npc("Danny", False, 0, initiative=4)
+        Z.sort_table()
+        Z.print_table()
+
+        values = (
+            (0, 3, -1),  # (Attacker, Defender, new Onslaught
+            (0, 2, -2),
+            (0, 1, -3),
+            (0, 2, -1),
+
+        )
+
+        self.assertEqual(Z.character_list[0].onslaught, 0)
+        for attacker, defender, onslaught in values:
+            # print
+            combatants = attacker, defender
+            a = Z.character_list[attacker]
+            d = Z.character_list[defender]
+            Z.handle_withering(combatants, 0)
+            self.assertEqual(d.onslaught, onslaught, str(d.name) + "'s onslaught should be " + str(onslaught))
+            self.assertEqual(a.onslaught, 0)
+            Z.sort_table()
+            print("")
+            Z.print_table()
+
+        Z.character_list = []
+        Z.add_npc("Amber", False, 0, initiative=10)
+        Z.add_npc("Billy", False, 0, initiative=8)
+        Z.add_npc("Carol", False, 0, initiative=6)
+        Z.add_npc("Danny", False, 0, initiative=4)
+        Z.sort_table()
+        for attacker, defender, onslaught in values:
+            # print
+            combatants = attacker, defender
+            a = Z.character_list[attacker]
+            d = Z.character_list[defender]
+            Z.handle_decisive(combatants, False)
+            self.assertEqual(d.onslaught, onslaught, str(d.name) + "'s onslaught should be " + str(onslaught))
+            self.assertEqual(a.onslaught, 0)
+            Z.sort_table()
+            print("")
+            Z.print_table()
+        Z.character_list = []
+        Z.add_npc("Amber", False, 0, initiative=10)
+        Z.add_npc("Billy", False, 0, initiative=8)
+        Z.add_npc("Carol", False, 0, initiative=6)
+        Z.add_npc("Danny", False, 0, initiative=4)
+        Z.sort_table()
+        for attacker, defender, onslaught in values:
+            # print
+            combatants = attacker, defender
+            a = Z.character_list[attacker]
+            d = Z.character_list[defender]
+            Z.handle_gambits(combatants, False, "Disarm")
+            self.assertEqual(d.onslaught, onslaught, str(d.name) + "'s onslaught should be " + str(onslaught))
+            self.assertEqual(a.onslaught, 0)
+            Z.sort_table()
+            print("")
+            Z.print_table()
 
 
 if __name__ == '__main__':
