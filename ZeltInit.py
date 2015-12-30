@@ -142,19 +142,20 @@ class Character:
         yield self.join_battle_pool
         yield self.shift_target
         yield self.recently_crashed
+        yield self.onslaught
 
-    def set_values(self, values):
-        new_values = value_generator(values)
-        self.name = next(new_values)
-        self.initiative = next(new_values)
-        self.inert_initiative = next(new_values)
-        self.crash_state = next(new_values)
-        self.crash_counter = next(new_values)
-        self.crash_return_counter = next(new_values)
-        self.has_gone = next(new_values)
-        self.join_battle_pool = next(new_values)
-        self.shift_target = next(new_values)
-        self.recently_crashed = next(new_values)
+        # def set_values(self, values):
+        #     new_values = value_generator(values)
+        #     self.name = next(new_values)
+        #     self.initiative = next(new_values)
+        #     self.inert_initiative = next(new_values)
+        #     self.crash_state = next(new_values)
+        #     self.crash_counter = next(new_values)
+        #     self.crash_return_counter = next(new_values)
+        #     self.has_gone = next(new_values)
+        #     self.join_battle_pool = next(new_values)
+        #     self.shift_target = next(new_values)
+        #     self.recently_crashed = next(new_values)
 
 
 def clear_screen():

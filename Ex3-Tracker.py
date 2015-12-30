@@ -431,6 +431,7 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
             shift_index = Z.character_list.index(shift_target)
             self.comboBox.setCurrentIndex(shift_index)
         self.crashed_recentlycheck.setChecked(next(old_values))
+        self.onslaught_spinbox.setValue(next(old_values))
 
         self.crashed_check.clicked.connect(self.disable_shift)
 
@@ -457,6 +458,7 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         has_gone = self.has_gone_check.isChecked()
         crashed_recently = self.crashed_recentlycheck.isChecked()
         inert_initiative = self.inertcheckBox.isChecked()
+        onslaught = self.onslaught_spinbox.value()
 
         if crashed:
             shift_target = self.comboBox.currentIndex()
@@ -495,6 +497,8 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
             self.c.shift_target = shift_target
         if crashed_recently != next(old_values):
             self.c.recently_crashed = crashed_recently
+        if onslaught != next(old_values):
+            self.c.onslaught = onslaught
 
         return
 

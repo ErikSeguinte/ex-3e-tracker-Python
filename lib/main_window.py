@@ -120,3 +120,4 @@ class Ui_MainWindow(object):
         self.actionLoad_Players.setText(_translate("MainWindow", "Load Players"))
         self.actionLoad_NPCs.setText(_translate("MainWindow", "Load NPCs"))
         self.actionReadme.setText(_translate("MainWindow", "Readme"))
+
