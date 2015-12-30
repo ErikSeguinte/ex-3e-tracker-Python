@@ -267,6 +267,15 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         self.defender_box = self.defender_combobox
         self.defender_box.setModel(self.model)
         self.defender_box.setCurrentIndex(1)
+        self.defender_idx = 1
+        self.defender_box.currentIndexChanged.connect(self.set_onslaught)
+        self.defender = Z.character_list[self.defender_idx]
+        self.onslaught_lbl.setText(str(self.defender.onslaught))
+
+    def set_onslaught(self):
+        self.defender_idx = self.defender_box.currentIndex()
+        self.defender = Z.character_list[self.defender_idx]
+        self.onslaught_lbl.setText(str(self.defender.onslaught))
 
     def exec(self):
 
@@ -318,6 +327,15 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
 
         self.gambit_combo.activated.connect(self.set_cost_text)
         self.set_cost_text()
+        self.defender_idx = 1
+        self.defender_box.currentIndexChanged.connect(self.set_onslaught)
+        self.defender = Z.character_list[self.defender_idx]
+        self.onslaught_lbl.setText(str(self.defender.onslaught))
+
+    def set_onslaught(self):
+        self.defender_idx = self.defender_box.currentIndex()
+        self.defender = Z.character_list[self.defender_idx]
+        self.onslaught_lbl.setText(str(self.defender.onslaught))
 
     def exec(self):
 
