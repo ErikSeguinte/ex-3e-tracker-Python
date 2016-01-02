@@ -48,3 +48,15 @@ For Decisive attacks, mark whether the attack was successful or not.
 Modify Character allows you to manually edit a character's flags and initiative.
 
 Reset removes any characters not loaded through the "add Player" function.
+
+## Changelog
+* v0.2.0
+  * Modification window: Shift target is now greyed out unless crashed.
+  * Attack windows now track onslaught
+* v0.1.1
+  * Fixed fatal crash in 'other action' window.
+  * Fixed typo in Modification window
+* v0.1.0.
+  * Initial Release.
+
+
