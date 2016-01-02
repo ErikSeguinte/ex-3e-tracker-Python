@@ -249,6 +249,8 @@ class OtherActionWindow(QtWidgets.QDialog, other_action_gui.Ui_Dialog):
         character_index = self.character_box.currentIndex()
         if self.Action_box.currentText() == "Delay":
             delay = True
+        else:
+            delay = False
 
         return character_index, cost, delay
 
