@@ -52,7 +52,7 @@ Reset removes any characters not loaded through the "add Player" function.
 ## Changelog
 * v0.2.0
   * Modification window: Shift target is now greyed out unless crashed.
-  * Attack windows now track onslaught
+  * Attack windows now tracks onslaught
 * v0.1.1
   * Fixed fatal crash in 'other action' window.
   * Fixed typo in Modification window
