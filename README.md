@@ -49,10 +49,6 @@ Modify Character allows you to manually edit a character's flags and initiative.
 
 Reset removes any characters not loaded through the "add Player" function.
 
-## Changelog
-* v0.1.1
-  * Fixed fatal crash in 'other action' window.
-* v0.1.0.
-  * Initial Release.
+
 
 
