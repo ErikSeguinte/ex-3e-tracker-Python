@@ -1,8 +1,0 @@
-## Changelog
-* v0.1.1
-  * Fixed fatal crash in 'other action' window.
-  * Added `Full Defense` to other action window.
-  * Possibly fixed packaging so windows version can be opened in Windows older than 10. (Probably still not
-   32bit, though)
-* v0.1.0.
-  * Initial Release.
