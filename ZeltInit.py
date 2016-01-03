@@ -28,6 +28,7 @@ OTHER_ACTIONS = (
     ("Delay", 2),
     ("Disengage", 2),
     ("Withdraw", 10),
+    ("Full Defense", 1),
     ("Other", 0),
 )
 
