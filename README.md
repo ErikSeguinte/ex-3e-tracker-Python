@@ -47,4 +47,4 @@ For Decisive attacks, mark whether the attack was successful or not.
 
 Modify Character allows you to manually edit a character's flags and initiative.
 
-Reset removes any characters not loaded through the "add Player" function.
+Reset removes any characters not loaded through the `add Player` function.
