@@ -43,12 +43,8 @@ For withering attacks and decisive/gambits, you have the option to add initiativ
 
 For Decisive attacks, mark whether the attack was successful or not.
 
-"Other Actions" include Delay, withdraw, and disengage.
+"Other Actions" include Delay, withdraw, Full Defense and disengage.
 
 Modify Character allows you to manually edit a character's flags and initiative.
 
-Reset removes any characters not loaded through the "add Player" function.
-
-
-
-
+Reset removes any characters not loaded through the `add Player` function.
