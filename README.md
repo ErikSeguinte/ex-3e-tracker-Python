@@ -22,9 +22,8 @@ This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written 
 *	Can automatically roll Join Battle for NPCs, given a JB pool.
 *	Players persist through combat reset. `todo: Option to reset them too.`
 *	Successful gambits cost (difficulty + 1) Initiative to perform
-	`todo: Prevent gambit if it would cause user to crash`
 *	Successful Decisive Attacks reset initiative to 3.
-*	Failed Decisive/Gambits cost initative depending on current initiative.
+*	Failed Decisive/Gambits cost initiative depending on current initiative.
 
 
 
