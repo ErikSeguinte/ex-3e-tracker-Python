@@ -3,8 +3,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-  * Modification window: Shift target is now greyed out unless crashed.
-  * Attack windows now tracks onslaught
+### Added
+- Attack windows now tracks onslaught
+- Attack windows warn if there are less then 2 characters listed.
+- Gambits that would cause a character to crash are no longer allowed.
+### Modified
+- Modification window: Shift target is now greyed out unless crashed.
+### Fixed
+
 
 
 ## [0.1.1] - 2016-01-02

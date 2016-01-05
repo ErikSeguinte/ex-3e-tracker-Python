@@ -96,7 +96,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.setup_model()
 
     def open_attack_window(self):
-        if len(Z.character_list) == 0:
+        if len(Z.character_list) <= 1:
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
 
             return
@@ -109,7 +109,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.setup_model()
 
     def open_decisive_window(self):
-        if len(Z.character_list) == 0:
+        if len(Z.character_list) <= 1:
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
         values = DecisiveWindow(self.model).exec()
@@ -362,12 +362,18 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
             tricks = False
         trick = (tricks, attacker_trick, defender_trick)
 
+        values = None
+
         if gambit_type == "Standard Decisive":
             # prepare for handle_decisive
             values = ((attacker, defender), success, trick)
         else:
             # prepare for handle_gambit
-            values = ((attacker, defender), success, gambit_type, trick)
+            if self.defender.initiative > Z.gambit_dict[gambit_type]:
+                values = ((attacker, defender), success, gambit_type, trick)
+            else:
+                QtWidgets.QMessageBox.warning(self, "Message",
+                                              "This Gambit would have crashed you, and has been canceled.")
 
         return values
 
