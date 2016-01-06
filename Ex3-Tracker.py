@@ -544,21 +544,17 @@ config_name = 'Ex3-Tracker.cfg'
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
     application_path = os.path.dirname(sys.executable)
-
-    application_path = os.path.dirname(application_path)
-    application_path = os.path.dirname(application_path)
-    application_path = os.path.dirname(application_path)
 elif __file__:
     application_path = os.path.dirname(__file__)
 
 config_path = os.path.join(application_path, config_name)
 
-try:
-    my_file = open(config_path)
-except IOError:
-    with open(config_path, mode='w', encoding='utf-8') as config:
-        # config.write('configging!!')
-        pass
+# try:
+#     my_file = open(config_path)
+# except IOError:
+#     with open(config_path, mode='w', encoding='utf-8') as config:
+#         # config.write('configging!!')
+#         pass
 
 
 
