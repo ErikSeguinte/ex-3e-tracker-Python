@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import os, sys
-from pathlib import Path
+from config import TrackerConfig
 
 from PyQt5 import QtGui, QtCore, QtWidgets
 
@@ -548,6 +548,8 @@ elif __file__:
     application_path = os.path.dirname(__file__)
 
 config_path = os.path.join(application_path, config_name)
+
+config = TrackerConfig(config_path)
 
 # try:
 #     my_file = open(config_path)
