@@ -39,18 +39,32 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         AboutWindow().exec()
 
     def load_combat(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', self.save_path, "*.txt")
-        self.save_path = os.path.dirname(fname)
+        fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "*.txt")
+        if fname[0]:
+            self.save_path = os.path.dirname(fname)
 
     def save_combat(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', self.save_path, "*.txt")
+        fname = QtWidgets.QFileDialog.getSaveFileName(None, 'Open file', self.save_path, "*.txt")
+        if fname[0]:
+            self.save_path = os.path.dirname(fname)
+            # QtWidgets.QFileDialog.getSaveFileName()
 
 
     def load_npcs(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', self.save_path, "*.txt")
+        fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "*.txt")
 
         if fname[0]:
             Z.add_npcs(fname[0])
+        self.setup_model()
+        if fname:
+            self.save_path = os.path.dirname(fname)
+
+    def add_players_from_file(self):
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', self.save_path, "*.txt")
+
+        if fname[0]:
+            Z.add_players(fname[0])
+            self.save_path = os.path.dirname(fname[0])
         self.setup_model()
 
     def setup_buttons(self):
@@ -149,12 +163,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             Z.sort_table()
             self.setup_model()
 
-    def add_players_from_file(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', self.save_path, "*.txt")
 
-        if fname[0]:
-            Z.add_players(fname[0])
-        self.setup_model()
 
     def reset(self):
         Z.reset_combat()
