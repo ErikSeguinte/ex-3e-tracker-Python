@@ -1,9 +1,7 @@
 from random import randint
-import time
-
-import input_validation
+import input_validation, config
 import user_interface
-import re
+import re, configparser
 
 ITEMS = (
     "Withering Attack",
@@ -53,6 +51,8 @@ for action in OTHER_ACTIONS:
     cost = action[1]
     action_names.append(name)
     action_dict[name] = cost
+
+config = None
 
 
 def debug_print(string):

@@ -75,6 +75,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def join_battle(self):
         c_list = Z.character_list
+        add_3 = Z.config['Settings'].getboolean('Join Battle automatically adds 3')
+        print(add_3)
 
         if len(c_list) == 0:
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
@@ -86,7 +88,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
                 values = JoinBattleWindow(character.name).exec()
                 if values is not None:
-                    join_battle = values + 3
+                    join_battle = values
+                    if add_3:
+                        join_battle += 3
                     character.initiative = join_battle
                 else:
                     break
@@ -549,7 +553,7 @@ elif __file__:
 
 config_path = os.path.join(application_path, config_name)
 
-config = TrackerConfig(config_path)
+TrackerConfig(config_path)
 
 # try:
 #     my_file = open(config_path)
@@ -566,7 +570,7 @@ app = QtWidgets.QApplication(sys.argv)
 # Z.set_up_test()
 
 window = MainWindow()
-QtWidgets.QMessageBox.warning(window, "Message", config_path)
+# QtWidgets.QMessageBox.warning(window, "Message", config_path)
 
 window.show()
 sys.exit(app.exec())
