@@ -27,3 +27,6 @@ class TrackerConfig:
         self.config.set("Settings", "End of round alert", 'False')
         self.config.set("Settings", "Reset includes players", 'False')
         self.config.set("Settings", "Join Battle automatically adds 3", 'True')
+        
+        #'Every turn', 'Every round', 'Off'
+        self.config.set("Settings", "Auto-save","Every turn")
