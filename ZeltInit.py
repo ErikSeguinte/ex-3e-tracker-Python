@@ -1,7 +1,7 @@
 from random import randint
 import input_validation, config
 import user_interface
-import re, configparser
+import re, configparser, os
 
 ITEMS = (
     "Withering Attack",
@@ -157,6 +157,14 @@ class Character:
         #     self.join_battle_pool = next(new_values)
         #     self.shift_target = next(new_values)
         #     self.recently_crashed = next(new_values)
+
+    def save(self):
+        values = self.get_values()
+        # values_to_save = []
+        # for value in values:
+        #     values_to_save.append(str(value))
+        string = ', '.join(str(value) for value in values)
+        print(string)
 
 
 def clear_screen():
@@ -550,5 +558,13 @@ def reset_combat():
     character_list[:] = [character for character in character_list if character.name in player_names]
 
 
+def save_combat():
+    file_path = os.path.expanduser('~/Ex3-Tracker/initiative.txt')
+    # with open(file_path,'w',encoding='utf-8') as file:
+    for character in character_list:
+        character.save()
+
 if __name__ == '__main__':
-    main()
+    # main()
+    set_up_test()
+    save_combat()
