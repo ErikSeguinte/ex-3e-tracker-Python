@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Customizable settings saved to an external file.
 ### Modified
 - Modification window: Shift target is now greyed out unless crashed.
+- File dialogs default to either directory of last loaded file or application path.
 ### Fixed
 
 

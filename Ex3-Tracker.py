@@ -10,7 +10,7 @@ from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_ba
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
-    def __init__(self):
+    def __init__(self, application_path):
         super().__init__()
 
         self.setupUi(self)
@@ -24,18 +24,30 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
         self.setup_model()
         self.window2 = None
+        self.application_path = application_path
+        self.save_path = application_path
 
     def setup_menu_items(self):
         self.actionLoad_Players.triggered.connect(self.add_players_from_file)
         self.actionQuit.triggered.connect(sys.exit)
         self.actionAbout.triggered.connect(self.about_window)
         self.actionLoad_NPCs.triggered.connect(self.load_npcs)
+        self.actionLoad_Combat.triggered.connect(self.load_combat)
+        self.actionSave_Combat.triggered.connect(self.save_combat)
 
     def about_window(self):
         AboutWindow().exec()
 
+    def load_combat(self):
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', self.save_path, "*.txt")
+        self.save_path = os.path.dirname(fname)
+
+    def save_combat(self):
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', self.save_path, "*.txt")
+
+
     def load_npcs(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', "", "*.txt")
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', self.save_path, "*.txt")
 
         if fname[0]:
             Z.add_npcs(fname[0])
@@ -138,7 +150,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.setup_model()
 
     def add_players_from_file(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', "", "*.txt")
+        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', self.save_path, "*.txt")
 
         if fname[0]:
             Z.add_players(fname[0])
@@ -569,7 +581,7 @@ TrackerConfig(config_path)
 app = QtWidgets.QApplication(sys.argv)
 # Z.set_up_test()
 
-window = MainWindow()
+window = MainWindow(application_path)
 # QtWidgets.QMessageBox.warning(window, "Message", config_path)
 
 window.show()
