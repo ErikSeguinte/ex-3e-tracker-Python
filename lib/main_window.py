@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\Primefactorx01\Documents\Python\ex-3e-init-tracker\lib\main_window.ui'
+# Form implementation generated from reading ui file '/Users/HornetBookstore/PycharmProjects/ex-3e-init-tracker/lib/main_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 588, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 588, 22))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -87,9 +87,20 @@ class Ui_MainWindow(object):
         self.actionLoad_NPCs.setObjectName("actionLoad_NPCs")
         self.actionReadme = QtWidgets.QAction(MainWindow)
         self.actionReadme.setObjectName("actionReadme")
+        self.actionSave_Combat = QtWidgets.QAction(MainWindow)
+        self.actionSave_Combat.setObjectName("actionSave_Combat")
+        self.actionLoad_Combat = QtWidgets.QAction(MainWindow)
+        self.actionLoad_Combat.setObjectName("actionLoad_Combat")
+        self.actionPreferences = QtWidgets.QAction(MainWindow)
+        self.actionPreferences.setObjectName("actionPreferences")
         self.menuFile.addAction(self.actionQuit)
         self.menuEdit.addAction(self.actionLoad_Players)
         self.menuEdit.addAction(self.actionLoad_NPCs)
+        self.menuEdit.addSeparator()
+        self.menuEdit.addAction(self.actionSave_Combat)
+        self.menuEdit.addAction(self.actionLoad_Combat)
+        self.menuEdit.addSeparator()
+        self.menuEdit.addAction(self.actionPreferences)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionReadme)
         self.menubar.addAction(self.menuFile.menuAction())
@@ -120,4 +131,6 @@ class Ui_MainWindow(object):
         self.actionLoad_Players.setText(_translate("MainWindow", "Load Players"))
         self.actionLoad_NPCs.setText(_translate("MainWindow", "Load NPCs"))
         self.actionReadme.setText(_translate("MainWindow", "Readme"))
-
+        self.actionSave_Combat.setText(_translate("MainWindow", "Save Combat"))
+        self.actionLoad_Combat.setText(_translate("MainWindow", "Load Combat"))
+        self.actionPreferences.setText(_translate("MainWindow", "Preferences"))
