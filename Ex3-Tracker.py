@@ -20,7 +20,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.statusBar()
         # self.Withering_btn.
         character_list = Z.character_list
-        Z.sort_table()
+        # Z.sort_table()
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
         self.setup_model()
         self.window2 = None
@@ -40,31 +40,44 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
     def load_combat(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "*.txt")
-        if fname[0]:
+        fname = fname[0]
+
+        if fname:
             self.save_path = os.path.dirname(fname)
+            Z.load_combat(fname)
+            self.setup_model()
+
+    def auto_save(self):
+        fname = os.path.join(self.application_path, '__resume_combat.txt')
+        Z.save_combat(fname)
 
     def save_combat(self):
         fname = QtWidgets.QFileDialog.getSaveFileName(None, 'Open file', self.save_path, "*.txt")
-        if fname[0]:
+        fname = fname[0]
+        if fname:
             self.save_path = os.path.dirname(fname)
+            Z.save_combat(fname)
             # QtWidgets.QFileDialog.getSaveFileName()
 
 
     def load_npcs(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "*.txt")
+        fname = fname[0]
 
-        if fname[0]:
-            Z.add_npcs(fname[0])
-        self.setup_model()
         if fname:
-            self.save_path = os.path.dirname(fname)
+            Z.add_npcs(fname)
+        self.setup_model()
+        print(fname)
+        if fname:
+            self.save_path = os.path.dirname(fname[0])
 
     def add_players_from_file(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', self.save_path, "*.txt")
+        fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "*.txt")
+        fname = fname[0]
 
-        if fname[0]:
-            Z.add_players(fname[0])
-            self.save_path = os.path.dirname(fname[0])
+        if fname:
+            Z.add_players(fname)
+            self.save_path = os.path.dirname(fname)
         self.setup_model()
 
     def setup_buttons(self):
@@ -185,7 +198,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.tableView.setModel(self.model)
         character_list = Z.character_list
 
-        Z.sort_table()
+        # Z.sort_table()
 
         progress = self.progressBar
 
@@ -574,18 +587,8 @@ elif __file__:
 
 config_path = os.path.join(application_path, config_name)
 
-TrackerConfig(config_path)
-
-# try:
-#     my_file = open(config_path)
-# except IOError:
-#     with open(config_path, mode='w', encoding='utf-8') as config:
-#         # config.write('configging!!')
-#         pass
-
-
-
-
+TrackerConfig(application_path)
+Z.auto_save_path = os.path.join(application_path, '__resume.txt')
 
 app = QtWidgets.QApplication(sys.argv)
 # Z.set_up_test()

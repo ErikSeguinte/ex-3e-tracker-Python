@@ -53,6 +53,7 @@ for action in OTHER_ACTIONS:
     action_dict[name] = cost
 
 config = None
+auto_save_path = None
 
 
 def debug_print(string):
@@ -97,7 +98,8 @@ class Character:
             has_gone=False,
             jb_pool=0,
             shift_target=None,
-            recently_crashed=False
+            recently_crashed=False,
+            onslaught=0
     ):
         self.name = name
         self.initiative = initiative
@@ -109,7 +111,7 @@ class Character:
         self.join_battle_pool = jb_pool
         self.shift_target = shift_target  # Character who crashed this character, for init shift.
         self.recently_crashed = recently_crashed
-        self.onslaught = 0
+        self.onslaught = onslaught
 
     def set_name(self):
         self.name = input("Name: ")
@@ -222,6 +224,15 @@ def add_npcs(f="Players.txt"):
                     kwargs["inert"] = True
             character = Character(**kwargs)
             character_list.append(character)
+
+
+def end_turn():
+    try:
+        if config['Settings']['Auto-save'] == 'Every turn':
+            auto_save()
+    except TypeError:
+        save_combat(os.path.join(os.path.dirname(__file__), '__resume.txt'))
+        auto_save()
 
 
 def print_table():
@@ -341,6 +352,7 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0):
     if attacker.crash_state:
         attacker.crash_counter += 1
 
+    end_turn()
     if check_for_end_of_round():
         reset_has_gone()
 
@@ -439,6 +451,7 @@ def handle_decisive(combatants, success, trick=(False, 0, 0), rout=0):
 
     d.onslaught -= 1
     a.has_gone = True
+    end_turn()
 
 
 def remove_from_combat(character_index):
@@ -472,6 +485,7 @@ def handle_gambits(combatants, success: bool, gambit: str, trick=(False, 0, 0), 
             attacker.initiative -= 3
 
     defender.onslaught -= 1
+    end_turn()
 
 
 def begin_turn(attacker: Character):
@@ -569,6 +583,41 @@ def save_combat(file_path=None):
 
     with open(file_path, 'w', encoding='utf-8') as file:
         file.writelines(to_save)
+
+
+def auto_save():
+    global auto_save_path
+    save_combat(auto_save_path)
+
+
+def load_combat(file_path):
+    global character_list
+    character_list = []
+    with open(file_path, 'r', encoding='utf-8') as file:
+        for line in file:
+            stats = line.split(',')
+            stats.reverse()
+            character = Character(
+                    stats.pop().strip(),
+                    int(stats.pop().strip()),
+                    str_to_bool(stats.pop().strip()),
+                    str_to_bool(stats.pop().strip()),
+                    int(stats.pop().strip()),
+                    int(stats.pop().strip()),
+                    str_to_bool(stats.pop().strip()),
+                    int(stats.pop().strip()),
+                    stats.pop().strip(),
+                    str_to_bool(stats.pop().strip()),
+                    int(stats.pop().strip()),
+            )
+            character_list.append(character)
+
+
+def str_to_bool(string):
+    if string == 'True':
+        return True
+    else:
+        return False
 
 
 if __name__ == '__main__':

@@ -1,18 +1,19 @@
-import configparser
+import configparser, os
 import ZeltInit
 
 
 class TrackerConfig:
     def __init__(self, path):
-        self.path = path
+        self.application_path = path
+        self.path = os.path.join(path, 'Ex3-Tracker.cfg')
         self.config = configparser.ConfigParser()
 
         try:
-            self.config.read_file(open(path))
+            self.config.read_file(open(self.path))
 
         except IOError:
             self.create_config()
-            with open(path, mode='w', encoding='utf-8') as config_file:
+            with open(self.path, mode='w', encoding='utf-8') as config_file:
                 self.config.write(config_file)
         else:
             self.config.sections()
@@ -30,3 +31,7 @@ class TrackerConfig:
         
         #'Every turn', 'Every round', 'Off'
         self.config.set("Settings", "Auto-save","Every turn")
+
+        auto_save = os.path.join(self.application_path, '__resume.txt')
+        self.config.set('Settings', 'auto_save_custom_path', 'False')
+        self.config.set('Settings', 'Auto-save path', auto_save)

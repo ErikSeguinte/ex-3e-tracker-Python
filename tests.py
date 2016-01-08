@@ -1,6 +1,6 @@
-import unittest
+import unittest, os, sys
 
-import ZeltInit
+import ZeltInit, config
 
 Z = ZeltInit
 
@@ -14,6 +14,8 @@ def simulate_round(turns):
 class MyTest(unittest.TestCase):
     def setUp(self):
         print("*****")
+        config.TrackerConfig(os.path.dirname(sys.executable))
+        # print(Z.config)
 
         Z.set_up_test()
 
