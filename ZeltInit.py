@@ -1,7 +1,7 @@
 from random import randint
 import input_validation, config
 import user_interface
-import re, configparser, os
+import re, configparser, os, pickle
 
 ITEMS = (
     "Withering Attack",
@@ -53,7 +53,7 @@ for action in OTHER_ACTIONS:
     action_dict[name] = cost
 
 config = None
-auto_save_path = None
+auto_save_path = os.path.join(os.path.dirname(__file__), '__resume.txt')
 
 
 def debug_print(string):
@@ -231,7 +231,7 @@ def end_turn():
         if config['Settings']['Auto-save'] == 'Every turn':
             auto_save()
     except TypeError:
-        save_combat(os.path.join(os.path.dirname(__file__), '__resume.txt'))
+        # save_combat(os.path.join(os.path.dirname(__file__), '__resume.txt'))
         auto_save()
 
 
@@ -573,44 +573,62 @@ def reset_combat():
     character_list[:] = [character for character in character_list if character.name in player_names]
 
 
-def save_combat(file_path=None):
-    if not file_path:
-        file_path = os.path.expanduser('~/Ex3-Tracker/initiative.txt')
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    to_save = []
-    for character in character_list:
-        to_save.append(character.save())
+# def save_combat(file_path=None):
+#     if not file_path:
+#         file_path = os.path.expanduser('~/Ex3-Tracker/initiative.txt')
+#         os.makedirs(os.path.dirname(file_path), exist_ok=True)
+#     to_save = []
+#     for character in character_list:
+#         to_save.append(character.save())
+#
+#     with open(file_path, 'w', encoding='utf-8') as file:
+#         file.writelines(to_save)
 
-    with open(file_path, 'w', encoding='utf-8') as file:
-        file.writelines(to_save)
+def save_pickler(file_path):
+    global character_list
+    with open(file_path, 'wb') as file:
+        pickle.dump(character_list, file)
 
 
 def auto_save():
     global auto_save_path
-    save_combat(auto_save_path)
+    # save_combat(auto_save_path)
+    save_pickler(auto_save_path)
 
 
 def load_combat(file_path):
     global character_list
+    print(file_path)
     character_list = []
-    with open(file_path, 'r', encoding='utf-8') as file:
-        for line in file:
-            stats = line.split(',')
-            stats.reverse()
-            character = Character(
-                    stats.pop().strip(),
-                    int(stats.pop().strip()),
-                    str_to_bool(stats.pop().strip()),
-                    str_to_bool(stats.pop().strip()),
-                    int(stats.pop().strip()),
-                    int(stats.pop().strip()),
-                    str_to_bool(stats.pop().strip()),
-                    int(stats.pop().strip()),
-                    stats.pop().strip(),
-                    str_to_bool(stats.pop().strip()),
-                    int(stats.pop().strip()),
-            )
-            character_list.append(character)
+    with open(file_path, 'rb') as file:
+        print(file)
+        character_list = pickle.load(file)
+    print('loading pickle')
+
+
+# def load_combat(file_path):
+#     global character_list
+#     character_list = []
+#     with open(file_path, 'r', encoding='utf-8') as file:
+#         for line in file:
+#             stats = line.split(',')
+#             stats.reverse()
+#             character = Character(
+#                     stats.pop().strip(),
+#                     int(stats.pop().strip()),
+#                     str_to_bool(stats.pop().strip()),
+#                     str_to_bool(stats.pop().strip()),
+#                     int(stats.pop().strip()),
+#                     int(stats.pop().strip()),
+#                     str_to_bool(stats.pop().strip()),
+#                     int(stats.pop().strip()),
+#                     stats.pop().strip(),
+#                     str_to_bool(stats.pop().strip()),
+#                     int(stats.pop().strip()),
+#             )
+#             character_list.append(character)
+
+
 
 
 def str_to_bool(string):
@@ -622,5 +640,9 @@ def str_to_bool(string):
 
 if __name__ == '__main__':
     # main()
-    set_up_test()
-    save_combat()
+    # set_up_test()
+    # auto_save()
+    print(character_list)
+    load_combat(auto_save_path)
+    print(character_list)
+    print(character_list[0].shift_target)

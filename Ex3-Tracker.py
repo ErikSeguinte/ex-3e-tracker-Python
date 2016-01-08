@@ -43,20 +43,21 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         fname = fname[0]
 
         if fname:
+            print(fname)
             self.save_path = os.path.dirname(fname)
             Z.load_combat(fname)
             self.setup_model()
 
-    def auto_save(self):
-        fname = os.path.join(self.application_path, '__resume_combat.txt')
-        Z.save_combat(fname)
+    # def auto_save(self):
+    #     fname = os.path.join(self.application_path, '__resume_combat.txt')
+    #     Z.save_combat(fname)
 
     def save_combat(self):
         fname = QtWidgets.QFileDialog.getSaveFileName(None, 'Open file', self.save_path, "*.txt")
         fname = fname[0]
         if fname:
             self.save_path = os.path.dirname(fname)
-            Z.save_combat(fname)
+            Z.save_pickler(fname)
             # QtWidgets.QFileDialog.getSaveFileName()
 
 
