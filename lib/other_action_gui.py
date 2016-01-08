@@ -52,3 +52,4 @@ class Ui_Dialog(object):
         self.label.setText(_translate("Dialog", "Character"))
         self.label_2.setText(_translate("Dialog", "Action"))
         self.label_3.setText(_translate("Dialog", "Initiative Cost"))
+
