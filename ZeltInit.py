@@ -304,7 +304,7 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
                     defender.shift_target = attacker
 
                 # Successful Attack
-
+                attacker.initiative += damage
                 if shifting:
                     attacker.has_gone = False
                     if attacker.initiative < 3:
@@ -312,7 +312,9 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
                     attacker.initiative += dice_roller(attacker.join_battle_pool)
 
                 defender.initiative -= damage
-            attacker.initiative += damage + 1
+
+            attacker.initiative += 1
+
 
         else:
             bonus = (rout * 5) + 1
