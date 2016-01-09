@@ -371,7 +371,13 @@ def check_for_end_of_round():
     for character in character_list:
         if not character.has_gone:
             return False
-    return True
+    else:
+        try:
+            if config['Settings']['Auto-save'] == 'Every Round':
+                auto_save()
+        except TypeError:
+            pass
+        return True
 
 
 def reset_has_gone():
@@ -613,6 +619,16 @@ def load_combat(file_path):
         print(file)
         character_list = pickle.load(file)
     print('loading pickle')
+
+
+def resume_combat():
+    global auto_save_path
+    if config.getbool('Settings', 'auto_save custom path'):
+        resume_path = config['Settings']['Auto-save path']
+        if os.path.exists(resume_path):
+            auto_save_path = resume_path
+    load_combat(auto_save_path)
+
 
 
 # def load_combat(file_path):

@@ -45,7 +45,14 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if fname:
             print(fname)
             self.save_path = os.path.dirname(fname)
-            Z.load_combat(fname)
+            try:
+                Z.load_combat(fname)
+            except Z.pickle.UnpicklingError:
+                QtWidgets.QMessageBox.warning(self.window2, "Message",
+                                              ("Unable to load combat.This may be due to the file being saved on "
+                                               "an older version or choosing an invalid file."))
+
+
             self.setup_model()
 
     # def auto_save(self):
@@ -57,9 +64,13 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         fname = fname[0]
         if fname:
             self.save_path = os.path.dirname(fname)
-            Z.save_pickler(fname)
-            # QtWidgets.QFileDialog.getSaveFileName()
-
+            try:
+                Z.save_pickler(fname)
+            except IOError:
+                QtWidgets.QMessageBox.warning(self.window2, "Message", "Cannot open file to write.")
+            except Z.pickle.PickleError:
+                QtWidgets.QMessageBox.warning(self.window2, "Message", "Unable to create save file")
+                # QtWidgets.QFileDialog.getSaveFileName()
 
     def load_npcs(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "*.txt")
@@ -176,8 +187,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             Z.add_npc(*values)
             Z.sort_table()
             self.setup_model()
-
-
 
     def reset(self):
         Z.reset_combat()

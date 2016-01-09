@@ -28,10 +28,10 @@ class TrackerConfig:
         self.config.set("Settings", "End of round alert", 'False')
         self.config.set("Settings", "Reset includes players", 'False')
         self.config.set("Settings", "Join Battle automatically adds 3", 'True')
-        
-        #'Every turn', 'Every round', 'Off'
+
+        # 'Every turn', 'Every Round', 'Off'
         self.config.set("Settings", "Auto-save","Every turn")
 
         auto_save = os.path.join(self.application_path, '__resume.txt')
-        self.config.set('Settings', 'auto_save_custom_path', 'False')
+        self.config.set('Settings', 'auto_save custom path', 'False')
         self.config.set('Settings', 'Auto-save path', auto_save)

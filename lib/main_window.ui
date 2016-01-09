@@ -140,7 +140,7 @@
      <x>0</x>
      <y>0</y>
      <width>588</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -158,6 +158,7 @@
     <addaction name="separator"/>
     <addaction name="actionSave_Combat"/>
     <addaction name="actionLoad_Combat"/>
+    <addaction name="actionResume_Combat"/>
     <addaction name="separator"/>
     <addaction name="actionPreferences"/>
    </widget>
@@ -210,6 +211,11 @@
   <action name="actionPreferences">
    <property name="text">
     <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionResume_Combat">
+   <property name="text">
+    <string>Resume Combat</string>
    </property>
   </action>
  </widget>
