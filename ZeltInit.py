@@ -53,7 +53,8 @@ for action in OTHER_ACTIONS:
     action_dict[name] = cost
 
 config = None
-auto_save_path = os.path.join(os.path.dirname(__file__), '__resume.txt')
+# auto_save_path = os.path.join(os.path.dirname(__file__), '__resume.txt')
+auto_save_path = ''
 
 
 def debug_print(string):
@@ -613,7 +614,7 @@ def auto_save():
 
 def load_combat(file_path):
     global character_list
-    print(file_path)
+    print(file_path, 'loading file')
     character_list = []
     with open(file_path, 'rb') as file:
         print(file)
@@ -623,11 +624,11 @@ def load_combat(file_path):
 
 def resume_combat():
     global auto_save_path
-    if config.getbool('Settings', 'auto_save custom path'):
+    if config.getboolean('Settings', 'auto_save custom path'):
         resume_path = config['Settings']['Auto-save path']
         if os.path.exists(resume_path):
             auto_save_path = resume_path
-    load_combat(auto_save_path)
+    load_combat(os.path.normpath(auto_save_path))
 
 
 

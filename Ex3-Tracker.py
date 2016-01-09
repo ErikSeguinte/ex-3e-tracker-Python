@@ -34,6 +34,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionLoad_NPCs.triggered.connect(self.load_npcs)
         self.actionLoad_Combat.triggered.connect(self.load_combat)
         self.actionSave_Combat.triggered.connect(self.save_combat)
+        self.actionResume_Combat.triggered.connect(self.resume_combat)
 
     def about_window(self):
         AboutWindow().exec()
@@ -59,6 +60,16 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     #     fname = os.path.join(self.application_path, '__resume_combat.txt')
     #     Z.save_combat(fname)
 
+    def resume_combat(self):
+        try:
+            Z.resume_combat()
+            self.setup_model()
+        except IOError:
+            QtWidgets.QMessageBox.warning(self.window2, "Message",
+                                          ("Unable to load combat.This may be due to the file being saved on "
+                                           "an older version or choosing an invalid file."))
+
+
     def save_combat(self):
         fname = QtWidgets.QFileDialog.getSaveFileName(None, 'Open file', self.save_path, "*.txt")
         fname = fname[0]
@@ -79,7 +90,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if fname:
             Z.add_npcs(fname)
         self.setup_model()
-        print(fname)
+
         if fname:
             self.save_path = os.path.dirname(fname[0])
 
@@ -495,7 +506,7 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         old_values = self.c.get_values()
         self.name_edit.setText(next(old_values))
         self.Initiative_box.setValue(next(old_values))
-        # print(next(old_values))
+
         self.inertcheckBox.setChecked(next(old_values))
         self.crashed_check.setChecked(next(old_values))
         self.crash_counter_box.setValue(next(old_values))
@@ -601,6 +612,7 @@ config_path = os.path.join(application_path, config_name)
 
 TrackerConfig(application_path)
 Z.auto_save_path = os.path.join(application_path, '__resume.txt')
+print(Z.auto_save_path, 'Auto save path from GUI')
 
 app = QtWidgets.QApplication(sys.argv)
 # Z.set_up_test()
