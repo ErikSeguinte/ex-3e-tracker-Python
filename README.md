@@ -4,26 +4,28 @@ This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written 
 
 ## Features
 
-*	Keeps track of Initiative, Initiative Break, initiative shift, and Crash
-*	A round progress bar at the bottom to help remind you about regaining motes.
-	`todo: Option to have a new round popup message?`
-*	Automatically resets to base initiative if a character survives 3 turns in crash,
-	at the beginning of their 4th turn.
-*	Cannot gain a Initiative Break Bonus if a character had returned from crash this
-	round or the one before it.
-*	Keeps track of who crashed whom for Shift purposes
-*	Initiative shift keeps a character at the top of the initiative.
-	`todo: Rolls join battle for NPCs. currently does not ask for JB from player, has to be added manually.'
-*	Characters that have gone this round will always be beneath those that have not,
-	but are otherwise everyone is kept in initiative order.
-*	Delaying keeps a character at the top of the initiative.
-	`todo: some sort of reminder to prevent a delaying character from wasting a round`
-*	Players and NPCs can be added from a text file.
-*	Can automatically roll Join Battle for NPCs, given a JB pool.
-*	Players persist through combat reset. `todo: Option to reset them too.`
-*	Successful gambits cost (difficulty + 1) Initiative to perform
-*	Successful Decisive Attacks reset initiative to 3.
-*	Failed Decisive/Gambits cost initiative depending on current initiative.
+*   Keeps track of Initiative, Initiative Break, initiative shift, and Crash
+*   A round progress bar at the bottom to help remind you about regaining motes.
+    `todo: Option to have a new round popup message?`
+*   Automatically resets to base initiative if a character survives 3 turns in crash,
+    at the beginning of their 4th turn.
+*   Cannot gain a Initiative Break Bonus if a character had returned from crash this
+    round or the one before it.
+*   Keeps track of who crashed whom for Shift purposes
+*   Initiative shift keeps a character at the top of the initiative.
+    `todo: Rolls join battle for NPCs. currently does not ask for JB from player, has to be added manually.'
+*   Characters that have gone this round will always be beneath those that have not,
+    but are otherwise everyone is kept in initiative order.
+*   Delaying keeps a character at the top of the initiative.
+    `todo: some sort of reminder to prevent a delaying character from wasting a round`
+*   Players and NPCs can be added from a text file.
+*   Can automatically roll Join Battle for NPCs, given a JB pool.
+*   Players persist through combat reset. `todo: Option to reset them too.`
+*   Successful gambits cost (difficulty + 1) Initiative to perform
+*   Successful Decisive Attacks reset initiative to 3.
+*   Failed Decisive/Gambits cost initiative depending on current initiative.
+*   Save and load combats, loading current initiative, order, etc
+*   Auto save of combats, configurable to every turn, every round, or never.
 
 
 
