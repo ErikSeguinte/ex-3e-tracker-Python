@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(299, 238)
+        Dialog.resize(304, 263)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
@@ -51,9 +51,6 @@ class Ui_Dialog(object):
         self.d_spinbox.setMinimum(-99)
         self.d_spinbox.setObjectName("d_spinbox")
         self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.d_spinbox)
-        self.label_31 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_31.setObjectName("label_31")
-        self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_31)
         self.label_7 = QtWidgets.QLabel(self.groupBox_2)
         self.label_7.setObjectName("label_7")
         self.formLayout_3.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.label_7)
@@ -124,7 +121,6 @@ class Ui_Dialog(object):
         self.groupBox_2.setTitle(_translate("Dialog", "Defender"))
         self.label_3.setText(_translate("Dialog", "Name"))
         self.label_4.setText(_translate("Dialog", "Initiative Modifier"))
-        self.label_31.setText(_translate("Dialog", "Name"))
         self.label_7.setText(_translate("Dialog", "Onslaught Penalty"))
         self.onslaught_lbl.setText(_translate("Dialog", "TextLabel"))
         self.label_5.setText(_translate("Dialog", "Damage"))
