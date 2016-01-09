@@ -310,6 +310,7 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         self.defender_box.setModel(self.model)
         self.defender_box.setCurrentIndex(1)
         self.defender_idx = 1
+        self.radioButton.setChecked(True)
         self.defender_box.currentIndexChanged.connect(self.set_onslaught)
         self.defender = Z.character_list[self.defender_idx]
         self.onslaught_lbl.setText(str(self.defender.onslaught))
@@ -335,6 +336,7 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         defender_trick = self.d_spinbox.value()
         damage = self.damage_spinbox.value()
         rout = self.spinBox.value()
+        success = self.radioButton.isChecked()
 
         if attacker_trick != 0 or defender_trick != 0:
             tricks = True
@@ -343,7 +345,7 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
 
         trick = (tricks, attacker_trick, defender_trick)
 
-        values = (attacker, defender), damage, trick, rout
+        values = (attacker, defender), damage, trick, rout, success
         return values
 
 
@@ -360,8 +362,8 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
         self.defender_box.setModel(self.model)
         self.defender_box.setCurrentIndex(1)
 
-        gambit_list = []
-        gambit_list.append("Standard Decisive")
+        gambit_list = ['Standard Decisive']
+        # gambit_list.append("Standard Decisive")
         for gambit in Z.GAMBITS:
             gambit_list.append(gambit[0])
 

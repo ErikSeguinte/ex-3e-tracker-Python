@@ -302,7 +302,7 @@ def check_for_crash(defender, init_damage):
         return False
 
 
-def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0):
+def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=True):
     global character_list
     attacker_index, defender_index = combatants
     attacker, defender = character_list[attacker_index], character_list[defender_index]
@@ -315,37 +315,46 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0):
 
     handle_tricks(combatants, *trick)
 
-    if not defender.inert_initiative:
-        if damage != 0:
-            shifting = False
-            if check_for_crash(defender_index, damage):
-                if attacker.shift_target is defender:  # Initiative Shift!
-                    shifting = True
-                attacker.initiative += 5
-                defender.crash_state = True
-                defender.shift_target = attacker
+    if success:
+        if not defender.inert_initiative:
 
-            # Successful Attack
-            attacker.initiative += damage + 1
-            if shifting:
-                attacker.has_gone = False
-                if attacker.initiative < 3:
-                    attacker.initiative = 3
-                attacker.initiative += dice_roller(attacker.join_battle_pool)
+            if damage != 0:
+                shifting = False
+                if check_for_crash(defender_index, damage):
+                    if attacker.shift_target is defender:  # Initiative Shift!
+                        shifting = True
+                    attacker.initiative += 5
+                    defender.crash_state = True
+                    defender.shift_target = attacker
 
-            defender.initiative -= damage
-            if attacker.initiative > 0:
-                if attacker.crash_state:
-                    attacker.recently_crashed = True
-                attacker.crash_state = False
-                attacker.crash_counter = 0
-                attacker.shift_target = None
-            else:
-                attacker.crash_state = True
-                attacker.recently_crashed = False
+                # Successful Attack
+                attacker.initiative += damage
+                if shifting:
+                    attacker.has_gone = False
+                    if attacker.initiative < 3:
+                        attacker.initiative = 3
+                    attacker.initiative += dice_roller(attacker.join_battle_pool)
+
+                defender.initiative -= damage
+
+            attacker.initiative += 1
+
+
+        else:
+            bonus = (rout * 5) + 1
+            attacker.initiative += bonus
+
+    if attacker.initiative > 0:
+        if attacker.crash_state:
+            attacker.recently_crashed = True
+        attacker.crash_state = False
+        attacker.crash_counter = 0
+        attacker.shift_target = None
     else:
-        bonus = (rout * 5) + 1
-        attacker.initiative += bonus
+        attacker.crash_state = True
+        attacker.recently_crashed = False
+
+
 
     defender.onslaught -= 1
 
