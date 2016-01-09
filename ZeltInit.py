@@ -355,8 +355,6 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
         attacker.crash_state = True
         attacker.recently_crashed = False
 
-
-
     defender.onslaught -= 1
 
     if attacker.crash_state:
@@ -589,16 +587,17 @@ def reset_combat():
     character_list[:] = [character for character in character_list if character.name in player_names]
 
 
-# def save_combat(file_path=None):
-#     if not file_path:
-#         file_path = os.path.expanduser('~/Ex3-Tracker/initiative.txt')
-#         os.makedirs(os.path.dirname(file_path), exist_ok=True)
-#     to_save = []
-#     for character in character_list:
-#         to_save.append(character.save())
-#
-#     with open(file_path, 'w', encoding='utf-8') as file:
-#         file.writelines(to_save)
+def save_combat_to_text(file_path=None):
+    if not file_path:
+        file_path = os.path.expanduser('~/Ex3-Tracker/initiative.txt')
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    to_save = []
+    for character in character_list:
+        to_save.append(character.save())
+
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.writelines(to_save)
+
 
 def save_pickler(file_path):
     global character_list
@@ -631,30 +630,41 @@ def resume_combat():
     load_combat(os.path.normpath(auto_save_path))
 
 
+def load_combat_from_text(file_path):
+    global character_list
+    character_list = []
+    with open(file_path, 'r', encoding='utf-8') as file:
+        for line in file:
+            stats = line.split(',')
+            stats.reverse()
+            character = Character(
+                    stats.pop().strip(),
+                    int(stats.pop().strip()),
+                    str_to_bool(stats.pop().strip()),
+                    str_to_bool(stats.pop().strip()),
+                    int(stats.pop().strip()),
+                    int(stats.pop().strip()),
+                    str_to_bool(stats.pop().strip()),
+                    int(stats.pop().strip()),
+                    stats.pop().strip(),
+                    str_to_bool(stats.pop().strip()),
+                    int(stats.pop().strip()),
+            )
+            character_list.append(character)
 
-# def load_combat(file_path):
-#     global character_list
-#     character_list = []
-#     with open(file_path, 'r', encoding='utf-8') as file:
-#         for line in file:
-#             stats = line.split(',')
-#             stats.reverse()
-#             character = Character(
-#                     stats.pop().strip(),
-#                     int(stats.pop().strip()),
-#                     str_to_bool(stats.pop().strip()),
-#                     str_to_bool(stats.pop().strip()),
-#                     int(stats.pop().strip()),
-#                     int(stats.pop().strip()),
-#                     str_to_bool(stats.pop().strip()),
-#                     int(stats.pop().strip()),
-#                     stats.pop().strip(),
-#                     str_to_bool(stats.pop().strip()),
-#                     int(stats.pop().strip()),
-#             )
-#             character_list.append(character)
+        for character in character_list:
+            target_str = character.shift_target
+            if target_str == 'None':
+                character.shift_target = None
+            else:
+                character.shift_target = str_to_character(target_str)
 
 
+def str_to_character(target_str):
+    global character_list
+    for character in character_list:
+        if str(character) == target_str:
+            return character
 
 
 def str_to_bool(string):
