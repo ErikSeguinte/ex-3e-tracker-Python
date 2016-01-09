@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Attack windows now tracks onslaught
+- Added Radio button for successful or failed withering attacks. Successful withering attacks
+that do 0 damage still give the attacker 1 initiative.
 - Attack windows warn if there are less then 2 characters listed.
 - Gambits that would cause a character to crash are no longer allowed.
 - Customizable settings saved to an external file.
