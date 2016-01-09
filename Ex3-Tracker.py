@@ -175,7 +175,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def open_attack_window(self):
         if len(Z.character_list) <= 1:
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
-
             return
 
         values = AttackWindow(self.model).exec()

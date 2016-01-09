@@ -166,7 +166,7 @@ class Character:
         # values_to_save = []
         # for value in values:
         #     values_to_save.append(str(value))
-        string = ', '.join(str(value) for value in values)
+        string = '\t\t'.join(str(value) for value in values)
         string += '\n'
         return string
 
@@ -587,7 +587,7 @@ def save_combat_to_text(file_path=None):
     if not file_path:
         file_path = os.path.expanduser('~/Ex3-Tracker/initiative.txt')
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    to_save = []
+    to_save = ["Name\t\tInit\tinert\t\tcrash\t\tcounter\treturn\thasgone\t\tjb\t\tshift\t\trcrashed\tonslaught\n"]
     for character in character_list:
         to_save.append(character.save())
 
@@ -628,8 +628,9 @@ def load_combat_from_text(file_path):
     global character_list
     character_list = []
     with open(file_path, 'r', encoding='utf-8') as file:
+        next(file)
         for line in file:
-            stats = line.split(',')
+            stats = line.split('\t\t')
             if len(stats) < 11:
                 raise IOError('Invalid File')
 

@@ -26,6 +26,7 @@ This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written 
 *   Failed Decisive/Gambits cost initiative depending on current initiative.
 *   Save and load combats, loading current initiative, order, etc
 *   Auto save of combats, configurable to every turn, every round, or never.
+*   Resume auto-save without choosing a file.
 
 
 
