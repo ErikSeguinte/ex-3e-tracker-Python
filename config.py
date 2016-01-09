@@ -6,6 +6,7 @@ class TrackerConfig:
     def __init__(self, path):
         self.application_path = path
         self.path = os.path.join(path, 'Ex3-Tracker.cfg')
+        self.path = os.path.relpath(self.path)
         self.config = configparser.ConfigParser()
 
         try:
@@ -37,4 +38,4 @@ class TrackerConfig:
         print(rel_path)
         print('config save', auto_save)
         self.config.set('Settings', 'auto_save custom path', 'False')
-        self.config.set('Settings', 'Auto-save path', auto_save)
+        self.config.set('Settings', 'Auto-save path', rel_path)
