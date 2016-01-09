@@ -40,7 +40,7 @@ class MyTest(unittest.TestCase):
         # (tricks, att_trick, def_trick))
         i = 1
 
-        # Z.print_table()
+
 
         known_values = (
             (1, 4, -1, False, True, True, (False, 0, 0)),
@@ -66,7 +66,7 @@ class MyTest(unittest.TestCase):
 
             Z.handle_withering(combatants, damage, tricks)
 
-            # Z.print_table()
+
 
             a.shift_target = None
             d.shift_target = None
@@ -86,7 +86,7 @@ class MyTest(unittest.TestCase):
             # Trick Assertions
             i += 1
             Z.sort_table()
-            # Z.print_table()
+
 
     def test_initiative_shift(self):
         print("Testing for Shift")
@@ -106,10 +106,10 @@ class MyTest(unittest.TestCase):
         #     (2, "Shift!")
         # )
 
-        Z.print_table()
+
         known_values = (
-            (0, 1, 2, 10, 0, (False, 0, 0), False, True, (1, Z.character_list[0])),  # Arnold Crashes Carol
-            (2, 4, 10, 16, 0, (False, 0, 0), False, True, (2, None)),  # Shift, init higher than base.
+            (0, 1, 3, 10, -1, (False, 0, 0), False, True, (1, Z.character_list[0])),  # Arnold Crashes Carol
+            (2, 4, 12, 16, 0, (False, 0, 0), False, True, (2, None)),  # Shift, init higher than base.
             (3, 2, 1, 3, 0, (False, 0, 0), False, True, (2, None)),  # Shift, init lower than base
         )
 
@@ -119,7 +119,16 @@ class MyTest(unittest.TestCase):
             combatants = (attacker, defender)
             a, d = Z.character_list[attacker], Z.character_list[defender]
 
+            print("")
+            Z.print_table()
+            print("")
+
             Z.handle_withering(combatants, damage, trick)
+            print(attacker, "attacks", defender)
+
+            print("")
+            Z.print_table()
+            print("")
 
             self.assertEqual(d.initiative, n_def_init)
             self.assertEqual(a.crash_state, a_crash)
@@ -130,9 +139,9 @@ class MyTest(unittest.TestCase):
             elif crashing[0] == 0:
                 self.assertEqual(a.initiative, n_att_init)
             else:
-                self.assertTrue(n_att_init <= a.initiative <= (n_att_init + a.join_battle_pool) * 2), \
-                a.name + "'s initiative is " + str(a.initiative) + ", but should be between " + str(
-                        n_att_init) + " and " + str((n_att_init + a.join_battle_pool) * 2)
+                self.assertTrue(n_att_init <= a.initiative <= (n_att_init + a.join_battle_pool) * 2), ( \
+                    a.name + "'s initiative is " + str(a.initiative) + ", but should be between " + str(
+                            n_att_init) + " and " + str((n_att_init + a.join_battle_pool) * 2))
 
             Z.sort_table()
 
@@ -147,10 +156,6 @@ class MyTest(unittest.TestCase):
 
         combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
         a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
-
-        print("")
-        Z.print_table()
-        print("")
 
         Z.handle_withering(combatants, damage)
         Z.sort_table()
@@ -265,8 +270,6 @@ class MyTest(unittest.TestCase):
         for c in c_list:
             still_in_play.append(c)
 
-        Z.print_table()
-
         for character in still_in_play:
             self.assertIn(character, c_list)
 
@@ -280,7 +283,6 @@ class MyTest(unittest.TestCase):
             self.assertNotIn(character, c_list)
 
         Z.sort_table()
-        Z.print_table()
 
         still_in_play = []
         for c in c_list:
@@ -292,7 +294,6 @@ class MyTest(unittest.TestCase):
             self.assertIn(character, c_list)
 
         Z.sort_table()
-        Z.print_table()
 
         for character in removed_from_play:
             self.assertNotIn(character, Z.character_list)
