@@ -208,7 +208,7 @@ def add_npcs(f="Players.txt"):
                         name = a_line.strip()
                     except ValueError:
                         break
-            print(name)
+
             kwargs = {"name": name}
             if jb:
                 try:
@@ -403,7 +403,6 @@ def name_generator():
 
 def value_generator(values):
     for value in values:
-        print(value)
         yield value
 
 
@@ -470,8 +469,6 @@ def handle_decisive(combatants, success, trick=(False, 0, 0), rout=0):
 
 def remove_from_combat(character_index):
     global character_list
-    print("Removing:")
-    print(character_list[character_index])
     del character_list[character_index]
 
 
@@ -491,7 +488,6 @@ def handle_gambits(combatants, success: bool, gambit: str, trick=(False, 0, 0), 
         attacker.initiative -= cost
         if re.search(r"Distract", gambit):
             defender.initiative += cost - 1
-            print("Distracted!")
     else:
         if attacker.initiative <= 10:
             attacker.initiative -= 2
@@ -613,12 +609,10 @@ def auto_save():
 
 def load_combat(file_path):
     global character_list
-    print(file_path, 'loading file')
+
     character_list = []
     with open(file_path, 'rb') as file:
-        print(file)
         character_list = pickle.load(file)
-    print('loading pickle')
 
 
 def resume_combat():
@@ -636,6 +630,9 @@ def load_combat_from_text(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         for line in file:
             stats = line.split(',')
+            if len(stats) < 11:
+                raise IOError('Invalid File')
+
             stats.reverse()
             character = Character(
                     stats.pop().strip(),

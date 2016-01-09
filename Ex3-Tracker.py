@@ -17,10 +17,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.setup_buttons()
         self.setup_menu_items()
 
-        self.statusBar()
-        # self.Withering_btn.
+        # self.statusBar()
         character_list = Z.character_list
-        # Z.sort_table()
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
         self.setup_model()
         self.window2 = None
@@ -35,30 +33,31 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionLoad_Combat.triggered.connect(self.load_combat)
         self.actionSave_Combat.triggered.connect(self.save_combat)
         self.actionResume_Combat.triggered.connect(self.resume_combat)
+        self.actionSave_to_Text_File.triggered.connect(self.save_to_text)
 
     def about_window(self):
         AboutWindow().exec()
 
     def load_combat(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "*.txt")
+        fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path,
+                                                      "Save File (*.sav *.txt)")
         fname = fname[0]
 
         if fname:
-            print(fname)
+
             self.save_path = os.path.dirname(fname)
             try:
                 Z.load_combat(fname)
+                self.setup_model()
             except Z.pickle.UnpicklingError:
-                QtWidgets.QMessageBox.warning(self.window2, "Message",
-                                              ("Unable to load combat.This may be due to the file being saved on "
-                                               "an older version or choosing an invalid file."))
+                # Fallback to text loading
+                try:
+                    Z.load_combat_from_text(fname)
+                    self.setup_model()
+                except Exception as error:
+                    m = "Unable to load.\n" + str(type(error)) + ": " + str(error)
 
-
-            self.setup_model()
-
-    # def auto_save(self):
-    #     fname = os.path.join(self.application_path, '__resume_combat.txt')
-    #     Z.save_combat(fname)
+                    QtWidgets.QMessageBox.warning(self.window2, "Message", m)
 
     def resume_combat(self):
         try:
@@ -69,9 +68,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
                                           ("Unable to load combat.This may be due to the file being saved on "
                                            "an older version or choosing an invalid file."))
 
-
     def save_combat(self):
-        fname = QtWidgets.QFileDialog.getSaveFileName(None, 'Open file', self.save_path, "*.txt")
+        fname = QtWidgets.QFileDialog.getSaveFileName(None, 'Open file', self.save_path, "Save File (*.sav)")
         fname = fname[0]
         if fname:
             self.save_path = os.path.dirname(fname)
@@ -83,8 +81,21 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
                 QtWidgets.QMessageBox.warning(self.window2, "Message", "Unable to create save file")
                 # QtWidgets.QFileDialog.getSaveFileName()
 
+    def save_to_text(self):
+        fname = QtWidgets.QFileDialog.getSaveFileName(None, 'Open file', self.save_path, "Text file (*.txt)")
+        fname = fname[0]
+        if fname:
+            self.save_path = os.path.dirname(fname)
+            try:
+                Z.save_combat_to_text(fname)
+            except IOError:
+                QtWidgets.QMessageBox.warning(self.window2, "Message", "Cannot open file to write.")
+                # except Z.pickle.PickleError:
+                #     QtWidgets.QMessageBox.warning(self.window2, "Message", "Unable to create save file")
+                #     # QtWidgets.QFileDialog.getSaveFileName()
+
     def load_npcs(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "*.txt")
+        fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "Text file (*.txt)")
         fname = fname[0]
 
         if fname:
@@ -95,7 +106,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.save_path = os.path.dirname(fname[0])
 
     def add_players_from_file(self):
-        fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "*.txt")
+        fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "Text file (*.txt)")
         fname = fname[0]
 
         if fname:
@@ -138,7 +149,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def join_battle(self):
         c_list = Z.character_list
         add_3 = Z.config['Settings'].getboolean('Join Battle automatically adds 3')
-        print(add_3)
 
         if len(c_list) == 0:
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
@@ -612,7 +622,6 @@ config_path = os.path.join(application_path, config_name)
 
 TrackerConfig(application_path)
 Z.auto_save_path = os.path.join(application_path, '__resume.txt')
-print(Z.auto_save_path, 'Auto save path from GUI')
 
 app = QtWidgets.QApplication(sys.argv)
 # Z.set_up_test()
