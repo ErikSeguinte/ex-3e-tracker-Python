@@ -97,6 +97,9 @@
          <widget class="QLabel" name="onslaught_lbl">
           <property name="text">
            <string>TextLabel</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>

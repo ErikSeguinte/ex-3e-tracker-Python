@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/Users/HornetBookstore/PycharmProjects/ex-3e-init-tracker/lib/character_picker_ui.ui'
+# Form implementation generated from reading ui file 'C:\Users\Primefactorx01\Documents\Python\ex-3e-init-tracker\lib\character_picker_ui.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
