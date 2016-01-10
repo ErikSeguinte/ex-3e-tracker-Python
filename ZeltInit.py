@@ -512,6 +512,7 @@ def begin_turn(attacker: Character):
     :return:
     """
     attacker.has_gone = True
+    attacker.delayed = False
     # attacker.onslaught = 0
     # if attacker.crash_counter >= 3:
     #     attacker.crash_counter = 0
@@ -592,6 +593,7 @@ def handle_other_actions(character_index, cost, delay=False):
     character.initiative -= cost
 
     if delay:
+        character.delayed = True
         character.has_gone = False
     else:
         character.has_gone = True
@@ -653,7 +655,12 @@ def resume_combat():
 
 
 def skip_turn():
-    character = character_list[0]
+    character = None
+    for c in character_list:
+        if c.delayed:
+            continue
+        character = c
+        break
     character.has_gone = True
     if character.initiative > 0:
         if character.crash_state:

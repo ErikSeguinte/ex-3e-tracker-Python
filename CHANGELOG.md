@@ -13,6 +13,8 @@ that do 0 damage still give the attacker 1 initiative.
 - Combat can be saved to and loaded from an external file, either a text file or a
     binary save file
 - Auto save after every turn, round, or never.
+- Character at the top of the initiative can be skipped easily.
+- Skip allowed a delayed character to remain at the top of the initiative.
 ### Modified
 - Modification window: Shift target is now greyed out unless crashed.
 - File dialogs default to either directory of last loaded file or application path.
