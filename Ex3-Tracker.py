@@ -257,6 +257,12 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             progress.setMaximum(1)
         else:
             progress.setMaximum(row)
+        initial_progress = progress.value()
+        try:
+            if number_gone < initial_progress and Z.config['Settings'].getboolean('End of round alert'):
+                print('End of Round!')
+        except Exception as error:
+            QtWidgets.QErrorMessage(self.window2, "Error", error)
         progress.setMinimum(0)
         progress.setValue(number_gone)
 
@@ -276,6 +282,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.setup_model()
 
     def skip(self):
+        if len(Z.character_list) <= 1:
+            QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
+            return
         Z.skip_turn()
         self.setup_model()
 

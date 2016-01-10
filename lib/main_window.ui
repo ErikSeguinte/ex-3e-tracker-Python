@@ -157,6 +157,12 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionSave_Combat"/>
+    <addaction name="actionSave_to_Text_File"/>
+    <addaction name="separator"/>
+    <addaction name="actionLoad_Combat"/>
+    <addaction name="actionResume_Combat"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -165,12 +171,6 @@
     </property>
     <addaction name="actionLoad_Players"/>
     <addaction name="actionLoad_NPCs"/>
-    <addaction name="separator"/>
-    <addaction name="actionSave_Combat"/>
-    <addaction name="actionSave_to_Text_File"/>
-    <addaction name="separator"/>
-    <addaction name="actionLoad_Combat"/>
-    <addaction name="actionResume_Combat"/>
     <addaction name="separator"/>
     <addaction name="actionPreferences"/>
    </widget>
