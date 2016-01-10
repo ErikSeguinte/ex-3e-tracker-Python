@@ -602,6 +602,12 @@ def reset_combat():
     global character_list
     global player_names
     character_list[:] = [character for character in character_list if character.player == True]
+    for character in character_list:
+        character.has_gone = False
+        character.crash_state = False
+        character.shift_target = None
+        character.initiative = 0
+
 
 
 def save_combat_to_text(file_path=None):

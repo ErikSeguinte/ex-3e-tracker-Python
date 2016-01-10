@@ -23,7 +23,7 @@ that do 0 damage still give the attacker 1 initiative.
 - Characters will reset their crash status at the beginning of their 4th turn (when they reach the top of initiative),
     instead of when performing their first action after their 3rd turn.
 ### Fixed
-
+-   Resetting combat reset's player Character's initiative and crash status.'
 
 
 ## [0.1.1] - 2016-01-02
