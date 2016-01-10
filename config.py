@@ -33,7 +33,7 @@ class TrackerConfig:
         # 'Every turn', 'Every Round', 'Off'
         self.config.set("Settings", "Auto-save","Every turn")
 
-        auto_save = os.path.join(self.application_path, '__resume.txt')
+        auto_save = os.path.join(self.application_path, '__autosave.sav')
         rel_path = os.path.relpath(auto_save)
         print(rel_path)
         print('config save', auto_save)

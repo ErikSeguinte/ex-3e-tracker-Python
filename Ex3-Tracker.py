@@ -627,7 +627,7 @@ elif __file__:
 config_path = os.path.join(application_path, config_name)
 
 TrackerConfig(application_path)
-Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__resume.sav'))
+Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
 app = QtWidgets.QApplication(sys.argv)
 # Z.set_up_test()
