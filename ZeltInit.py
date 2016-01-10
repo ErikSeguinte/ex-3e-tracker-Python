@@ -100,7 +100,9 @@ class Character:
             jb_pool=0,
             shift_target=None,
             recently_crashed=False,
-            onslaught=0
+            onslaught=0,
+            player=False,
+            delayed=False
     ):
         self.name = name
         self.initiative = initiative
@@ -113,6 +115,8 @@ class Character:
         self.shift_target = shift_target  # Character who crashed this character, for init shift.
         self.recently_crashed = recently_crashed
         self.onslaught = onslaught
+        self.player = player
+        self.delayed = delayed
 
     def set_name(self):
         self.name = input("Name: ")
@@ -147,6 +151,8 @@ class Character:
         yield self.shift_target
         yield self.recently_crashed
         yield self.onslaught
+        yield self.player
+        yield self.delayed
 
         # def set_values(self, values):
         #     new_values = value_generator(values)
@@ -185,6 +191,7 @@ def add_players(f="Players.txt"):
         for a_line in player_file:
             name = a_line.rstrip()
             character = Character(name=name)
+            character.player = True
             character_list.append(character)
             player_names.append(name)
 
@@ -580,14 +587,15 @@ def handle_other_actions(character_index, cost, delay=False):
 def reset_combat():
     global character_list
     global player_names
-    character_list[:] = [character for character in character_list if character.name in player_names]
+    character_list[:] = [character for character in character_list if character.player == True]
 
 
 def save_combat_to_text(file_path=None):
     if not file_path:
         file_path = os.path.expanduser('~/Ex3-Tracker/initiative.txt')
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    to_save = ["Name\t\tInit\tinert\t\tcrash\t\tcounter\treturn\thasgone\t\tjb\t\tshift\t\trcrashed\tonslaught\n"]
+    to_save = [
+        "Name\t\tInit\tinert\t\tcrash\t\tcounter\treturn\thasgone\t\tjb\t\tshift\t\trcrashed\tonslt\tplayer\t\tdelay\n", ]
     for character in character_list:
         to_save.append(character.save())
 
@@ -634,20 +642,7 @@ def load_combat_from_text(file_path):
             if len(stats) < 11:
                 raise IOError('Invalid File')
 
-            stats.reverse()
-            character = Character(
-                    stats.pop().strip(),
-                    int(stats.pop().strip()),
-                    str_to_bool(stats.pop().strip()),
-                    str_to_bool(stats.pop().strip()),
-                    int(stats.pop().strip()),
-                    int(stats.pop().strip()),
-                    str_to_bool(stats.pop().strip()),
-                    int(stats.pop().strip()),
-                    stats.pop().strip(),
-                    str_to_bool(stats.pop().strip()),
-                    int(stats.pop().strip()),
-            )
+            character = Character(*text_reader(stats))
             character_list.append(character)
 
         for character in character_list:
@@ -656,6 +651,16 @@ def load_combat_from_text(file_path):
                 character.shift_target = None
             else:
                 character.shift_target = str_to_character(target_str)
+
+
+def text_reader(list):
+    for item in list:
+        try:
+            item = int(item)
+        except:
+            if item == "True" or item == "False":
+                item = str_to_bool(item)
+        yield item
 
 
 def str_to_character(target_str):
@@ -676,7 +681,5 @@ if __name__ == '__main__':
     # main()
     # set_up_test()
     # auto_save()
-    print(character_list)
-    load_combat(auto_save_path)
-    print(character_list)
-    print(character_list[0].shift_target)
+    set_up_test()
+    print(character_list[0].__dict__)

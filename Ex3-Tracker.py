@@ -93,6 +93,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
                 # except Z.pickle.PickleError:
                 #     QtWidgets.QMessageBox.warning(self.window2, "Message", "Unable to create save file")
                 #     # QtWidgets.QFileDialog.getSaveFileName()
+            except Exception as error:
+                print(error)
 
     def load_npcs(self):
         fname = QtWidgets.QFileDialog.getOpenFileName(None, 'Open file', self.save_path, "Text file (*.txt)")
