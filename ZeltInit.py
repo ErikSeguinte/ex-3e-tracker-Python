@@ -56,7 +56,6 @@ config = None
 auto_save_path = os.path.relpath(os.path.join(os.path.dirname(__file__), '__resume.sav'))
 
 
-
 def debug_print(string):
     """ Prints string. Used in debugging so it can be found easier later.
 
@@ -270,6 +269,7 @@ def sort_table():
     global character_list
     character_list = sorted(character_list, key=lambda character: character.initiative, reverse=True)
     character_list = sorted(character_list, key=lambda character: character.has_gone)
+    setup_preturn()
 
 
 def add_npc(name, inert, join_battle, initiative):
@@ -512,11 +512,25 @@ def begin_turn(attacker: Character):
     :return:
     """
     attacker.has_gone = True
-    attacker.onslaught = 0
-    if attacker.crash_counter >= 3:
-        attacker.crash_counter = 0
-        attacker.crash_state = False
-        attacker.initiative = 3
+    # attacker.onslaught = 0
+    # if attacker.crash_counter >= 3:
+    #     attacker.crash_counter = 0
+    #     attacker.crash_state = False
+    #     attacker.initiative = 3
+
+
+def setup_preturn():
+    global character_list
+    for character in character_list:
+        if character.delayed:
+            continue
+        character.onslaught = 0
+        if character.crash_counter >= 3:
+            character.crash_counter = 0
+            character.crash_state = False
+            character.initiative = 3
+            character.shift_target = None
+        break
 
 
 def remove_character(char_index):
@@ -630,6 +644,29 @@ def resume_combat():
         if os.path.exists(resume_path):
             auto_save_path = resume_path
     load_combat(os.path.normpath(auto_save_path))
+
+
+def skip_turn():
+    character = character_list[0]
+    character.has_gone = True
+    if character.initiative > 0:
+        if character.crash_state:
+            character.recently_crashed = True
+        character.crash_state = False
+        character.crash_counter = 0
+        character.shift_target = None
+    else:
+        character.crash_state = True
+        character.recently_crashed = False
+
+    if character.crash_state:
+        character.crash_counter += 1
+
+    end_turn()
+
+    if check_for_end_of_round():
+        reset_has_gone()
+
 
 
 def load_combat_from_text(file_path):

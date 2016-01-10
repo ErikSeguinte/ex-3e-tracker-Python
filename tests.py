@@ -214,10 +214,25 @@ class MyTest(unittest.TestCase):
         self.assertEqual(a.initiative, n_att_init)
         self.assertTrue(a.crash_state)
         self.assertEqual(a.crash_counter, counter)
+
+        #  Get arnold back to the top of the initiative
+        Z.skip_turn()
+        Z.sort_table()
+        Z.skip_turn()
+        Z.sort_table()
+        Z.skip_turn()
+        Z.sort_table()
+        Z.skip_turn()
+        Z.sort_table()
+
+
         combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
         a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
         Z.handle_withering(combatants, damage)
-        Z.sort_table()
+
+        Z.print_table()
+
+
         self.assertEqual(a.initiative, n_att_init)
         self.assertFalse(a.crash_state)
         self.assertEqual(a.crash_counter, counter)
@@ -253,7 +268,7 @@ class MyTest(unittest.TestCase):
             ((4, 0), 0, -6, 1, True, 2),
             ((4, 0), 0, -5, 1, True, 3),
             ((4, 0), 0, -5, 1, True, 3),
-            ((4, 0), 1, 5, 17, True, 0),
+            ((0, 1), 1, 5, 20, True, 0),
         )
 
         for value in values:

@@ -125,6 +125,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.other_action_btn.clicked.connect(self.other_action_window)
         self.remove_from_combat_btn.clicked.connect(self.remove_character)
         self.reset_btn.clicked.connect(self.reset)
+        self.skip_btn.clicked.connect(self.skip)
 
     def modify_character(self):
         if len(Z.character_list) == 0:
@@ -273,6 +274,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
             Z.character_list.remove(character)
             self.setup_model()
+
+    def skip(self):
+        Z.skip_turn()
+        self.setup_model()
 
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
