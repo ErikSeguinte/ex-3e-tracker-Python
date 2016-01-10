@@ -53,8 +53,8 @@ for action in OTHER_ACTIONS:
     action_dict[name] = cost
 
 config = None
-# auto_save_path = os.path.join(os.path.dirname(__file__), '__resume.txt')
-auto_save_path = ''
+auto_save_path = os.path.relpath(os.path.join(os.path.dirname(__file__), '__resume.sav'))
+
 
 
 def debug_print(string):
