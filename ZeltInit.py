@@ -533,6 +533,11 @@ def reset_combat():
     global character_list
     global player_names
     character_list[:] = [character for character in character_list if character.name in player_names]
+    for character in character_list:
+        character.has_gone = False
+        character.crash_state = False
+        character.shift_target = None
+        character.initiative = 0
 
 
 if __name__ == '__main__':

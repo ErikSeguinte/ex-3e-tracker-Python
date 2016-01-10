@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Added Radio button for successful or failed withering attacks. Successful withering attacks
 that do 0 damage still give the attacker 1 initiative.
 
+### Fixed
+-   Resetting combat reset's player Character's initiative and crash status.'
+
 
 ## [0.1.1] - 2016-01-02
 ### Added
