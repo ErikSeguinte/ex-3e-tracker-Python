@@ -42,8 +42,6 @@ class MyTest(unittest.TestCase):
         # (tricks, att_trick, def_trick))
         i = 1
 
-
-
         known_values = (
             (1, 4, -1, False, True, True, (False, 0, 0)),
             (5, 5, -9, False, True, True, (False, 0, 0)),
@@ -68,15 +66,13 @@ class MyTest(unittest.TestCase):
 
             Z.handle_withering(combatants, damage, tricks)
 
-
-
             a.shift_target = None
             d.shift_target = None
 
             self.assertEqual(a.initiative, n_attacker_init,
                              "loop " + str(
                                      i) + " " + a.name + " attacking " + d.name + ". Initiative is " + str(
-                                 a.initiative) + " but should be " + str(n_attacker_init))
+                                     a.initiative) + " but should be " + str(n_attacker_init))
             self.assertEqual(a.crash_state, a_crash,
                              str(a) + "'s a_crash status is not correct.")
 
@@ -88,7 +84,6 @@ class MyTest(unittest.TestCase):
             # Trick Assertions
             i += 1
             Z.sort_table()
-
 
     def test_initiative_shift(self):
         print("Testing for Shift")
@@ -122,14 +117,14 @@ class MyTest(unittest.TestCase):
             a, d = Z.character_list[attacker], Z.character_list[defender]
 
             print("")
-            Z.print_table()
+
             print("")
 
             Z.handle_withering(combatants, damage, trick)
             print(attacker, "attacks", defender)
 
             print("")
-            Z.print_table()
+
             print("")
 
             self.assertEqual(d.initiative, n_def_init)
@@ -225,13 +220,9 @@ class MyTest(unittest.TestCase):
         Z.skip_turn()
         Z.sort_table()
 
-
         combatants, damage, n_att_init, n_def_init, crash_status, counter = next(known_values)
         a, d = Z.character_list[combatants[0]], Z.character_list[combatants[1]]
         Z.handle_withering(combatants, damage)
-
-        Z.print_table()
-
 
         self.assertEqual(a.initiative, n_att_init)
         self.assertFalse(a.crash_state)
@@ -322,7 +313,6 @@ class MyTest(unittest.TestCase):
         Z.add_npc("Carol", False, 0, initiative=6)
         Z.add_npc("Danny", False, 0, initiative=4)
         Z.sort_table()
-        Z.print_table()
 
         values = (
             (0, 3, -1),  # (Attacker, Defender, new Onslaught
@@ -343,7 +333,6 @@ class MyTest(unittest.TestCase):
             self.assertEqual(a.onslaught, 0)
             Z.sort_table()
             print("")
-            Z.print_table()
 
         Z.character_list = []
         Z.add_npc("Amber", False, 0, initiative=10)
@@ -361,7 +350,7 @@ class MyTest(unittest.TestCase):
             self.assertEqual(a.onslaught, 0)
             Z.sort_table()
             print("")
-            Z.print_table()
+
         Z.character_list = []
         Z.add_npc("Amber", False, 0, initiative=10)
         Z.add_npc("Billy", False, 0, initiative=8)
@@ -378,7 +367,44 @@ class MyTest(unittest.TestCase):
             self.assertEqual(a.onslaught, 0)
             Z.sort_table()
             print("")
-            Z.print_table()
+
+    def test_legendary_size(self):
+        Z.reset_combat()
+        jack = Z.Character(name='Jack', initiative=3)
+        Z.character_list.append(jack)
+        giant = Z.Character(name='Giant', initiative=10, legendary_size=True)
+        Z.character_list.append(giant)
+        Z.sort_table()
+        # Z.print_table(True)
+
+        known_values = (
+            (5, 9, 5, False),
+            (7, 17, 1, False),
+        )
+        values = iter(known_values)
+
+        damage, j_init, g_init, crash = next(values)
+
+        Z.skip_turn()
+        Z.sort_table()
+        Z.handle_withering((0, 1), damage)
+        Z.sort_table()
+
+        # Z.print_table(True)
+        self.assertEqual(giant.initiative, g_init)
+        self.assertEqual(jack.initiative, j_init)
+        self.assertEqual(giant.crash_state, crash)
+
+        damage, j_init, g_init, crash = next(values)
+        Z.skip_turn()
+        Z.sort_table()
+        Z.handle_withering((0, 1), damage)
+        Z.sort_table()
+
+        Z.print_table(True)
+        self.assertEqual(giant.initiative, g_init)
+        self.assertEqual(jack.initiative, j_init)
+        self.assertEqual(giant.crash_state, crash)
 
 
 if __name__ == '__main__':

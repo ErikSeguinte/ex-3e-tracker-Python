@@ -101,7 +101,8 @@ class Character:
             recently_crashed=False,
             onslaught=0,
             player=False,
-            delayed=False
+            delayed=False,
+            legendary_size: bool = False,
     ):
         self.name = name
         self.initiative = initiative
@@ -116,6 +117,7 @@ class Character:
         self.onslaught = onslaught
         self.player = player
         self.delayed = delayed
+        self.legendary_size = legendary_size
 
     def set_name(self):
         self.name = input("Name: ")
@@ -242,11 +244,14 @@ def end_turn():
         auto_save()
 
 
-def print_table():
+def print_table(blank_space=False):
     """Prints characters and initiative status, in order."""
     global character_list
 
     n = 0
+
+    if blank_space:
+        print("")
     fmt = "({id:>3}){name:>15} | {init:^5} | {crash:^5} | {gone:^5}"
     print(fmt.format(
             name="Name",
@@ -263,6 +268,8 @@ def print_table():
                 id=str(n),
                 gone=char.has_gone))
         n += 1
+    if blank_space:
+        print("")
 
 
 def sort_table():
@@ -611,7 +618,6 @@ def reset_combat():
         character.initiative = 0
 
 
-
 def save_combat_to_text(file_path=None):
     if not file_path:
         file_path = os.path.expanduser('~/Ex3-Tracker/initiative.txt')
@@ -679,7 +685,6 @@ def skip_turn():
 
     if check_for_end_of_round():
         reset_has_gone()
-
 
 
 def load_combat_from_text(file_path):
