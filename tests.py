@@ -381,7 +381,8 @@ class MyTest(unittest.TestCase):
             (5, 9, 5, False),
             (7, 17, 1, False),
             (10, 33, -9, True),
-            (1, 35, -9, True)
+            (1, 35, -9, True),
+            (10, 46, -19, True)
         )
 
         for damage, j_init, g_init, crash in known_values:

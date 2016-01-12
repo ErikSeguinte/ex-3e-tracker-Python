@@ -15,6 +15,7 @@ that do 0 damage still give the attacker 1 initiative.
 - Auto save after every turn, round, or never.
 - Character at the top of the initiative can be skipped easily.
 - Skip allowed a delayed character to remain at the top of the initiative.
+- implemented logic to handle creatures of legendary size.
 ### Modified
 - Modification window: Shift target is now greyed out unless crashed.
 - File dialogs default to either directory of last loaded file or application path.

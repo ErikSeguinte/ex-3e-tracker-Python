@@ -361,7 +361,6 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
                 if defender.legendary_size:
                     original_init = defender.initiative
                     new_initiative = defender.initiative - damage
-                    crossing_0 = (original_init > 0 >= new_initiative)
                     if new_initiative > 0 or damage >= 10:
                         defender.initiative -= damage
                     else:
