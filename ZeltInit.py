@@ -300,7 +300,7 @@ def add_new_character():
     return new_character
 
 
-def check_for_crash(defender, init_damage):
+def check_for_crash(defender: int, init_damage):
     """Checks if this attack would cause defender to crash
 
     :param init_damage:     Damage taken in this attack
@@ -311,6 +311,12 @@ def check_for_crash(defender, init_damage):
     init = character_list[defender].initiative
     new_init = init - init_damage
     if init > 0 >= new_init:
+        if character_list[defender].legendary_size:
+            if init_damage >= 10:
+                return True
+            else:
+                return False
+
         # Crash!
         return True
     else:
@@ -333,6 +339,9 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
     if success:
         if not defender.inert_initiative:
 
+            if defender.legendary_size and check_for_crash(defender_index, damage):
+                pass
+
             if damage != 0:
                 shifting = False
                 if check_for_crash(defender_index, damage):
@@ -349,9 +358,21 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
                     if attacker.initiative < 3:
                         attacker.initiative = 3
                     attacker.initiative += dice_roller(attacker.join_battle_pool)
+                if defender.legendary_size:
+                    original_init = defender.initiative
+                    new_initiative = defender.initiative - damage
+                    crossing_0 = (original_init > 0 >= new_initiative)
+                    if new_initiative > 0 or damage >= 10:
+                        defender.initiative -= damage
+                    else:
+                        if original_init > 1:
+                            defender.initiative = 1
 
-                defender.initiative -= damage
 
+                else:
+                    defender.initiative -= damage
+
+            # Attacker gains 1 init regardless of damage
             attacker.initiative += 1
 
 
