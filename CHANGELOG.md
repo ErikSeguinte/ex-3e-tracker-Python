@@ -14,14 +14,14 @@ that do 0 damage still give the attacker 1 initiative.
     binary save file
 - Auto save after every turn, round, or never.
 - Character at the top of the initiative can be skipped easily.
-- Skip allowed a delayed character to remain at the top of the initiative.
+- Skip allowes a delayed character to remain at the top of the initiative.
 - implemented logic to handle creatures of legendary size.
 ### Modified
 - Modification window: Shift target is now greyed out unless crashed.
 - File dialogs default to either directory of last loaded file or application path.
 - Character's onslaught Penalty is now reset once they reach the top of the initiative, instead of when
     they perform an action
-- Character's Crash counter is incremented once they reach the top of the initative, instead
+- Character's Crash counter is incremented once they reach the top of the initiative, instead
     of when they perform an action.
 - Characters will reset their crash status at the beginning of their 4th turn (when they reach the top of initiative),
     instead of when performing their first action after their 3rd turn.
