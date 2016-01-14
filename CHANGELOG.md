@@ -14,6 +14,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Character at the top of the initiative can be skipped easily.
 - Skip allowed a delayed character to remain at the top of the initiative.
 - implemented logic to handle creatures of legendary size.
+  - Cannot crash unless post-soak damage > 10.
+  - Do not gain onslaught.
+  - Mutually exclusive with inert initative.
 - option to erase all characters, including players. Found in preferences.
 - Preferences Window
 
@@ -24,6 +27,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   	they perform an action
 - Character's Crash counter is incremented once they reach the top of the initiative, instead of when they perform an action.
 - Characters will reset their crash status at the beginning of their 4th turn (when they reach the top of 	initiative), instead of when performing their first action after their 3rd turn.
+- (internal) modification window uses character.__dict__ instead of calling the variables individually. Only returns changed values to update the original dict.
 ### Fixed
 -   Resetting combat reset's player Character's initiative and crash status.
 
