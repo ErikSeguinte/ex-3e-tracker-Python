@@ -603,7 +603,13 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         else:
             new['shift_target'] = None
 
-        return new
+        changed = {}
+        if self.old != new:
+            for k in self.old.keys():
+                if self.old[k] != new[k]:
+                    changed[k] = new[k]
+        print(str(changed))
+        return changed
 
 
 class AboutWindow(QtWidgets.QDialog, About_gui.Ui_Dialog):
