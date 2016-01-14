@@ -240,7 +240,7 @@ def add_npcs(f="Players.txt"):
 
 def end_turn():
     try:
-        if config['Settings']['Auto-save'] == 'Every turn':
+        if config['Settings']['Auto-save'] == 'Every Turn':
             auto_save()
     except TypeError:
         # save_combat(os.path.join(os.path.dirname(__file__), '__resume.txt'))

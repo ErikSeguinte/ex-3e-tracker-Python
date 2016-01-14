@@ -531,10 +531,8 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         self.old = self.c.get_values()
         self.setup_old_values()
 
-
     def setup_old_values(self):
         old = (self.old)
-        print(type(old))
 
         print(old)
         # old_values = self.c.get_values()
@@ -542,6 +540,7 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         self.Initiative_box.setValue(old['initiative'])
 
         self.inertcheckBox.setChecked(old['inert_initiative'])
+        self.legendary_size_checkBox.setEnabled(not self.inertcheckBox.isChecked())
         self.crashed_check.setChecked(old['crash_state'])
         self.crash_counter_box.setValue(old['crash_counter'])
         self.crash_return_box.setValue(old['crash_return_counter'])
@@ -549,7 +548,7 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         self.join_battle_box.setValue(old['join_battle_pool'])
         # shift_target = old['shift_target']
         self.comboBox.setEnabled(self.crashed_check.isChecked())
-        if self.crashed_check.isChecked():
+        if self.crashed_check.isChecked() and old['shift_target']:
             shift_index = Z.character_list.index(old['shift_target'])
             self.comboBox.setCurrentIndex(shift_index)
         self.crashed_recentlycheck.setChecked(old['recently_crashed'])
@@ -559,6 +558,12 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         self.legendary_size_checkBox.setChecked(old['legendary_size'])
 
         self.crashed_check.clicked.connect(self.disable_shift)
+        self.inertcheckBox.clicked.connect(self.disable_legendary)
+
+    def disable_legendary(self):
+        print("Click")
+        print(str(not self.inertcheckBox.isChecked()))
+        self.legendary_size_checkBox.setEnabled(not self.inertcheckBox.isChecked())
 
     def disable_shift(self):
         self.comboBox.setEnabled(self.crashed_check.isChecked())
@@ -567,65 +572,38 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         super().exec()
 
         if self.result():
-            self.get_values()
+            new = self.get_values()
+            self.c.__dict__.update(new)
             return True
         else:
             return None
 
     def get_values(self):
-        name = self.name_edit.text()
-        init = self.Initiative_box.value()
-        crash_counter = self.crash_counter_box.value()
-        crash_return = self.crash_return_box.value()
-        join_battle_pool = self.join_battle_box.value()
+        new = {}
 
-        crashed = self.crashed_check.isChecked()
-        has_gone = self.has_gone_check.isChecked()
-        crashed_recently = self.crashed_recentlycheck.isChecked()
-        inert_initiative = self.inertcheckBox.isChecked()
-        onslaught = self.onslaught_spinbox.value()
+        new['name'] = self.name_edit.text()
+        new['initiative'] = self.Initiative_box.value()
+        new['crash_counter'] = self.crash_counter_box.value()
+        new['crash_return_counter'] = self.crash_return_box.value()
+        new['join_battle_pool'] = self.join_battle_box.value()
 
-        if crashed:
-            shift_target = self.comboBox.currentIndex()
+        new['crash_state'] = self.crashed_check.isChecked()
+        new['has_gone'] = self.has_gone_check.isChecked()
+        new['recently_crashed'] = self.crashed_recentlycheck.isChecked()
+        new['inert_initiative'] = self.inertcheckBox.isChecked()
+        new['onslaught'] = self.onslaught_spinbox.value()
+
+        new['legendary_size'] = self.legendary_size_checkBox.isChecked()
+        new['delayed'] = self.delayed_checkBox.isChecked()
+        new['player'] = self.player_checkBox.isChecked()
+
+        if new['crash_state']:
+            shift_target = Z.character_list[self.comboBox.currentIndex()]
+            new['shift_target'] = shift_target
         else:
-            shift_target = None
+            new['shift_target'] = None
 
-        old_values = self.c.get_values()
-        kwargs = {}
-        # yield self.name
-        # yield self.initiative
-        # yield self.inert_initiative
-        # yield self.crash_state
-        # yield self.crash_counter
-        # yield self.crash_return_counter
-        # yield self.has_gone
-        # yield self.join_battle_pool
-        # yield self.shift_target
-        # yield self.recently_crashed
-        if name != next(old_values):
-            self.c.name = name
-        if init != next(old_values):
-            self.c.initiative = init
-        if inert_initiative != next(old_values):
-            self.c.inert_initiative = inert_initiative
-        if crashed != next(old_values):
-            self.c.crash_state = crashed
-        if crash_counter != next(old_values):
-            self.c.crash_counter = crash_counter
-        if crash_return != next(old_values):
-            self.c.crash_return_counter = crash_return
-        if has_gone != next(old_values):
-            self.c.has_gone = has_gone
-        if join_battle_pool != next(old_values):
-            self.c.join_battle_pool = join_battle_pool
-        if shift_target != next(old_values):
-            self.c.shift_target = shift_target
-        if crashed_recently != next(old_values):
-            self.c.recently_crashed = crashed_recently
-        if onslaught != next(old_values):
-            self.c.onslaught = onslaught
-
-        return
+        return new
 
 
 class AboutWindow(QtWidgets.QDialog, About_gui.Ui_Dialog):
