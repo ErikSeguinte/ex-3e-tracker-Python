@@ -76,7 +76,7 @@
       <item>
        <widget class="QPushButton" name="add_npc_btn">
         <property name="text">
-         <string>&amp;Add NPCs</string>
+         <string>&amp;Add Character</string>
         </property>
        </widget>
       </item>

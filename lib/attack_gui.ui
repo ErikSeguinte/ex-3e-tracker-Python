@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>304</width>
-    <height>263</height>
+    <width>336</width>
+    <height>286</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -110,13 +110,23 @@
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_6">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
          <property name="text">
           <string>Rout Checks</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QSpinBox" name="spinBox"/>
+        <widget class="QSpinBox" name="rout_spinBox"/>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QCheckBox" name="post_soak_damage_exceeds_10_checkBox">
+         <property name="text">
+          <string>Post Soak damage exceeds 10</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -147,14 +157,14 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QRadioButton" name="success_radioButton">
           <property name="text">
            <string>Successful</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_2">
+         <widget class="QRadioButton" name="failed_radioButton">
           <property name="text">
            <string>Failed</string>
           </property>
@@ -186,7 +196,7 @@
   <tabstop>attacker_combo</tabstop>
   <tabstop>a_spinBox</tabstop>
   <tabstop>d_spinbox</tabstop>
-  <tabstop>spinBox</tabstop>
+  <tabstop>rout_spinBox</tabstop>
  </tabstops>
  <resources/>
  <connections>

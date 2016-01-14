@@ -127,7 +127,7 @@ class Ui_MainWindow(object):
         self.Withering_btn.setText(_translate("MainWindow", "&Withering Attack"))
         self.Decisive_btn.setText(_translate("MainWindow", "&Decisive && Gambits"))
         self.other_action_btn.setText(_translate("MainWindow", "&Other Actions"))
-        self.add_npc_btn.setText(_translate("MainWindow", "&Add NPCs"))
+        self.add_npc_btn.setText(_translate("MainWindow", "&Add Character"))
         self.join_battle_btn.setText(_translate("MainWindow", "&Join Battle!"))
         self.modify_init_btn.setText(_translate("MainWindow", "&Modify Character"))
         self.remove_from_combat_btn.setText(_translate("MainWindow", "&Remove from Combat"))

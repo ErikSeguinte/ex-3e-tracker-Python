@@ -282,13 +282,9 @@ def sort_table():
     setup_preturn()
 
 
-def add_npc(name, inert, join_battle, initiative):
+def add_npc(**kwargs):
     global character_list
-    new_character = Character()
-    new_character.name = name
-    new_character.join_battle_pool = join_battle
-    new_character.inert_initiative = inert
-    new_character.initiative = initiative
+    new_character = Character(kwargs)
     character_list.append(new_character)
 
 
@@ -326,13 +322,11 @@ def check_for_crash(defender: int, init_damage):
         return False
 
 
-def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=True):
+def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=True, damage_exceeds_10=False):
     global character_list
     attacker_index, defender_index = combatants
     attacker, defender = character_list[attacker_index], character_list[defender_index]
 
-    # if __name__ == '__main__':
-    # debug_print(str(combata/nts, damage, trick))
 
     # Reset Crash Counter at the beginning of the 4th turn if survives
     begin_turn(attacker)
@@ -341,9 +335,6 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
 
     if success:
         if not defender.inert_initiative:
-
-            if defender.legendary_size and check_for_crash(defender_index, damage):
-                pass
 
             if damage != 0:
                 shifting = False
@@ -364,7 +355,7 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
                 if defender.legendary_size:
                     original_init = defender.initiative
                     new_initiative = defender.initiative - damage
-                    if new_initiative > 0 or damage >= 10:
+                    if new_initiative > 0 or damage_exceeds_10:
                         defender.initiative -= damage
                     else:
                         if original_init > 1:
@@ -376,7 +367,6 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
 
             # Attacker gains 1 init regardless of damage
             attacker.initiative += 1
-
 
         else:
             bonus = (rout * 5) + 1
