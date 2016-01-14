@@ -282,13 +282,9 @@ def sort_table():
     setup_preturn()
 
 
-def add_npc(name, inert, join_battle, initiative):
+def add_npc(kwargs):
     global character_list
-    new_character = Character()
-    new_character.name = name
-    new_character.join_battle_pool = join_battle
-    new_character.inert_initiative = inert
-    new_character.initiative = initiative
+    new_character = Character(**kwargs)
     character_list.append(new_character)
 
 

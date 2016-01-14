@@ -208,7 +208,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         values = AddCharacterWindow(self.model).exec()
 
         if values:
-            Z.add_npc(*values)
+            Z.add_npc(values)
             Z.sort_table()
             self.setup_model()
 
@@ -494,11 +494,13 @@ class AddCharacterWindow(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
             return None
 
     def get_values(self):
-        name = self.name_edit.text()
-        inert_init = self.checkBox.isChecked()
-        join_battle = self.Join_battle_box.value()
-        initiative = self.current_init_spinbox.value()
-        values = name, inert_init, join_battle, initiative
+        values = {}
+        values['name'] = self.name_edit.text()
+        values['inert'] = self.checkBox.isChecked()
+        values['jb_pool'] = self.Join_battle_box.value()
+        values['initiative'] = self.current_init_spinbox.value()
+        values['player'] = self.player_checkBox.isChecked()
+        values['legendary_size'] = self.legendary_size_checkBox.isChecked()
         return values
 
 
