@@ -392,7 +392,8 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
         attacker.crash_state = True
         attacker.recently_crashed = False
 
-    defender.onslaught -= 1
+    if not defender.legendary_size:
+        defender.onslaught -= 1
 
     if attacker.crash_state:
         attacker.crash_counter += 1
@@ -499,7 +500,8 @@ def handle_decisive(combatants, success, trick=(False, 0, 0), rout=0):
         else:
             a.initiative -= 3
 
-    d.onslaught -= 1
+    if not d.legendary_size:
+        d.onslaught -= 1
     a.has_gone = True
     end_turn()
 
@@ -531,7 +533,8 @@ def handle_gambits(combatants, success: bool, gambit: str, trick=(False, 0, 0), 
         else:
             attacker.initiative -= 3
 
-    defender.onslaught -= 1
+    if not defender.legendary_size:
+        defender.onslaught -= 1
     end_turn()
 
 
