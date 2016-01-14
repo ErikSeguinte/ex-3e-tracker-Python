@@ -307,11 +307,13 @@ class MyTest(unittest.TestCase):
             self.assertNotIn(character, Z.character_list)
 
     def test_onslaught_penalty(self):
+
+        #  Testing Withering Attacks
         Z.character_list = []
-        Z.add_npc("Amber", False, 0, initiative=10)
-        Z.add_npc("Billy", False, 0, initiative=8)
-        Z.add_npc("Carol", False, 0, initiative=6)
-        Z.add_npc("Danny", False, 0, initiative=4)
+        Z.add_npc(name="Amber", initiative=10)
+        Z.add_npc(name="Billy", initiative=8)
+        Z.add_npc(name="Carol", initiative=6)
+        Z.add_npc(name="Danny", initiative=4)
         Z.sort_table()
 
         values = (
@@ -334,11 +336,12 @@ class MyTest(unittest.TestCase):
             Z.sort_table()
             print("")
 
+        # Testing decisive attacks
         Z.character_list = []
-        Z.add_npc("Amber", False, 0, initiative=10)
-        Z.add_npc("Billy", False, 0, initiative=8)
-        Z.add_npc("Carol", False, 0, initiative=6)
-        Z.add_npc("Danny", False, 0, initiative=4)
+        Z.add_npc(name="Amber", initiative=10)
+        Z.add_npc(name="Billy", initiative=8)
+        Z.add_npc(name="Carol", initiative=6)
+        Z.add_npc(name="Danny", initiative=4)
         Z.sort_table()
         for attacker, defender, onslaught in values:
             # print
@@ -351,11 +354,12 @@ class MyTest(unittest.TestCase):
             Z.sort_table()
             print("")
 
+        # Testing Gambits
         Z.character_list = []
-        Z.add_npc("Amber", False, 0, initiative=10)
-        Z.add_npc("Billy", False, 0, initiative=8)
-        Z.add_npc("Carol", False, 0, initiative=6)
-        Z.add_npc("Danny", False, 0, initiative=4)
+        Z.add_npc(name="Amber", initiative=10)
+        Z.add_npc(name="Billy", initiative=8)
+        Z.add_npc(name="Carol", initiative=6)
+        Z.add_npc(name="Danny", initiative=4)
         Z.sort_table()
         for attacker, defender, onslaught in values:
             # print
@@ -389,8 +393,12 @@ class MyTest(unittest.TestCase):
             if Z.character_list[0] != jack:
                 Z.skip_turn()
                 Z.sort_table()
+            if damage >= 10:
+                damage_exceeds_10 = True
+            else:
+                damage_exceeds_10 = False
             Z.print_table(True)
-            Z.handle_withering((0, 1), damage)
+            Z.handle_withering((0, 1), damage, damage_exceeds_10=damage_exceeds_10)
             Z.print_table(True)
             self.assertEqual(giant.initiative, g_init, "loop " + str(i))
             self.assertEqual(jack.initiative, j_init, "loop " + str(i))

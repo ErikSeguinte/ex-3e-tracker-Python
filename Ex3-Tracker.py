@@ -184,7 +184,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         values = AttackWindow(self.model).exec()
 
         if values:
-            Z.handle_withering(*values)
+            Z.handle_withering(**values)
             Z.sort_table()
             self.setup_model()
 
@@ -359,13 +359,27 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         self.defender_box.setModel(self.model)
         self.defender_box.setCurrentIndex(1)
         self.defender_idx = 1
-        self.radioButton.setChecked(True)
-        self.defender_box.currentIndexChanged.connect(self.set_onslaught)
+        self.success_radioButton.setChecked(True)
+        self.defender_box.currentIndexChanged.connect(self.defender_changed)
         self.defender = Z.character_list[self.defender_idx]
         self.onslaught_lbl.setText(str(self.defender.onslaught))
+        self.special_rules()
+
+    def defender_changed(self):
+        self.set_onslaught()
+        self.special_rules()
+
+    def special_rules(self):
+        #  Disable rout check if defender not inert.
+        self.rout_spinBox.setEnabled(self.defender.inert_initiative)
+        self.label_6.setEnabled(self.defender.inert_initiative)
+
+        # disable post soak checkbox unless defender is legendary
+        self.post_soak_damage_exceeds_10_checkBox.setEnabled(self.defender.legendary_size)
 
     def set_onslaught(self):
         self.defender_idx = self.defender_box.currentIndex()
+
         self.defender = Z.character_list[self.defender_idx]
         self.onslaught_lbl.setText(str(self.defender.onslaught))
 
@@ -384,8 +398,11 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
         attacker_trick = self.a_spinBox.value()
         defender_trick = self.d_spinbox.value()
         damage = self.damage_spinbox.value()
-        rout = self.spinBox.value()
-        success = self.radioButton.isChecked()
+        rout = self.rout_spinBox.value()
+        success = self.success_radioButton.isChecked()
+        damage_exceeds_10 = self.post_soak_damage_exceeds_10_checkBox.isChecked()
+
+        combatants = (attacker, defender)
 
         if attacker_trick != 0 or defender_trick != 0:
             tricks = True
@@ -394,7 +411,10 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
 
         trick = (tricks, attacker_trick, defender_trick)
 
-        values = (attacker, defender), damage, trick, rout, success
+        values = {'combatants':        combatants, 'damage': damage, 'trick': trick, 'rout': rout,
+                  'damage_exceeds_10': damage_exceeds_10}
+
+        # values = (attacker, defender), damage, trick, rout, success
         return values
 
 
@@ -541,7 +561,6 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
     def setup_old_values(self):
         old = (self.old)
 
-        print(old)
         self.name_edit.setText(old['name'])
         self.Initiative_box.setValue(old['initiative'])
 
