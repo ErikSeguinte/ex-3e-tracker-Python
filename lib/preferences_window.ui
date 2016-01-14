@@ -37,7 +37,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Never</string>
+         <string>Off</string>
         </property>
        </item>
       </widget>

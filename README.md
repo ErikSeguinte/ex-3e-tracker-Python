@@ -10,23 +10,23 @@ This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written 
     `todo: Option to have a new round popup message?`
 *   Automatically resets to base initiative if a character survives 3 turns in crash,
     at the beginning of their 4th turn.
-*   Cannot gain a Initiative Break Bonus if a character had returned from crash this
+*   Cannot gain a Initiative Break Bonus if the target had returned from crash this
     round or the one before it.
 *   Keeps track of who crashed whom for Shift purposes
 *   Initiative shift keeps a character at the top of the initiative.
-    `todo: Rolls join battle for NPCs. currently does not ask for JB from player, has to be added manually.'
+    `todo: Rolls join battle for NPCs. currently does not ask for JB from player, has to be added manually.`
 *   Characters that have gone this round will always be beneath those that have not,
     but are otherwise everyone is kept in initiative order.
 *   Delaying keeps a character at the top of the initiative.
     `todo: some sort of reminder to prevent a delaying character from wasting a round`
 *   Players and NPCs can be added from a text file.
 *   Can automatically roll Join Battle for NPCs, given a JB pool.
-*   Players persist through combat reset. todo: Option to reset them too.
+*   Players persist through combat reset by default. This can be changed in preferences.
 *   Successful gambits cost (difficulty + 1) Initiative to perform
 *   Successful Decisive Attacks reset initiative to 3.
 *   Failed Decisive/Gambits cost initiative depending on current initiative.
 *   Save and load combats, loading current initiative, order, etc
-*   Auto save of combats, configurable to every turn, every round, or never.
+*   Auto save of combats, configurable to every turn, every round, or never. Defaults to every turn.
 *   Resume auto-save without choosing a file.
 
 
@@ -49,6 +49,11 @@ want to roll for them. You can leave it blank or 0 if you decide that you would
 rather roll. Inert Initiative takes the values of `true` or `1` for true, and anything
  else as false. `todo: Add jb pool functionality to players.`
 
+Alternatively, you can fill the tracker with your NPCs and save the combat into a seperate file.
+You have the option of using a binary file, or a text file for these saves. Binary file has
+the advantage of letting you have duplicate names, but otherwise should be identical.
+Text saves have a slightly lower chance of breaking between versions.
+
 These files can be loaded from the Edit menu.
 
 Additional NPCs can be added using the "Add NPC" button. Here, you can dictate inert
@@ -61,7 +66,6 @@ to this number. It
 should just be the number of successes in their roll. I've found that my players forget
  to add the three more often then not, and I have to ask whether or not they'd
  included it, so decided to have the app do it instead. This can be modified in preferences.
- `todo: Option to include +3 on join battle or not`
 
 For withering attacks and decisive/gambits, you have the option to add initiative
 modifiers. If, for example, the defender is using Reed in the Wind to increase his
@@ -74,3 +78,8 @@ For attacks, mark success or failure.
 Modify Character allows you to manually edit a character's flags and initiative.
 
 Reset removes any characters not loaded through the `add Player` function.
+
+Skip flips the top character's has_gone flag to True, effectively skipping him.
+This option will ignore delaying characters. Note: This is for characters who choose
+to do nothing that interacts with initiative during their turn, not for delaying. Use
+'other action' for delaying a turn to go later in the same round.

@@ -6,11 +6,11 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 
 import ZeltInit as Z
 from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui, character_picker_ui, \
-    Modification_Window, other_action_gui, About_gui
+    Modification_Window, other_action_gui, About_gui, preferences_window
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
-    def __init__(self, application_path):
+    def __init__(self, path):
         super().__init__()
 
         self.setupUi(self)
@@ -22,8 +22,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
         self.setup_model()
         self.window2 = None
-        self.application_path = application_path
-        self.save_path = application_path
+        self.application_path = path
+        self.save_path = path
 
     def setup_menu_items(self):
         self.actionLoad_Players.triggered.connect(self.add_players_from_file)
@@ -34,6 +34,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionSave_Combat.triggered.connect(self.save_combat)
         self.actionResume_Combat.triggered.connect(self.resume_combat)
         self.actionSave_to_Text_File.triggered.connect(self.save_to_text)
+        self.actionPreferences.triggered.connect(self.preferences_window)
 
     def about_window(self):
         AboutWindow().exec()
@@ -287,6 +288,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             return
         Z.skip_turn()
         self.setup_model()
+
+    def preferences_window(self):
+        PreferencesWindow().exec()
 
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
@@ -625,6 +629,53 @@ class AboutWindow(QtWidgets.QDialog, About_gui.Ui_Dialog):
         super().exec()
 
 
+class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
+    def __init__(self, parent=None):
+        super().__init__()
+        self.setupUi(self)
+        self.config = Z.config['Settings']
+        try:
+            self.setup_values()
+        except Exception:
+            QtWidgets.QMessageBox.warning(self, "Message", "Unable to load config. Recreating with default settings")
+            current_config.recreate_config()
+            self.config = Z.config['Settings']
+            self.setup_values()
+
+    def exec(self):
+        super().exec()
+
+        if self.result():
+            self.set_config()
+
+    def setup_values(self):
+        self.set_auto_save()
+        self.jb_checkBox.setChecked(self.config.getboolean('Join Battle automatically adds 3'))
+        self.reset_checkBox.setChecked(self.config.getboolean('Reset includes players'))
+
+    def set_auto_save(self):
+        setting = self.config['Auto-save']
+        selections = {'Every Turn': 0, 'Every Round': 1, 'Off': 2}
+        self.auto_save_comboBox.setCurrentIndex(selections[setting])
+
+    def get_auto_save(self):
+        selections = {'0': 'Every Turn', '1': 'Every Round', '2': 'Off'}
+        index = str(self.auto_save_comboBox.currentIndex())
+        return selections[index]
+
+    def set_config(self):
+        auto_save = self.get_auto_save()
+        jb_add_3 = str(self.jb_checkBox.isChecked())
+        reset_players = str(self.reset_checkBox.isChecked())
+
+        self.config['Auto-save'] = auto_save
+        self.config['Join Battle automatically adds 3'] = jb_add_3
+        self.config['Reset includes players'] = reset_players
+
+        global current_config
+        current_config.save_config()
+
+
 config_name = 'Ex3-Tracker.cfg'
 
 # determine if application is a script file or frozen exe
@@ -635,7 +686,7 @@ elif __file__:
 
 config_path = os.path.join(application_path, config_name)
 
-TrackerConfig(application_path)
+current_config = TrackerConfig(application_path)
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
 app = QtWidgets.QApplication(sys.argv)

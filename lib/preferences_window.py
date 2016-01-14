@@ -8,7 +8,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -53,6 +52,6 @@ class Ui_Dialog(object):
         self.label.setText(_translate("Dialog", "Auto-save frequency"))
         self.auto_save_comboBox.setItemText(0, _translate("Dialog", "Every Turn"))
         self.auto_save_comboBox.setItemText(1, _translate("Dialog", "Every Round"))
-        self.auto_save_comboBox.setItemText(2, _translate("Dialog", "Never"))
+        self.auto_save_comboBox.setItemText(2, _translate("Dialog", "Off"))
         self.jb_checkBox.setText(_translate("Dialog", "Join Battle automatically adds 3"))
         self.reset_checkBox.setText(_translate("Dialog", "Reset includes Players"))

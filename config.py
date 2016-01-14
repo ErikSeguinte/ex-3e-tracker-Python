@@ -14,8 +14,7 @@ class TrackerConfig:
 
         except IOError:
             self.create_config()
-            with open(self.path, mode='w', encoding='utf-8') as config_file:
-                self.config.write(config_file)
+            self.save_config()
         else:
             self.config.sections()
             print(self.config.sections())
@@ -30,8 +29,8 @@ class TrackerConfig:
         self.config.set("Settings", "Reset includes players", 'False')
         self.config.set("Settings", "Join Battle automatically adds 3", 'True')
 
-        # 'Every turn', 'Every Round', 'Off'
-        self.config.set("Settings", "Auto-save","Every turn")
+        # 'Every Turn', 'Every Round', 'Off'
+        self.config.set("Settings", "Auto-save", "Every Turn")
 
         auto_save = os.path.join(self.application_path, '__autosave.sav')
         rel_path = os.path.relpath(auto_save)
@@ -39,3 +38,16 @@ class TrackerConfig:
         print('config save', auto_save)
         self.config.set('Settings', 'auto_save custom path', 'False')
         self.config.set('Settings', 'Auto-save path', rel_path)
+
+    def save_config(self):
+        try:
+            with open(self.path, mode='w', encoding='utf-8') as config_file:
+                self.config.write(config_file)
+        except IOError:
+            pass
+
+    def recreate_config(self):
+        self.config = configparser.ConfigParser()
+        self.create_config()
+        self.save_config()
+        ZeltInit.config = self.config
