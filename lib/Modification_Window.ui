@@ -141,7 +141,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBox">
+        <widget class="QCheckBox" name="legendary_size_checkBox">
          <property name="text">
           <string>Legendary Size</string>
          </property>

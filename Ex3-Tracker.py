@@ -528,27 +528,35 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         self.setupUi(self)
         self.comboBox.setModel(model)
         self.c = Z.character_list[character_index]
+        self.old = self.c.get_values()
         self.setup_old_values()
 
+
     def setup_old_values(self):
+        old = (self.old)
+        print(type(old))
 
-        old_values = self.c.get_values()
-        self.name_edit.setText(next(old_values))
-        self.Initiative_box.setValue(next(old_values))
+        print(old)
+        # old_values = self.c.get_values()
+        self.name_edit.setText(old['name'])
+        self.Initiative_box.setValue(old['initiative'])
 
-        self.inertcheckBox.setChecked(next(old_values))
-        self.crashed_check.setChecked(next(old_values))
-        self.crash_counter_box.setValue(next(old_values))
-        self.crash_return_box.setValue(next(old_values))
-        self.has_gone_check.setChecked(next(old_values))
-        self.join_battle_box.setValue(next(old_values))
-        shift_target = next(old_values)
+        self.inertcheckBox.setChecked(old['inert_initiative'])
+        self.crashed_check.setChecked(old['crash_state'])
+        self.crash_counter_box.setValue(old['crash_counter'])
+        self.crash_return_box.setValue(old['crash_return_counter'])
+        self.has_gone_check.setChecked(old['has_gone'])
+        self.join_battle_box.setValue(old['join_battle_pool'])
+        # shift_target = old['shift_target']
         self.comboBox.setEnabled(self.crashed_check.isChecked())
         if self.crashed_check.isChecked():
-            shift_index = Z.character_list.index(shift_target)
+            shift_index = Z.character_list.index(old['shift_target'])
             self.comboBox.setCurrentIndex(shift_index)
-        self.crashed_recentlycheck.setChecked(next(old_values))
-        self.onslaught_spinbox.setValue(next(old_values))
+        self.crashed_recentlycheck.setChecked(old['recently_crashed'])
+        self.onslaught_spinbox.setValue(old['onslaught'])
+        self.player_checkBox.setChecked(old['player'])
+        self.delayed_checkBox.setChecked(old['delayed'])
+        self.legendary_size_checkBox.setChecked(old['legendary_size'])
 
         self.crashed_check.clicked.connect(self.disable_shift)
 
