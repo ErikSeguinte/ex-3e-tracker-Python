@@ -41,5 +41,5 @@ that do 0 damage still give the attacker 1 initiative.
 - Possibly fixed packaging so windows version can be opened in Windows older than 10. (Probably still not
    32bit, though)
 - Fixed Typo
-## [0.1.0] - 2016-01-02
+## [0.1.0] - 2015-12-24
   * Initial Release.
