@@ -484,6 +484,11 @@ class AddCharacterWindow(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
         super().__init__()
         self.setupUi(self)
 
+        self.checkBox.clicked.connect(self.disable_legendary)
+
+    def disable_legendary(self):
+        self.legendary_size_checkBox.setEnabled(not self.checkBox.isChecked())
+
     def exec(self):
 
         super().exec()
@@ -537,7 +542,6 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         old = (self.old)
 
         print(old)
-        # old_values = self.c.get_values()
         self.name_edit.setText(old['name'])
         self.Initiative_box.setValue(old['initiative'])
 
@@ -548,7 +552,6 @@ class ModifyCharacterWindow(QtWidgets.QDialog, Modification_Window.Ui_Dialog):
         self.crash_return_box.setValue(old['crash_return_counter'])
         self.has_gone_check.setChecked(old['has_gone'])
         self.join_battle_box.setValue(old['join_battle_pool'])
-        # shift_target = old['shift_target']
         self.comboBox.setEnabled(self.crashed_check.isChecked())
         if self.crashed_check.isChecked() and old['shift_target']:
             shift_index = Z.character_list.index(old['shift_target'])
