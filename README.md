@@ -80,7 +80,7 @@ Modify Character allows you to manually edit a character's flags and initiative.
 
 Reset removes any characters not loaded through the `add Player` function.
 
-Skip flips the top character's has_gone flag to True, effectively skipping him.
+Skip flips the top character's has_gone flag to True, effectively skipping them.
 This option will ignore delaying characters. Note: This is for characters who choose
 to do nothing that interacts with initiative during their turn, not for delaying. Use
 'other action' for delaying a turn to go later in the same round.
