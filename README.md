@@ -5,7 +5,8 @@ This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written 
 ## Features
 
 *   Keeps track of Initiative, Initiative Break, initiative shift, and Crash
-*   Handles battle groups(inert initiative) and creatures with legendary size (Cannot be crashed unless damage > 10
+*   Handles battle groups(inert initiative) and creatures with legendary size (Cannot be crashed unless damage > 10)
+  *   Note that Legendary Size and Inert Initative are mutually exclusive. Their rule sets initative wise are not compatible. (Though it is my belief that battle groups of tyrant lizards should be encouraged!)
 *   A round progress bar at the bottom to help remind you about regaining motes.
     `todo: Option to have a new round popup message?`
 *   Automatically resets to base initiative if a character survives 3 turns in crash,
