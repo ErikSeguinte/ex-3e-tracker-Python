@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>588</width>
-    <height>337</height>
+    <height>379</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -102,6 +102,16 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="skip_btn">
+        <property name="toolTip">
+         <string>Skip character currently at the top of the initiative.</string>
+        </property>
+        <property name="text">
+         <string>Skip</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -147,6 +157,12 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionSave_Combat"/>
+    <addaction name="actionSave_to_Text_File"/>
+    <addaction name="separator"/>
+    <addaction name="actionLoad_Combat"/>
+    <addaction name="actionResume_Combat"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -155,6 +171,8 @@
     </property>
     <addaction name="actionLoad_Players"/>
     <addaction name="actionLoad_NPCs"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -190,6 +208,31 @@
   <action name="actionReadme">
    <property name="text">
     <string>Readme</string>
+   </property>
+  </action>
+  <action name="actionSave_Combat">
+   <property name="text">
+    <string>Save Combat</string>
+   </property>
+  </action>
+  <action name="actionLoad_Combat">
+   <property name="text">
+    <string>Load Combat</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionResume_Combat">
+   <property name="text">
+    <string>Resume Combat</string>
+   </property>
+  </action>
+  <action name="actionSave_to_Text_File">
+   <property name="text">
+    <string>Save to Text File</string>
    </property>
   </action>
  </widget>

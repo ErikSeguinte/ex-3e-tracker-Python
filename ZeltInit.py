@@ -1,9 +1,7 @@
 from random import randint
-import time
-
-import input_validation
+import input_validation, config
 import user_interface
-import re
+import re, configparser, os, pickle
 
 ITEMS = (
     "Withering Attack",
@@ -32,10 +30,7 @@ OTHER_ACTIONS = (
     ("Other", 0),
 )
 
-global character_list
-character_list = []
-
-global player_names
+character_list = []  # type: List[Character]
 player_names = []
 
 # set up gambits
@@ -56,6 +51,9 @@ for action in OTHER_ACTIONS:
     cost = action[1]
     action_names.append(name)
     action_dict[name] = cost
+
+config = None
+auto_save_path = os.path.relpath(os.path.join(os.path.dirname(__file__), '__autosave.sav'))
 
 
 def debug_print(string):
@@ -89,17 +87,37 @@ def dice_roller(pool=None, doubles=10):
 class Character:
     """Class containing all character related variables."""
 
-    def __init__(self):
-        self.name = ""
-        self.initiative = 0
-        self.inert_initiative = False
-        self.crash_state = False
-        self.crash_counter = 0  # Number of turns in crash
-        self.crash_return_counter = 0  # Number of turns after returning from crash
-        self.has_gone = False
-        self.join_battle_pool = 0
-        self.shift_target = None  # Character who crashed this character, for init shift.
-        self.recently_crashed = False
+    def __init__(
+            self,
+            name="",
+            initiative=0,
+            inert=False,
+            crashed=False,
+            crash_counter=0,
+            crash_return_counter=0,
+            has_gone=False,
+            jb_pool=0,
+            shift_target=None,
+            recently_crashed=False,
+            onslaught=0,
+            player=False,
+            delayed=False,
+            legendary_size: bool = False,
+    ):
+        self.name = name
+        self.initiative = initiative
+        self.inert_initiative = inert
+        self.crash_state = crashed
+        self.crash_counter = crash_counter  # Number of turns in crash
+        self.crash_return_counter = crash_return_counter  # Number of turns after returning from crash
+        self.has_gone = has_gone
+        self.join_battle_pool = jb_pool
+        self.shift_target = shift_target  # Character who crashed this character, for init shift.
+        self.recently_crashed = recently_crashed
+        self.onslaught = onslaught
+        self.player = player
+        self.delayed = delayed
+        self.legendary_size = legendary_size
 
     def set_name(self):
         self.name = input("Name: ")
@@ -122,34 +140,45 @@ class Character:
     def join_battle(self):
         self.initiative = dice_roller(self.join_battle_pool) + 3
 
+    # def get_values(self):
+    #     yield self.name
+    #     yield self.initiative
+    #     yield self.inert_initiative
+    #     yield self.crash_state
+    #     yield self.crash_counter
+    #     yield self.crash_return_counter
+    #     yield self.has_gone
+    #     yield self.join_battle_pool
+    #     yield self.shift_target
+    #     yield self.recently_crashed
+    #     yield self.onslaught
+    #     yield self.player
+    #     yield self.delayed
     def get_values(self):
-        values = (
-            self.name,
-            self.initiative,
-            self.inert_initiative,
-            self.crash_state,
-            self.crash_counter,
-            self.crash_return_counter,
-            self.has_gone,
-            self.join_battle_pool,
-            self.shift_target,
-            self.recently_crashed,
-        )
+        # print(self.__dict__)
+        return self.__dict__
 
-        return values
+        # def set_values(self, values):
+        #     new_values = value_generator(values)
+        #     self.name = next(new_values)
+        #     self.initiative = next(new_values)
+        #     self.inert_initiative = next(new_values)
+        #     self.crash_state = next(new_values)
+        #     self.crash_counter = next(new_values)
+        #     self.crash_return_counter = next(new_values)
+        #     self.has_gone = next(new_values)
+        #     self.join_battle_pool = next(new_values)
+        #     self.shift_target = next(new_values)
+        #     self.recently_crashed = next(new_values)
 
-    def set_values(self, values):
-        new_values = value_generator(values)
-        self.name = next(new_values)
-        self.initiative = next(new_values)
-        self.inert_initiative = next(new_values)
-        self.crash_state = next(new_values)
-        self.crash_counter = next(new_values)
-        self.crash_return_counter = next(new_values)
-        self.has_gone = next(new_values)
-        self.join_battle_pool = next(new_values)
-        self.shift_target = next(new_values)
-        self.recently_crashed = next(new_values)
+    def save(self):
+        values = self.get_values()
+        # values_to_save = []
+        # for value in values:
+        #     values_to_save.append(str(value))
+        string = '\t\t'.join(str(value) for value in values)
+        string += '\n'
+        return string
 
 
 def clear_screen():
@@ -164,9 +193,9 @@ def add_players(f="Players.txt"):
     global character_list
     with open(f, encoding='utf-8') as player_file:
         for a_line in player_file:
-            character = Character()
             name = a_line.rstrip()
-            character.name = name
+            character = Character(name=name)
+            character.player = True
             character_list.append(character)
             player_names.append(name)
 
@@ -187,13 +216,11 @@ def add_npcs(f="Players.txt"):
                     name, jb = a_line.split(",")
                 except ValueError:
                     try:
-                        name = a_line
+                        name = a_line.strip()
                     except ValueError:
                         break
 
-            character = Character()
-            print(name)
-            character.name = name.strip()
+            kwargs = {"name": name}
             if jb:
                 try:
                     jb_int = int(jb.strip())
@@ -202,19 +229,32 @@ def add_npcs(f="Players.txt"):
                     pass
                 else:
                     if jb_int > 0:
-                        character.join_battle_pool = jb_int
+                        kwargs["jb_pool"] = jb_int
             if inert:
                 inert = str(inert).lower().strip()
                 if inert == "true" or inert == "1":
-                    character.inert_initiative = True
+                    kwargs["inert"] = True
+            character = Character(**kwargs)
             character_list.append(character)
 
 
-def print_table():
+def end_turn():
+    try:
+        if config['Settings']['Auto-save'] == 'Every Turn':
+            auto_save()
+    except TypeError:
+        # save_combat(os.path.join(os.path.dirname(__file__), '__resume.txt'))
+        auto_save()
+
+
+def print_table(blank_space=False):
     """Prints characters and initiative status, in order."""
     global character_list
 
     n = 0
+
+    if blank_space:
+        print("")
     fmt = "({id:>3}){name:>15} | {init:^5} | {crash:^5} | {gone:^5}"
     print(fmt.format(
             name="Name",
@@ -231,12 +271,15 @@ def print_table():
                 id=str(n),
                 gone=char.has_gone))
         n += 1
+    if blank_space:
+        print("")
 
 
 def sort_table():
     global character_list
     character_list = sorted(character_list, key=lambda character: character.initiative, reverse=True)
     character_list = sorted(character_list, key=lambda character: character.has_gone)
+    setup_preturn()
 
 
 def add_npc(name, inert, join_battle, initiative):
@@ -260,7 +303,7 @@ def add_new_character():
     return new_character
 
 
-def check_for_crash(defender, init_damage):
+def check_for_crash(defender: int, init_damage):
     """Checks if this attack would cause defender to crash
 
     :param init_damage:     Damage taken in this attack
@@ -271,6 +314,12 @@ def check_for_crash(defender, init_damage):
     init = character_list[defender].initiative
     new_init = init - init_damage
     if init > 0 >= new_init:
+        if character_list[defender].legendary_size:
+            if init_damage >= 10:
+                return True
+            else:
+                return False
+
         # Crash!
         return True
     else:
@@ -286,13 +335,15 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
     # debug_print(str(combata/nts, damage, trick))
 
     # Reset Crash Counter at the beginning of the 4th turn if survives
-    reset_crash_check(attacker)
+    begin_turn(attacker)
 
     handle_tricks(combatants, *trick)
 
-    attacker.has_gone = True
     if success:
         if not defender.inert_initiative:
+
+            if defender.legendary_size and check_for_crash(defender_index, damage):
+                pass
 
             if damage != 0:
                 shifting = False
@@ -310,9 +361,20 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
                     if attacker.initiative < 3:
                         attacker.initiative = 3
                     attacker.initiative += dice_roller(attacker.join_battle_pool)
+                if defender.legendary_size:
+                    original_init = defender.initiative
+                    new_initiative = defender.initiative - damage
+                    if new_initiative > 0 or damage >= 10:
+                        defender.initiative -= damage
+                    else:
+                        if original_init > 1:
+                            defender.initiative = 1
 
-                defender.initiative -= damage
 
+                else:
+                    defender.initiative -= damage
+
+            # Attacker gains 1 init regardless of damage
             attacker.initiative += 1
 
 
@@ -330,11 +392,13 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
         attacker.crash_state = True
         attacker.recently_crashed = False
 
-
+    if not defender.legendary_size:
+        defender.onslaught -= 1
 
     if attacker.crash_state:
         attacker.crash_counter += 1
 
+    end_turn()
     if check_for_end_of_round():
         reset_has_gone()
 
@@ -344,7 +408,13 @@ def check_for_end_of_round():
     for character in character_list:
         if not character.has_gone:
             return False
-    return True
+    else:
+        try:
+            if config['Settings']['Auto-save'] == 'Every Round':
+                auto_save()
+        except TypeError:
+            pass
+        return True
 
 
 def reset_has_gone():
@@ -370,10 +440,7 @@ def name_generator():
 
 
 def value_generator(values):
-    print("Generating Values")
-    print(str(values))
     for value in values:
-        print(value)
         yield value
 
 
@@ -417,10 +484,12 @@ def handle_tricks(combatants, trick_status=False, att_trick=0, def_trick=0):
 
 def handle_decisive(combatants, success, trick=(False, 0, 0), rout=0):
     attacker = combatants[0]
+    defender = combatants[1]
 
     a = character_list[attacker]
+    d = character_list[defender]
 
-    reset_crash_check(a)
+    begin_turn(a)
     handle_tricks(combatants, *trick)
 
     if success:
@@ -430,22 +499,24 @@ def handle_decisive(combatants, success, trick=(False, 0, 0), rout=0):
             a.initiative -= 2
         else:
             a.initiative -= 3
+
+    if not d.legendary_size:
+        d.onslaught -= 1
     a.has_gone = True
+    end_turn()
 
 
 def remove_from_combat(character_index):
     global character_list
-    print("Removing:")
-    print(character_list[character_index])
     del character_list[character_index]
 
 
-def handle_gambits(combatants, success, gambit, trick=(False, 0, 0), ):
+def handle_gambits(combatants, success: bool, gambit: str, trick=(False, 0, 0), ):
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
     cost = gambit_dict[gambit] + 1
 
-    reset_crash_check(attacker)
+    begin_turn(attacker)
     handle_tricks(combatants, *trick)
 
     if check_for_crash(combatants[0], cost):
@@ -456,21 +527,39 @@ def handle_gambits(combatants, success, gambit, trick=(False, 0, 0), ):
         attacker.initiative -= cost
         if re.search(r"Distract", gambit):
             defender.initiative += cost - 1
-            print("Distracted!")
     else:
         if attacker.initiative <= 10:
             attacker.initiative -= 2
         else:
             attacker.initiative -= 3
 
+    if not defender.legendary_size:
+        defender.onslaught -= 1
+    end_turn()
+
+
+def begin_turn(attacker: Character):
+    """ Rests crash counter and onslaught penalty.
+
+    :param attacker:
+    :return:
+    """
     attacker.has_gone = True
+    attacker.delayed = False
 
 
-def reset_crash_check(attacker):
-    if attacker.crash_counter >= 3:
-        attacker.crash_counter = 0
-        attacker.crash_state = False
-        attacker.initiative = 3
+def setup_preturn():
+    global character_list
+    for character in character_list:
+        if character.delayed:
+            continue
+        character.onslaught = 0
+        if character.crash_counter >= 3:
+            character.crash_counter = 0
+            character.crash_state = False
+            character.initiative = 3
+            character.shift_target = None
+        break
 
 
 def remove_character(char_index):
@@ -523,22 +612,153 @@ def main():
 
 def handle_other_actions(character_index, cost, delay=False):
     character = character_list[character_index]
+
+    if character.crash_counter >= 3:
+        character.crash_counter = 0
+        character.crash_state = False
+        character.initiative = 3
+
     character.initiative -= cost
 
-    if not delay:
+    if delay:
+        character.delayed = True
+        character.has_gone = False
+    else:
         character.has_gone = True
+        character.onslaught = 0
 
 
 def reset_combat():
     global character_list
     global player_names
-    character_list[:] = [character for character in character_list if character.name in player_names]
+    if config['Settings'].getboolean('Reset includes players'):
+        character_list = []
+    else:
+        character_list[:] = [character for character in character_list if character.player == True]
+        for character in character_list:
+            character.has_gone = False
+            character.crash_state = False
+            character.shift_target = None
+            character.initiative = 0
+
+
+def save_combat_to_text(file_path=None):
+    if not file_path:
+        file_path = os.path.expanduser('~/Ex3-Tracker/initiative.txt')
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    to_save = [
+        "Name\t\tInit\tinert\t\tcrash\t\tcounter\treturn\thasgone\t\tjb\t\tshift\t\trcrashed\tonslt\tplayer\t\tdelay\n", ]
     for character in character_list:
-        character.has_gone = False
+        to_save.append(character.save())
+
+    with open(file_path, 'w', encoding='utf-8') as file:
+        file.writelines(to_save)
+
+
+def save_pickler(file_path):
+    global character_list
+    with open(file_path, 'wb') as file:
+        pickle.dump(character_list, file)
+
+
+def auto_save():
+    global auto_save_path
+    # save_combat(auto_save_path)
+    save_pickler(auto_save_path)
+
+
+def load_combat(file_path):
+    global character_list
+
+    character_list = []
+    with open(file_path, 'rb') as file:
+        character_list = pickle.load(file)
+
+
+def resume_combat():
+    global auto_save_path
+    if config.getboolean('Settings', 'auto_save custom path'):
+        resume_path = config['Settings']['Auto-save path']
+        if os.path.exists(resume_path):
+            auto_save_path = resume_path
+    load_combat(os.path.normpath(auto_save_path))
+
+
+def skip_turn():
+    character = None
+    for c in character_list:
+        if c.delayed:
+            continue
+        character = c
+        break
+    character.has_gone = True
+    if character.initiative > 0:
+        if character.crash_state:
+            character.recently_crashed = True
         character.crash_state = False
+        character.crash_counter = 0
         character.shift_target = None
-        character.initiative = 0
+    else:
+        character.crash_state = True
+        character.recently_crashed = False
+
+    if character.crash_state:
+        character.crash_counter += 1
+
+    end_turn()
+
+    if check_for_end_of_round():
+        reset_has_gone()
+
+
+def load_combat_from_text(file_path):
+    global character_list
+    character_list = []
+    with open(file_path, 'r', encoding='utf-8') as file:
+        next(file)
+        for line in file:
+            stats = line.split('\t\t')
+            if len(stats) < 11:
+                raise IOError('Invalid File')
+
+            character = Character(*text_reader(stats))
+            character_list.append(character)
+
+        for character in character_list:
+            target_str = character.shift_target
+            if target_str == 'None':
+                character.shift_target = None
+            else:
+                character.shift_target = str_to_character(target_str)
+
+
+def text_reader(list):
+    for item in list:
+        try:
+            item = int(item)
+        except:
+            if item == "True" or item == "False":
+                item = str_to_bool(item)
+        yield item
+
+
+def str_to_character(target_str):
+    global character_list
+    for character in character_list:
+        if str(character) == target_str:
+            return character
+
+
+def str_to_bool(string):
+    if string == 'True':
+        return True
+    else:
+        return False
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    # set_up_test()
+    # auto_save()
+    set_up_test()
+    print(character_list[0].__dict__)
