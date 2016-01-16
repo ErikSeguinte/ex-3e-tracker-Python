@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [0.2.0] 01-14-2016
+## [0.2.1] 2016-01-15
+### Fixed
+- fixed fatal crash when adding characters.
+
+## [0.2.0] 2016-01-14
 ### Added
 - Attack windows now tracks onslaught
 - Added Radio button for successful or failed withering attacks. Successful withering attacks that do 0 damage still give the attacker 1 initiative.

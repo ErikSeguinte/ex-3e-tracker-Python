@@ -208,7 +208,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         values = AddCharacterWindow(self.model).exec()
 
         if values:
-            Z.add_npc(values)
+            Z.add_npc(**values)
             Z.sort_table()
             self.setup_model()
 
