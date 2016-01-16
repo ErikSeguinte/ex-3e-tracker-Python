@@ -148,4 +148,3 @@ class Ui_MainWindow(object):
         self.actionPreferences.setText(_translate("MainWindow", "Preferences"))
         self.actionResume_Combat.setText(_translate("MainWindow", "Resume Combat"))
         self.actionSave_to_Text_File.setText(_translate("MainWindow", "Save to Text File"))
-

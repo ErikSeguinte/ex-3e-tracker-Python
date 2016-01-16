@@ -1,13 +1,13 @@
 # Exalted 3rd Edition Initiative Tracker
 
-This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written in Python® 3.5.1, QT 5.5.1, and PyQT 5.5.1. Bundled with PyInstaller. Created by Erik Seguinte <ErikSeguinte@gmail.com>
+This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written in Python® 3.5.1, QT 5.5.1, and PyQT 5.5.1. Bundled using PyInstaller. Created by Erik Seguinte <ErikSeguinte@gmail.com>
 
 ## Features
 
 *   Keeps track of Initiative, Initiative Break, initiative shift, and Crash
 *   Handles battle groups(inert initiative) and creatures with legendary size (Cannot be crashed unless damage > 10)
-  *   Note that Legendary Size and Inert Initative are mutually exclusive. Their rule sets initative wise are not compatible. (Though it is my belief that battle groups of tyrant lizards should be encouraged!)
-*   A round progress bar at the bottom to help remind you about regaining motes.
+  *   Note that Legendary Size and Inert Initiative are mutually exclusive. Their rule sets initiative wise are not compatible. (Though it is my belief that battle groups of tyrant lizards should be encouraged!)
+*   A round-progress bar at the bottom to help remind you about regaining motes.
     `todo: Option to have a new round popup message?`
 *   Automatically resets to base initiative if a character survives 3 turns in crash,
     at the beginning of their 4th turn.
@@ -33,32 +33,32 @@ This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written 
 
 
 ## How to use
-Create a text file that contains a list of your players, each on a new line. While you
-can add players one by one using the "Add NPC" button, creating this text file in
-advance allows you to save time since, 1), your players are likely in many of your
-battles anyway, so you can save typing, and 2), players added in this manner persist
-when combat is reset, whereas npcs are deleted from the tracker.
-`todo: option to get players without a text file`
+You may create a text file that contains a list of your players, each on a new line. While you
+can add players one by one using the "Add Character" button, creating this text file in
+advance allows you to save time since your players are likely in many of your
+battles anyway.
 
 If you are the type of Storyteller who plans out their combats in advance, you can
-optionally create a seperate text file containing NPCs, each on a new line in the
+optionally create a separate text file containing NPCs, each on a new line in the
 following format `Name, Join Battle Pool, Inert Initiative`, with the values
-seperated by commas. You can include just the NPC's name and JB Pool (Inert
+separated by commas. You can include just the NPC's name and JB Pool (Inert
 initiative will default to False), or even just the name. The Join Battle Pool will
 be used to roll for the NPC's join battle in the event that you as the ST don't
 want to roll for them. You can leave it blank or 0 if you decide that you would
 rather roll. Inert Initiative takes the values of `true` or `1` for true, and anything
  else as false. `todo: Add jb pool functionality to players.`
 
-Alternatively, you can fill the tracker with your NPCs and save the combat into a seperate file.
+Examples for both files are included in the Zip file as players.txt and npcs.txt, respectively.
+
+Alternatively, you can fill the tracker with your NPCs and save the combat into a separate file using the save functions.
 You have the option of using a binary file, or a text file for these saves. Binary file has
 the advantage of letting you have duplicate names, but otherwise should be identical.
-Text saves have a slightly lower chance of breaking between versions.
+Text saves have a slightly lower chance of breaking between versions (Assuming I change the underlying code).
 
 These files can be loaded from the Edit menu.
 
-Additional NPCs can be added using the "Add NPC" button. Here, you can dictate inert
- initiative, join battle pool, or current initiative as you create them one by one.
+Additional NPCs can be added using the "Add Character" button. Here, you can dictate inert
+ initiative, join battle pool, current initiative, and legendary size as you create them one by one.
 
 Once the tracker is filled, you can use "Join Battle" to get everyone's current
 initiative. NPCs with join battle pools > 0 will roll theirs automatically. For everyone
@@ -74,9 +74,20 @@ DV, you would enter `-2`.
 
 For attacks, mark success or failure.
 
+When fighting battle groups, fill the rout check box with the number of rout checks forced onto the battle group.
+There's currently a dispute amongst my group whether or not multiple rout-checks allow for multiple
+initiative crash bonuses. I've programmed that possibility into this program, so if you force 2 rout checks, you'll
+gain 10 initiative as a bonus. If you disagree, you may leave the rout check at one. This option should be grayed
+out unless the defender has inert initiative.
+
+When fighting creatures of Legendary size, a check-box has been provided asking if post-soak damage exceeds 10.
+Unless this box is checked, it will be impossible to bring the creature's initiative lower than 1. This option
+is grayed out unless applicable.
+
 "Other Actions" include Delay, withdraw, Full Defense and disengage.
 
-Modify Character allows you to manually edit a character's flags and initiative.
+Modify Character allows you to manually edit a character's flags and initiative. NOTE: Inert initiative takes
+precedence over legendary size.
 
 Reset removes any characters not loaded through the `add Player` function.
 

@@ -414,7 +414,7 @@ class MyTest(unittest.TestCase):
             # Z.handle_withering((0, 1), damage)
             # Z.sort_table()
 
-        # Z.print_table(True)
+            # Z.print_table(True)
             # self.assertEqual(giant.initiative, g_init)
             # self.assertEqual(jack.initiative, j_init)
             # self.assertEqual(giant.crash_state, crash)
