@@ -104,7 +104,12 @@ class Character:
             delayed=False,
             legendary_size: bool = False,
     ):
-        self.name = name
+        if name:
+            self.name = name
+        else:
+            global character_list
+            number = str(len(character_list) + 1)
+            self.name = "Character #" + number
         self.initiative = initiative
         self.inert_initiative = inert
         self.crash_state = crashed

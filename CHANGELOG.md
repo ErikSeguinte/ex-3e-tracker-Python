@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+- Blank names were crashing the join battle window, and probably anywhere else where the
+    name was explicitly called. Blank names are no longer be allowed to be created. They
+    will instead default to "Character #X"
+
 ## [0.2.2] 2016-01-15
 ### Fixed
 - Quick fix for add character window forced creation of blank characters. Should be fixed now.
