@@ -284,7 +284,8 @@ def sort_table():
 
 def add_npc(**kwargs):
     global character_list
-    new_character = Character(kwargs)
+    print(kwargs)
+    new_character = Character(**kwargs)
     character_list.append(new_character)
 
 
