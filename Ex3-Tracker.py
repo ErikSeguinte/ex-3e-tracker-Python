@@ -437,8 +437,12 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
 
         gambit_list = ['Standard Decisive']
         # gambit_list.append("Standard Decisive")
-        for gambit in Z.GAMBITS:
-            gambit_list.append(gambit[0])
+        if Z.gambits:
+            for gambit in Z.gambits:
+                gambit_list.append(gambit[0])
+        else:
+            for gambit in Z.DEFAULT_GAMBITS:
+                gambit_list.append(gambit[0])
 
         self.gambit_combo.addItems(gambit_list)
 
@@ -660,24 +664,28 @@ class CustomGambitWindow(QtWidgets.QDialog, custom_gambit.Ui_Dialog):
         self.Gambits.setText(gambit_string)
 
     def get_default_gambits(self):
-        gambits = Z.GAMBITS
+
+        gambits = Z.DEFAULT_GAMBITS
+        # print(gambits)
         gambit_string = ""
-        for gambit in gambits:
-            string = str(gambit[0]) + " : " + str(gambit[1]) + ",\n"
+        for gambit, difficulty in gambits:
+            string = str(gambit) + " : " + str(difficulty) + ",\n"
             gambit_string += string
         return gambit_string
 
     def get_custom_gambits(self):
         gambits = Z.config["Custom"]["gambits"]
         gambit_string = gambits
-        # for gambit in gambits:
-        #     string = str(gambit[0]) + "," + str(gambit[1]) + "\n"
-        #     gambit_string += string
+
         return gambit_string
 
 
     def exec(self):
         super().exec()
+
+        if self.result():
+            gambit_string = self.Gambits.toPlainText()
+            current_config.process_custom_gambits(gambit_string)
 
 
 class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):

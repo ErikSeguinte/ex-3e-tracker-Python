@@ -17,9 +17,12 @@ class TrackerConfig:
             self.save_config()
         else:
             self.config.sections()
-            print(self.config.sections())
+            # print(self.config.sections())
 
         ZeltInit.config = self.config
+
+        if self.config['Custom']['gambits']:
+            self.process_custom_gambits()
 
     def create_config(self):
         """Create a config file
@@ -34,8 +37,8 @@ class TrackerConfig:
 
         auto_save = os.path.join(self.application_path, '__autosave.sav')
         rel_path = os.path.relpath(auto_save)
-        print(rel_path)
-        print('config save', auto_save)
+        # print(rel_path)
+        # print('config save', auto_save)
         self.config.set('Settings', 'auto_save custom path', 'False')
         self.config.set('Settings', 'Auto-save path', rel_path)
 
@@ -59,3 +62,23 @@ Hadouken: 7,
         self.create_config()
         self.save_config()
         ZeltInit.config = self.config
+
+    def process_custom_gambits(self, gambit_string):
+        default_gambits = ZeltInit.DEFAULT_GAMBITS
+
+        gambits = gambit_string.split('\n')
+        gambits[:] = [x.split(' : ') for x in gambits if x]
+
+        print(gambits)
+
+        gambit_dict = {}
+        gambit = []
+
+        for gambit in gambits:
+            name = gambit[0].strip()
+            cost = gambit[1].strip()
+            cost = cost.rstrip(',')
+            gambit_dict[name] = int(cost)
+
+        ZeltInit.gambit_dict = gambit_dict
+        ZeltInit.gambits = gambits

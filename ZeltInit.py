@@ -13,7 +13,7 @@ ITEMS = (
     "Modify Initiative",
     "Remove from combat",
 )
-GAMBITS = (
+DEFAULT_GAMBITS = (
     ("Disarm", 3),
     ("Unhorse", 4),
     ("Distract(3)", 3),
@@ -35,12 +35,11 @@ player_names = []
 
 # set up gambits
 gambit_dict = {}
-gambit_names = []
+gambits = []
 
-for gambit in GAMBITS:
+for gambit in DEFAULT_GAMBITS:
     name = gambit[0]
     cost = gambit[1]
-    gambit_names.append(name)
     gambit_dict[name] = cost
 
 action_dict = {}
@@ -566,7 +565,7 @@ def main():
     global character_list
 
     add_players()
-    ui = user_interface.UI(ITEMS, GAMBITS)
+    ui = user_interface.UI(ITEMS, DEFAULT_GAMBITS)
 
     while True:
         clear_screen()
