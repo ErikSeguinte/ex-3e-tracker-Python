@@ -41,7 +41,7 @@ class TrackerConfig:
 
         self.config.add_section("Custom")
         config = self.config["Custom"]
-        config["Gambits"] = """\
+        config["gambits"] = """\
 karate kick:2,
 Judo Chop: 3,
 Hadouken: 7,

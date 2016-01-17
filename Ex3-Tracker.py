@@ -655,16 +655,24 @@ class CustomGambitWindow(QtWidgets.QDialog, custom_gambit.Ui_Dialog):
         self.setupUi(self)
 
         gambit_string = self.get_default_gambits()
+        gambit_string += self.get_custom_gambits()
 
         self.Gambits.setText(gambit_string)
 
-    @staticmethod
-    def get_default_gambits():
+    def get_default_gambits(self):
         gambits = Z.GAMBITS
         gambit_string = ""
         for gambit in gambits:
-            string = str(gambit[0]) + "," + str(gambit[1]) + "\n"
+            string = str(gambit[0]) + " : " + str(gambit[1]) + ",\n"
             gambit_string += string
+        return gambit_string
+
+    def get_custom_gambits(self):
+        gambits = Z.config["Custom"]["gambits"]
+        gambit_string = gambits
+        # for gambit in gambits:
+        #     string = str(gambit[0]) + "," + str(gambit[1]) + "\n"
+        #     gambit_string += string
         return gambit_string
 
 
