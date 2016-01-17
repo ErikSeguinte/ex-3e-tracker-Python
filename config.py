@@ -39,6 +39,14 @@ class TrackerConfig:
         self.config.set('Settings', 'auto_save custom path', 'False')
         self.config.set('Settings', 'Auto-save path', rel_path)
 
+        self.config.add_section("Custom")
+        config = self.config["Custom"]
+        config["Gambits"] = """\
+karate kick:2,
+Judo Chop: 3,
+Hadouken: 7,
+"""
+
     def save_config(self):
         try:
             with open(self.path, mode='w', encoding='utf-8') as config_file:
