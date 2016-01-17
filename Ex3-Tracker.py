@@ -6,7 +6,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 
 import ZeltInit as Z
 from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui, character_picker_ui, \
-    Modification_Window, other_action_gui, About_gui, preferences_window
+    Modification_Window, other_action_gui, About_gui, preferences_window, custom_gambit
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -35,6 +35,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionResume_Combat.triggered.connect(self.resume_combat)
         self.actionSave_to_Text_File.triggered.connect(self.save_to_text)
         self.actionPreferences.triggered.connect(self.preferences_window)
+        self.actionCustom_Gambits.triggered.connect(self.custom_gambit_window)
+
+    def custom_gambit_window(self):
+        CustomGambitWindow().exec()
 
     def about_window(self):
         AboutWindow().exec()
@@ -640,6 +644,29 @@ class AboutWindow(QtWidgets.QDialog, About_gui.Ui_Dialog):
     def __init__(self, parent=None, ):
         super().__init__()
         self.setupUi(self)
+
+    def exec(self):
+        super().exec()
+
+
+class CustomGambitWindow(QtWidgets.QDialog, custom_gambit.Ui_Dialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setupUi(self)
+
+        gambit_string = self.get_default_gambits()
+
+        self.Gambits.setText(gambit_string)
+
+    @staticmethod
+    def get_default_gambits():
+        gambits = Z.GAMBITS
+        gambit_string = ""
+        for gambit in gambits:
+            string = str(gambit[0]) + "," + str(gambit[1]) + "\n"
+            gambit_string += string
+        return gambit_string
+
 
     def exec(self):
         super().exec()

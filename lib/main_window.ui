@@ -172,6 +172,8 @@
     <addaction name="actionLoad_Players"/>
     <addaction name="actionLoad_NPCs"/>
     <addaction name="separator"/>
+    <addaction name="actionCustom_Gambits"/>
+    <addaction name="separator"/>
     <addaction name="actionPreferences"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -233,6 +235,11 @@
   <action name="actionSave_to_Text_File">
    <property name="text">
     <string>Save to Text File</string>
+   </property>
+  </action>
+  <action name="actionCustom_Gambits">
+   <property name="text">
+    <string>Custom Gambits</string>
    </property>
   </action>
  </widget>

@@ -79,3 +79,4 @@ class Ui_Dialog(object):
         self.label_3.setText(_translate("Dialog", "Join Battle Pool"))
         self.label_2.setText(_translate("Dialog", "Used for automatically rolling for NPCs"))
         self.label_4.setText(_translate("Dialog", "Current Initiative"))
+
