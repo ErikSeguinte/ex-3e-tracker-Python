@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Custom Gambits can now be added from the Edit window. These are added to the config file.
+
 ### Fixed
 - Blank names were crashing the join battle window, and probably anywhere else where the
     name was explicitly called. Blank names are no longer be allowed to be created. They
