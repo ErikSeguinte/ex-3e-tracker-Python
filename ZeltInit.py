@@ -34,13 +34,19 @@ character_list = []  # type: List[Character]
 player_names = []
 
 # set up gambits
-gambit_dict = {}
-gambits = []
 
-for gambit in DEFAULT_GAMBITS:
-    name = gambit[0]
-    cost = gambit[1]
-    gambit_dict[name] = cost
+
+def setup_default_gambits():
+    default_gambits = {}
+    for gambit in DEFAULT_GAMBITS:
+        name = gambit[0]
+        cost = gambit[1]
+        default_gambits[name] = cost
+    return default_gambits
+
+
+gambit_dict = setup_default_gambits()
+gambits = []
 
 action_dict = {}
 action_names = []

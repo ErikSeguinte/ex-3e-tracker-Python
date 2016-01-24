@@ -17,12 +17,13 @@ class TrackerConfig:
             self.save_config()
         else:
             self.config.sections()
-            # print(self.config.sections())
+            print(str(self.config.sections()))
 
         ZeltInit.config = self.config
 
-        if self.config['Custom']['gambits']:
-            self.process_custom_gambits()
+        if 'gambits' in self.config['Custom']:
+            self.process_custom_gambits(self.config["Custom"]["gambits"])
+            # print(self.config.sections())
 
     def create_config(self):
         """Create a config file
@@ -63,22 +64,25 @@ Hadouken: 7,
         self.save_config()
         ZeltInit.config = self.config
 
-    def process_custom_gambits(self, gambit_string):
-        default_gambits = ZeltInit.DEFAULT_GAMBITS
+    def process_custom_gambits(self, gambit_string=''):
+        default_gambits = ZeltInit.setup_default_gambits()
 
-        gambits = gambit_string.split('\n')
-        gambits[:] = [x.split(' : ') for x in gambits if x]
+        gambits = gambit_string.split(',\n')
 
-        print(gambits)
+        gambits[:] = [x.split(':') for x in gambits if x]
 
-        gambit_dict = {}
-        gambit = []
+        gambit_dict = default_gambits
+        gambit_names = []
 
+        # gambits = []
         for gambit in gambits:
-            name = gambit[0].strip()
+            print(gambit)
+            name = str(gambit[0].strip())
             cost = gambit[1].strip()
             cost = cost.rstrip(',')
             gambit_dict[name] = int(cost)
+            gambit_names.append(name)
 
+        # print(str(gambit_dict))
         ZeltInit.gambit_dict = gambit_dict
-        ZeltInit.gambits = gambits
+        ZeltInit.gambits = gambit_names
