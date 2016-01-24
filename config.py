@@ -45,11 +45,12 @@ class TrackerConfig:
 
         self.config.add_section("Custom")
         config = self.config["Custom"]
-        config["gambits"] = """\
-karate kick:2,
-Judo Chop: 3,
-Hadouken: 7,
-"""
+
+    #         config["gambits"] = """\
+    # karate kick:2,
+    # Judo Chop: 3,
+    # Hadouken: 7,
+    # """
 
     def save_config(self):
         try:
@@ -67,22 +68,44 @@ Hadouken: 7,
     def process_custom_gambits(self, gambit_string=''):
         default_gambits = ZeltInit.setup_default_gambits()
 
+        # self.config['Custom']['gambits'] = gambit_string
+        try:
+            gambit_dict, gambit_names = self.read_custom_gambits(gambit_string)
+        except ValueError:
+            print('unable to read value')
+            return
+
+        # print(str(gambit_dict))
+
+        gambit_dict.update(default_gambits)
+        ZeltInit.gambit_dict = gambit_dict
+        ZeltInit.gambits = gambit_names
+        custom_gambits = {}
+        for x in gambit_dict.keys():
+            if x not in default_gambits:
+                custom_gambits[x] = gambit_dict[x]
+
+        custom_gambit_string = ""
+        for gambit in custom_gambits.keys():
+            string = gambit + " : " + str(custom_gambits[gambit]) + ",\n"
+            custom_gambit_string += string
+        self.config['Custom']['gambits'] = custom_gambit_string
+        self.save_config()
+
+    def read_custom_gambits(self, gambit_string):
         gambits = gambit_string.split(',\n')
 
         gambits[:] = [x.split(':') for x in gambits if x]
 
-        gambit_dict = default_gambits
+        gambit_dict = {}
         gambit_names = []
 
         # gambits = []
         for gambit in gambits:
-            print(gambit)
-            name = str(gambit[0].strip())
+            name = gambit[0].strip()
             cost = gambit[1].strip()
             cost = cost.rstrip(',')
             gambit_dict[name] = int(cost)
             gambit_names.append(name)
 
-        # print(str(gambit_dict))
-        ZeltInit.gambit_dict = gambit_dict
-        ZeltInit.gambits = gambit_names
+        return gambit_dict, gambit_names

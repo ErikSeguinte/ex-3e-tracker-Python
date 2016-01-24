@@ -658,7 +658,8 @@ class CustomGambitWindow(QtWidgets.QDialog, custom_gambit.Ui_Dialog):
         super().__init__(parent)
         self.setupUi(self)
 
-        gambit_string = self.get_default_gambits()
+        gambit_string = ""
+        gambit_string += self.get_default_gambits()
         gambit_string += self.get_custom_gambits()
 
         self.Gambits.setText(gambit_string)
@@ -674,10 +675,12 @@ class CustomGambitWindow(QtWidgets.QDialog, custom_gambit.Ui_Dialog):
         return gambit_string
 
     def get_custom_gambits(self):
-        gambits = Z.config["Custom"]["gambits"]
-        gambit_string = gambits
-
-        return gambit_string
+        if 'gambits' in Z.config['Custom']:
+            gambits = Z.config["Custom"]["gambits"]
+            gambit_string = gambits
+            return gambit_string
+        else:
+            return ""
 
 
     def exec(self):
