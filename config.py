@@ -71,29 +71,30 @@ class TrackerConfig:
         # self.config['Custom']['gambits'] = gambit_string
         try:
             gambit_dict, gambit_names = self.read_custom_gambits(gambit_string)
-        except ValueError:
+        except (ValueError, IndexError) as e:
             print('unable to read value')
-            return
+            raise e
+        else:
 
-        # print(str(gambit_dict))
+            # print(str(gambit_dict))
 
-        gambit_dict.update(default_gambits)
-        ZeltInit.gambit_dict = gambit_dict
-        ZeltInit.gambits = gambit_names
-        custom_gambits = {}
-        for x in gambit_dict.keys():
-            if x not in default_gambits:
-                custom_gambits[x] = gambit_dict[x]
+            gambit_dict.update(default_gambits)
+            ZeltInit.gambit_dict = gambit_dict
+            ZeltInit.gambits = gambit_names
+            custom_gambits = {}
+            for x in gambit_dict.keys():
+                if x not in default_gambits:
+                    custom_gambits[x] = gambit_dict[x]
 
-        custom_gambit_string = ""
-        for gambit in custom_gambits.keys():
-            string = gambit + " : " + str(custom_gambits[gambit]) + ",\n"
-            custom_gambit_string += string
-        self.config['Custom']['gambits'] = custom_gambit_string
-        self.save_config()
+            custom_gambit_string = ""
+            for gambit in custom_gambits.keys():
+                string = gambit + " : " + str(custom_gambits[gambit]) + ",\n"
+                custom_gambit_string += string
+            self.config['Custom']['gambits'] = custom_gambit_string
+            self.save_config()
 
     def read_custom_gambits(self, gambit_string):
-        gambits = gambit_string.split(',\n')
+        gambits = gambit_string.split('\n')
 
         gambits[:] = [x.split(':') for x in gambits if x]
 

@@ -688,7 +688,10 @@ class CustomGambitWindow(QtWidgets.QDialog, custom_gambit.Ui_Dialog):
 
         if self.result():
             gambit_string = self.Gambits.toPlainText()
-            current_config.process_custom_gambits(gambit_string)
+            try:
+                current_config.process_custom_gambits(gambit_string)
+            except Exception as e:
+                QtWidgets.QMessageBox.warning(self, "Error", "Unable to parse custom gambits\n" + str(e))
 
 
 class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
