@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+### Fixed
+- Mistakenly checked defender's initiative when determining if gambit would crash attacker.
+
 ## [0.2.2] 2016-01-15
 ### Fixed
 - Quick fix for add character window forced creation of blank characters. Should be fixed now.
