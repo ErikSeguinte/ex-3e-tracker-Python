@@ -255,6 +255,7 @@ def end_turn():
     except TypeError:
         # save_combat(os.path.join(os.path.dirname(__file__), '__resume.txt'))
         auto_save()
+    check_for_end_of_round()
 
 
 def print_table(blank_space=False):
@@ -400,21 +401,22 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
         attacker.crash_counter += 1
 
     end_turn()
-    if check_for_end_of_round():
-        reset_has_gone()
+    # if check_for_end_of_round():
+    #     reset_has_gone()
 
 
 def check_for_end_of_round():
     global character_list
     for character in character_list:
         if not character.has_gone:
-            return False
+            return
     else:
         try:
             if config['Settings']['Auto-save'] == 'Every Round':
                 auto_save()
         except TypeError:
             pass
+        reset_has_gone()
         return True
 
 
@@ -512,10 +514,11 @@ def remove_from_combat(character_index):
     del character_list[character_index]
 
 
-def handle_gambits(combatants, success: bool, gambit: str, trick=(False, 0, 0), ):
+def handle_gambits(combatants, success: bool, gambit: str, trick=(False, 0, 0), diff: int = 0):
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
-    cost = gambit_dict[gambit] + 1
+
+    cost = diff + 1
 
     begin_turn(attacker)
     handle_tricks(combatants, *trick)
@@ -708,8 +711,8 @@ def skip_turn():
 
     end_turn()
 
-    if check_for_end_of_round():
-        reset_has_gone()
+    # if check_for_end_of_round():
+    #     reset_has_gone()
 
 
 def load_combat_from_text(file_path):

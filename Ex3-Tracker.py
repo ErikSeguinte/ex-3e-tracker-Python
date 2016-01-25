@@ -489,9 +489,11 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
             # prepare for handle_decisive
             values = ((attacker, defender), success, trick)
         else:
+            print(self.difficulty_spinbox.value())
             # prepare for handle_gambit
-            if self.defender.initiative > Z.gambit_dict[gambit_type]:
-                values = ((attacker, defender), success, gambit_type, trick)
+            a = Z.character_list[attacker]
+            if a.initiative > self.difficulty_spinbox.value() + 1:
+                values = ((attacker, defender), success, gambit_type, trick, self.difficulty_spinbox.value())
             else:
                 QtWidgets.QMessageBox.warning(self, "Message",
                                               "This Gambit would have crashed you, and has been canceled.")
