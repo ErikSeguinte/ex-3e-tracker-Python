@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
     name was explicitly called. Blank names are no longer be allowed to be created. They
     will instead default to "Character #X"
 
+- Mistakenly checked defender's initiative when determining if gambit would crash attacker.
+
 ## [0.2.2] 2016-01-15
 ### Fixed
 - Quick fix for add character window forced creation of blank characters. Should be fixed now.
