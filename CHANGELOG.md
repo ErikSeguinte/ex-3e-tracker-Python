@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [0.3.0] 2016-01-16
 ### Added
 - Custom Gambits can now be added from the Edit window. These are added to the config file.
 

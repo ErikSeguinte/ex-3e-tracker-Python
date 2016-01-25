@@ -439,7 +439,7 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
         # gambit_list.append("Standard Decisive")
         if Z.gambits:
             for gambit in Z.gambits:
-                gambit_list.append(gambit[0])
+                gambit_list.append(gambit)
         else:
             for gambit in Z.DEFAULT_GAMBITS:
                 gambit_list.append(gambit[0])
@@ -509,6 +509,7 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
 
         elif gambit == 'Custom Gambit':
             self.difficulty_spinbox.setEnabled(True)
+            diff = 0
 
         else:
             self.difficulty_spinbox.setEnabled(False)

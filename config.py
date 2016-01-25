@@ -65,7 +65,10 @@ class TrackerConfig:
         self.save_config()
         ZeltInit.config = self.config
 
-    def process_custom_gambits(self, gambit_string=''):
+    def initialize_custom_gambits(self):
+        self.process_custom_gambits(self.config['Custom']['gambits'])
+
+    def process_custom_gambits(self, gambit_string):
         default_gambits = ZeltInit.setup_default_gambits()
 
         # self.config['Custom']['gambits'] = gambit_string
@@ -80,7 +83,8 @@ class TrackerConfig:
 
             gambit_dict.update(default_gambits)
             ZeltInit.gambit_dict = gambit_dict
-            ZeltInit.gambits = gambit_names
+            ZeltInit.gambits = list(gambit_dict.keys())
+            print(gambit_names)
             custom_gambits = {}
             for x in gambit_dict.keys():
                 if x not in default_gambits:
