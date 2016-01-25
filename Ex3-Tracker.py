@@ -224,13 +224,14 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         character_list = Z.character_list
         Z.sort_table()
-        self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
+        self.model = QtGui.QStandardItemModel(len(character_list), 6, self)
 
         self.model.setHeaderData(0, QtCore.Qt.Horizontal, "name")
         self.model.setHeaderData(1, QtCore.Qt.Horizontal, "Initiative")
         self.model.setHeaderData(2, QtCore.Qt.Horizontal, "Crash")
-        self.model.setHeaderData(3, QtCore.Qt.Horizontal, "Has Gone")
-        self.model.setHeaderData(4, QtCore.Qt.Horizontal, "Shift Target")
+        self.model.setHeaderData(3, QtCore.Qt.Horizontal, "Onslaught")
+        self.model.setHeaderData(4, QtCore.Qt.Horizontal, "Has Gone")
+        self.model.setHeaderData(5, QtCore.Qt.Horizontal, "Shift Target")
 
         self.table = self.tableView
         self.tableView.setModel(self.model)
@@ -248,9 +249,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.model.setData(self.model.index(row, 0, QtCore.QModelIndex()), character.name)
             self.model.setData(self.model.index(row, 1, QtCore.QModelIndex()), character.initiative)
             self.model.setData(self.model.index(row, 2, QtCore.QModelIndex()), character.crash_state)
-            self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.has_gone)
+            self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.onslaught)
+            self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.has_gone)
             if character.shift_target:
-                self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.shift_target.name)
+                self.model.setData(self.model.index(row, 5, QtCore.QModelIndex()), character.shift_target.name)
             self.model.setData(self.model.index(row, 6, QtCore.QModelIndex()), character)
             row += 1
             if character.has_gone:

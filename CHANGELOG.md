@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.3.0] 2016-01-25
 ### Added
 - Custom Gambits can now be added from the Edit menu. These are added to the config file.
+- Onslaught Penalty appears in the main window.
 
 ### Fixed
 - Blank names were crashing the join battle window, and probably anywhere else where the
