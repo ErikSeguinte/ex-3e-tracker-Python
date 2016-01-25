@@ -6,7 +6,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 
 import ZeltInit as Z
 from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui, character_picker_ui, \
-    Modification_Window, other_action_gui, About_gui, preferences_window
+    Modification_Window, other_action_gui, About_gui, preferences_window, custom_gambit
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -35,6 +35,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionResume_Combat.triggered.connect(self.resume_combat)
         self.actionSave_to_Text_File.triggered.connect(self.save_to_text)
         self.actionPreferences.triggered.connect(self.preferences_window)
+        self.actionCustom_Gambits.triggered.connect(self.custom_gambit_window)
+
+    def custom_gambit_window(self):
+        CustomGambitWindow().exec()
 
     def about_window(self):
         AboutWindow().exec()
@@ -220,13 +224,14 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         character_list = Z.character_list
         Z.sort_table()
-        self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
+        self.model = QtGui.QStandardItemModel(len(character_list), 6, self)
 
         self.model.setHeaderData(0, QtCore.Qt.Horizontal, "name")
         self.model.setHeaderData(1, QtCore.Qt.Horizontal, "Initiative")
         self.model.setHeaderData(2, QtCore.Qt.Horizontal, "Crash")
-        self.model.setHeaderData(3, QtCore.Qt.Horizontal, "Has Gone")
-        self.model.setHeaderData(4, QtCore.Qt.Horizontal, "Shift Target")
+        self.model.setHeaderData(3, QtCore.Qt.Horizontal, "Onslaught")
+        self.model.setHeaderData(4, QtCore.Qt.Horizontal, "Has Gone")
+        self.model.setHeaderData(5, QtCore.Qt.Horizontal, "Shift Target")
 
         self.table = self.tableView
         self.tableView.setModel(self.model)
@@ -244,9 +249,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.model.setData(self.model.index(row, 0, QtCore.QModelIndex()), character.name)
             self.model.setData(self.model.index(row, 1, QtCore.QModelIndex()), character.initiative)
             self.model.setData(self.model.index(row, 2, QtCore.QModelIndex()), character.crash_state)
-            self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.has_gone)
+            self.model.setData(self.model.index(row, 3, QtCore.QModelIndex()), character.onslaught)
+            self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.has_gone)
             if character.shift_target:
-                self.model.setData(self.model.index(row, 4, QtCore.QModelIndex()), character.shift_target.name)
+                self.model.setData(self.model.index(row, 5, QtCore.QModelIndex()), character.shift_target.name)
             self.model.setData(self.model.index(row, 6, QtCore.QModelIndex()), character)
             row += 1
             if character.has_gone:
@@ -433,8 +439,14 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
 
         gambit_list = ['Standard Decisive']
         # gambit_list.append("Standard Decisive")
-        for gambit in Z.GAMBITS:
-            gambit_list.append(gambit[0])
+        if Z.gambits:
+            for gambit in Z.gambits:
+                gambit_list.append(gambit)
+        else:
+            for gambit in Z.DEFAULT_GAMBITS:
+                gambit_list.append(gambit[0])
+
+        gambit_list.append('Custom Gambit')
 
         self.gambit_combo.addItems(gambit_list)
 
@@ -479,10 +491,11 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
             # prepare for handle_decisive
             values = ((attacker, defender), success, trick)
         else:
-            a = Z.character_list[attacker]
+            print(self.difficulty_spinbox.value())
             # prepare for handle_gambit
-            if a.initiative > Z.gambit_dict[gambit_type]:
-                values = ((attacker, defender), success, gambit_type, trick)
+            a = Z.character_list[attacker]
+            if a.initiative > self.difficulty_spinbox.value() + 1:
+                values = ((attacker, defender), success, gambit_type, trick, self.difficulty_spinbox.value())
             else:
                 QtWidgets.QMessageBox.warning(self, "Message",
                                               "This Gambit would have crashed you, and has been canceled.")
@@ -492,12 +505,18 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
     def set_cost_text(self):
         gambit = self.gambit_combo.currentText()
 
-        if gambit != "Standard Decisive":
-            difficulty = Z.gambit_dict[gambit]
-            text = "Difficulty: " + str(difficulty)
+        if gambit == "Standard Decisive":
+            self.difficulty_spinbox.setEnabled(False)
+            diff = 0
+
+        elif gambit == 'Custom Gambit':
+            self.difficulty_spinbox.setEnabled(True)
+            diff = 0
+
         else:
-            text = ""
-        self.init_cost_label.setText(text)
+            self.difficulty_spinbox.setEnabled(False)
+            diff = Z.gambit_dict[gambit]
+        self.difficulty_spinbox.setValue(diff)
 
 
 class AddCharacterWindow(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
@@ -644,6 +663,46 @@ class AboutWindow(QtWidgets.QDialog, About_gui.Ui_Dialog):
 
     def exec(self):
         super().exec()
+
+
+class CustomGambitWindow(QtWidgets.QDialog, custom_gambit.Ui_Dialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setupUi(self)
+
+        gambit_string = ""
+        gambit_string += self.get_default_gambits()
+        gambit_string += self.get_custom_gambits()
+
+        self.Gambits.setText(gambit_string)
+
+    def get_default_gambits(self):
+
+        gambits = Z.DEFAULT_GAMBITS
+        # print(gambits)
+        gambit_string = ""
+        for gambit, difficulty in gambits:
+            string = str(gambit) + " : " + str(difficulty) + ",\n"
+            gambit_string += string
+        return gambit_string
+
+    def get_custom_gambits(self):
+        if 'gambits' in Z.config['Custom']:
+            gambits = Z.config["Custom"]["gambits"]
+            gambit_string = gambits
+            return gambit_string
+        else:
+            return ""
+
+    def exec(self):
+        super().exec()
+
+        if self.result():
+            gambit_string = self.Gambits.toPlainText()
+            try:
+                current_config.process_custom_gambits(gambit_string)
+            except Exception as e:
+                QtWidgets.QMessageBox.warning(self, "Error", "Unable to parse custom gambits\n" + str(e))
 
 
 class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):

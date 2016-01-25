@@ -13,7 +13,7 @@ ITEMS = (
     "Modify Initiative",
     "Remove from combat",
 )
-GAMBITS = (
+DEFAULT_GAMBITS = (
     ("Disarm", 3),
     ("Unhorse", 4),
     ("Distract(3)", 3),
@@ -34,14 +34,19 @@ character_list = []  # type: List[Character]
 player_names = []
 
 # set up gambits
-gambit_dict = {}
-gambit_names = []
 
-for gambit in GAMBITS:
-    name = gambit[0]
-    cost = gambit[1]
-    gambit_names.append(name)
-    gambit_dict[name] = cost
+
+def setup_default_gambits():
+    default_gambits = {}
+    for gambit in DEFAULT_GAMBITS:
+        name = gambit[0]
+        cost = gambit[1]
+        default_gambits[name] = cost
+    return default_gambits
+
+
+gambit_dict = setup_default_gambits()
+gambits = []
 
 action_dict = {}
 action_names = []
@@ -104,7 +109,12 @@ class Character:
             delayed=False,
             legendary_size: bool = False,
     ):
-        self.name = name
+        if name:
+            self.name = name
+        else:
+            global character_list
+            number = str(len(character_list) + 1)
+            self.name = "Character #" + number
         self.initiative = initiative
         self.inert_initiative = inert
         self.crash_state = crashed
@@ -245,6 +255,7 @@ def end_turn():
     except TypeError:
         # save_combat(os.path.join(os.path.dirname(__file__), '__resume.txt'))
         auto_save()
+    check_for_end_of_round()
 
 
 def print_table(blank_space=False):
@@ -390,21 +401,22 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
         attacker.crash_counter += 1
 
     end_turn()
-    if check_for_end_of_round():
-        reset_has_gone()
+    # if check_for_end_of_round():
+    #     reset_has_gone()
 
 
 def check_for_end_of_round():
     global character_list
     for character in character_list:
         if not character.has_gone:
-            return False
+            return
     else:
         try:
             if config['Settings']['Auto-save'] == 'Every Round':
                 auto_save()
         except TypeError:
             pass
+        reset_has_gone()
         return True
 
 
@@ -502,10 +514,11 @@ def remove_from_combat(character_index):
     del character_list[character_index]
 
 
-def handle_gambits(combatants, success: bool, gambit: str, trick=(False, 0, 0), ):
+def handle_gambits(combatants, success: bool, gambit: str, trick=(False, 0, 0), diff: int = 0):
     attacker = character_list[combatants[0]]
     defender = character_list[combatants[1]]
-    cost = gambit_dict[gambit] + 1
+
+    cost = diff + 1
 
     begin_turn(attacker)
     handle_tricks(combatants, *trick)
@@ -561,7 +574,7 @@ def main():
     global character_list
 
     add_players()
-    ui = user_interface.UI(ITEMS, GAMBITS)
+    ui = user_interface.UI(ITEMS, DEFAULT_GAMBITS)
 
     while True:
         clear_screen()
@@ -698,8 +711,8 @@ def skip_turn():
 
     end_turn()
 
-    if check_for_end_of_round():
-        reset_has_gone()
+    # if check_for_end_of_round():
+    #     reset_has_gone()
 
 
 def load_combat_from_text(file_path):

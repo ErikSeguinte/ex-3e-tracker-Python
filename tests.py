@@ -14,14 +14,13 @@ def simulate_round(turns):
 class MyTest(unittest.TestCase):
     def setUp(self):
         print("*****")
-        config.TrackerConfig(os.path.dirname(sys.executable))
-        # print(Z.config)
+        config.TrackerConfig('')
 
         Z.set_up_test()
 
     def test_for_crash(self):
         """check_for_crash should return known values for known inputs."""
-        print("Testing for Crash")
+
         known_values = (
             (0, 2, True),
             (1, 2, False),
@@ -57,8 +56,6 @@ class MyTest(unittest.TestCase):
         )
         for damage, n_attacker_init, n_defender_init, a_crash, d_crash, has_gone, \
             tricks, in known_values:
-            # print("")
-            # print("")
 
             combatants = (0, 1)
 
@@ -116,16 +113,8 @@ class MyTest(unittest.TestCase):
             combatants = (attacker, defender)
             a, d = Z.character_list[attacker], Z.character_list[defender]
 
-            print("")
-
-            print("")
 
             Z.handle_withering(combatants, damage, trick)
-            print(attacker, "attacks", defender)
-
-            print("")
-
-            print("")
 
             self.assertEqual(d.initiative, n_def_init)
             self.assertEqual(a.crash_state, a_crash)
@@ -334,7 +323,6 @@ class MyTest(unittest.TestCase):
             self.assertEqual(d.onslaught, onslaught, str(d.name) + "'s onslaught should be " + str(onslaught))
             self.assertEqual(a.onslaught, 0)
             Z.sort_table()
-            print("")
 
         # Testing decisive attacks
         Z.character_list = []
@@ -352,7 +340,6 @@ class MyTest(unittest.TestCase):
             self.assertEqual(d.onslaught, onslaught, str(d.name) + "'s onslaught should be " + str(onslaught))
             self.assertEqual(a.onslaught, 0)
             Z.sort_table()
-            print("")
 
         # Testing Gambits
         Z.character_list = []
@@ -370,7 +357,6 @@ class MyTest(unittest.TestCase):
             self.assertEqual(d.onslaught, onslaught, str(d.name) + "'s onslaught should be " + str(onslaught))
             self.assertEqual(a.onslaught, 0)
             Z.sort_table()
-            print("")
 
     def test_legendary_size(self):
         Z.reset_combat()
@@ -397,9 +383,9 @@ class MyTest(unittest.TestCase):
                 damage_exceeds_10 = True
             else:
                 damage_exceeds_10 = False
-            Z.print_table(True)
+
             Z.handle_withering((0, 1), damage, damage_exceeds_10=damage_exceeds_10)
-            Z.print_table(True)
+
             self.assertEqual(giant.initiative, g_init, "loop " + str(i))
             self.assertEqual(jack.initiative, j_init, "loop " + str(i))
             self.assertEqual(giant.crash_state, crash, "loop " + str(i))

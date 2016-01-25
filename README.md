@@ -17,7 +17,7 @@ This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written 
 *   Initiative shift keeps a character at the top of the initiative.
     `todo: Rolls join battle for NPCs. currently does not ask for JB from player, has to be added manually.`
 *   Characters that have gone this round will always be beneath those that have not,
-    but are otherwise everyone is kept in initiative order.
+    but otherwise everyone is kept in initiative order.
 *   Delaying keeps a character at the top of the initiative.
     `todo: some sort of reminder to prevent a delaying character from wasting a round`
 *   Players and NPCs can be added from a text file.
@@ -95,3 +95,8 @@ Skip flips the top character's has_gone flag to True, effectively skipping them.
 This option will ignore delaying characters. Note: This is for characters who choose
 to do nothing that interacts with initiative during their turn, not for delaying. Use
 'other action' for delaying a turn to go later in the same round.
+
+Custom Gambits that are used frequently can be added for reuse later from the edit menu.
+Use the format "Name : Difficulty", with each gambit seperated by a new line. The default
+gambits cannot be modified, they will be regenerated if deleted or changed.
+The custom gambits will be saved to the config file.
