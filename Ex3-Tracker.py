@@ -444,6 +444,8 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
             for gambit in Z.DEFAULT_GAMBITS:
                 gambit_list.append(gambit[0])
 
+        gambit_list.append('Custom Gambit')
+
         self.gambit_combo.addItems(gambit_list)
 
         self.gambit_combo.activated.connect(self.set_cost_text)
@@ -499,12 +501,17 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
     def set_cost_text(self):
         gambit = self.gambit_combo.currentText()
 
-        if gambit != "Standard Decisive":
-            difficulty = Z.gambit_dict[gambit]
-            text = "Difficulty: " + str(difficulty)
+        if gambit == "Standard Decisive":
+            self.difficulty_spinbox.setEnabled(False)
+            diff = 0
+
+        elif gambit == 'Custom Gambit':
+            self.difficulty_spinbox.setEnabled(True)
+
         else:
-            text = ""
-        self.init_cost_label.setText(text)
+            self.difficulty_spinbox.setEnabled(False)
+            diff = Z.gambit_dict[gambit]
+        self.difficulty_spinbox.setValue(diff)
 
 
 class AddCharacterWindow(QtWidgets.QDialog, new_character_ui.Ui_Dialog):
