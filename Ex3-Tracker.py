@@ -479,8 +479,9 @@ class DecisiveWindow(QtWidgets.QDialog, decisive_gui.Ui_Dialog):
             # prepare for handle_decisive
             values = ((attacker, defender), success, trick)
         else:
+            a = Z.character_list[attacker]
             # prepare for handle_gambit
-            if self.defender.initiative > Z.gambit_dict[gambit_type]:
+            if a.initiative > Z.gambit_dict[gambit_type]:
                 values = ((attacker, defender), success, gambit_type, trick)
             else:
                 QtWidgets.QMessageBox.warning(self, "Message",
