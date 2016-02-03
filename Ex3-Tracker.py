@@ -36,6 +36,14 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionSave_to_Text_File.triggered.connect(self.save_to_text)
         self.actionPreferences.triggered.connect(self.preferences_window)
         self.actionCustom_Gambits.triggered.connect(self.custom_gambit_window)
+        self.actionChoose_Font.triggered.connect(self.choose_font)
+
+    def choose_font(self):
+        font, ok = QtWidgets.QFontDialog.getFont()
+        if ok:
+            # self.lbl.setFont(font)
+            QtWidgets.QApplication.setFont(font)
+            self.setup_model()
 
     def custom_gambit_window(self):
         CustomGambitWindow().exec()
