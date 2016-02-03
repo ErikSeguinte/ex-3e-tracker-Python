@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'C:\Users\Primefactorx01\Documents\Python\ex-3e-init-tracker\lib\main_window.ui'
+# Form implementation generated from reading ui file '/Users/HornetBookstore/PycharmProjects/ex-3e-init-tracker/lib/main_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 588, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 588, 22))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -102,6 +102,8 @@ class Ui_MainWindow(object):
         self.actionSave_to_Text_File.setObjectName("actionSave_to_Text_File")
         self.actionCustom_Gambits = QtWidgets.QAction(MainWindow)
         self.actionCustom_Gambits.setObjectName("actionCustom_Gambits")
+        self.actionChoose_Font = QtWidgets.QAction(MainWindow)
+        self.actionChoose_Font.setObjectName("actionChoose_Font")
         self.menuFile.addAction(self.actionSave_Combat)
         self.menuFile.addAction(self.actionSave_to_Text_File)
         self.menuFile.addSeparator()
@@ -114,6 +116,7 @@ class Ui_MainWindow(object):
         self.menuEdit.addSeparator()
         self.menuEdit.addAction(self.actionCustom_Gambits)
         self.menuEdit.addSeparator()
+        self.menuEdit.addAction(self.actionChoose_Font)
         self.menuEdit.addAction(self.actionPreferences)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionReadme)
@@ -153,3 +156,4 @@ class Ui_MainWindow(object):
         self.actionResume_Combat.setText(_translate("MainWindow", "Resume Combat"))
         self.actionSave_to_Text_File.setText(_translate("MainWindow", "Save to Text File"))
         self.actionCustom_Gambits.setText(_translate("MainWindow", "Custom Gambits"))
+        self.actionChoose_Font.setText(_translate("MainWindow", "Choose Font"))
