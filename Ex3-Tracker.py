@@ -694,7 +694,6 @@ class CustomGambitWindow(QtWidgets.QDialog, custom_gambit.Ui_Dialog):
         else:
             return ""
 
-
     def exec(self):
         super().exec()
 

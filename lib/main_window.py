@@ -153,4 +153,3 @@ class Ui_MainWindow(object):
         self.actionResume_Combat.setText(_translate("MainWindow", "Resume Combat"))
         self.actionSave_to_Text_File.setText(_translate("MainWindow", "Save to Text File"))
         self.actionCustom_Gambits.setText(_translate("MainWindow", "Custom Gambits"))
-
