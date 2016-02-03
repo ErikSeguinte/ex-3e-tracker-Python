@@ -45,6 +45,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             # QtWidgets.QApplication.setFont(font)
 
             self.tableView.setFont(font)
+            print(font.toString())
             self.setup_model()
 
     def custom_gambit_window(self):
