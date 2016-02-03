@@ -42,7 +42,9 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         font, ok = QtWidgets.QFontDialog.getFont()
         if ok:
             # self.lbl.setFont(font)
-            QtWidgets.QApplication.setFont(font)
+            # QtWidgets.QApplication.setFont(font)
+
+            self.tableView.setFont(font)
             self.setup_model()
 
     def custom_gambit_window(self):

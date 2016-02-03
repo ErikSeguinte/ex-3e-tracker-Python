@@ -2,9 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+## Added
+- Ability to change font and font size of application.
+- ability to change font in main window.
+
 ## [0.3.0] 2016-01-25
 ### Added
 - Custom Gambits can now be added from the Edit menu. These are added to the config file.
+-  "Custom Gambit" option now included in decisive window where you are allowed to enter your own difficulty.
 - Onslaught Penalty appears in the main window.
 
 ### Fixed
