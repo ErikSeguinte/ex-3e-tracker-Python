@@ -20,6 +20,14 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         # self.statusBar()
         character_list = Z.character_list
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
+        try:
+            fontstring = Z.config['Settings']['tracker Font']
+            font = QtGui.QFont()
+            font.fromString(fontstring)
+            self.tableView.setFont(font)
+
+        except:
+            pass
 
         self.setup_model()
 
@@ -27,16 +35,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.application_path = path
         self.save_path = path
 
-        try:
-            fontstring = Z.config['Settings']['tracker Font']
-            print(fontstring)
-            font = QtGui.QFont()
-            font.fromString(fontstring)
-            print(font.toString())
-            self.tableView.setFont(font)
-            print('Font Set')
-        except:
-            print('DUDE')
+
 
     def setup_menu_items(self):
         self.actionLoad_Players.triggered.connect(self.add_players_from_file)
@@ -251,7 +250,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         Z.sort_table()
         self.model = QtGui.QStandardItemModel(len(character_list), 6, self)
 
-        self.model.setHeaderData(0, QtCore.Qt.Horizontal, "name")
+        self.model.setHeaderData(0, QtCore.Qt.Horizontal, "Name")
         self.model.setHeaderData(1, QtCore.Qt.Horizontal, "Initiative")
         self.model.setHeaderData(2, QtCore.Qt.Horizontal, "Crash")
         self.model.setHeaderData(3, QtCore.Qt.Horizontal, "Onslaught")
@@ -746,6 +745,15 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
             self.setup_values()
 
         self.choose_font_btn.clicked.connect(self.change_font)
+        self.Reset_Button_btn.clicked.connect(self.reset_fonts)
+
+    def reset_fonts(self):
+        Z.config.remove_option('Settings', 'font')
+        Z.config.remove_option('Settings', 'tracker font')
+        current_config.save_config()
+        QtWidgets.QMessageBox.warning(None, "Message",
+                                      "Please restart this application to return to your system default fonts.")
+        self.close()
 
     def change_font(self):
         font, ok = QtWidgets.QFontDialog.getFont()
@@ -754,8 +762,6 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
             global app
             QtWidgets.QApplication.setFont(font)
             self.new_font = font.toString()
-
-
 
     def exec(self):
         super().exec()
@@ -825,13 +831,5 @@ window = MainWindow(application_path)
 
 
 window.show()
-try:
-    fontstring = Z.config['Settings']['tracker Font']
-    print(fontstring)
-    font = QtGui.QFont()
-    font.fromString(fontstring)
-    print(font)
-    window.tableView.setFont(font)
-except:
-    print('DUDE')
+
 sys.exit(app.exec())

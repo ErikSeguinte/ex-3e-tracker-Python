@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - This font change is saved to the config file. 
 - ability to change font in main window.
 
+## Fixed
+- changed "name" to "Name" in the main tracker table header.
+
 ## [0.3.0] 2016-01-25
 ### Added
 - Custom Gambits can now be added from the Edit menu. These are added to the config file.
