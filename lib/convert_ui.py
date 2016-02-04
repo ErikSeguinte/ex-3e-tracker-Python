@@ -1,11 +1,14 @@
 from PyQt5 import uic
-import sys, re
+import sys, re, subprocess, datetime
 import os
 
 path = os.getcwd()
 
 # uic.compileUiDir(path)
 print(path)
+def get_datetime(filename: str):
+    timestamp = os.path.getmtime(filename)
+    return datetime.datetime.fromtimestamp(timestamp)
 
 file_list = os.listdir(path)
 
@@ -25,3 +28,15 @@ for file in ui_files:
         with open(match,'w',encoding='utf-8') as new_file:
             uic.compileUi(file,new_file)
             print(True)
+
+        subprocess.run(['hg','add',match,'-y'])
+        continue
+
+    ui_time = get_datetime(file)
+    py_time = get_datetime(match)
+
+    print(ui_time < py_time)
+
+
+
+
