@@ -4,7 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ## Added
-- Ability to change font and font size of application.
+- Ability to change font and font size of application. 
+  - This font change is saved to the config file. 
 - ability to change font in main window.
 
 ## [0.3.0] 2016-01-25

@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 588, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 588, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -156,5 +156,4 @@ class Ui_MainWindow(object):
         self.actionResume_Combat.setText(_translate("MainWindow", "Resume Combat"))
         self.actionSave_to_Text_File.setText(_translate("MainWindow", "Save to Text File"))
         self.actionCustom_Gambits.setText(_translate("MainWindow", "Custom Gambits"))
-        self.actionChoose_Font.setText(_translate("MainWindow", "Choose Font"))
-
+        self.actionChoose_Font.setText(_translate("MainWindow", "Change Table Font"))

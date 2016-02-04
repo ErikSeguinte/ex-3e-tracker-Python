@@ -150,7 +150,7 @@
      <x>0</x>
      <y>0</y>
      <width>588</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -245,7 +245,7 @@
   </action>
   <action name="actionChoose_Font">
    <property name="text">
-    <string>Choose Font</string>
+    <string>Change Table Font</string>
    </property>
   </action>
  </widget>

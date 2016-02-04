@@ -20,10 +20,23 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         # self.statusBar()
         character_list = Z.character_list
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
+
         self.setup_model()
+
         self.window2 = None
         self.application_path = path
         self.save_path = path
+
+        try:
+            fontstring = Z.config['Settings']['tracker Font']
+            print(fontstring)
+            font = QtGui.QFont()
+            font.fromString(fontstring)
+            print(font.toString())
+            self.tableView.setFont(font)
+            print('Font Set')
+        except:
+            print('DUDE')
 
     def setup_menu_items(self):
         self.actionLoad_Players.triggered.connect(self.add_players_from_file)
@@ -45,7 +58,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             # QtWidgets.QApplication.setFont(font)
 
             self.tableView.setFont(font)
-            print(font.toString())
+            Z.config['Settings']['tracker font'] = font.toString()
+            current_config.save_config()
             self.setup_model()
 
     def custom_gambit_window(self):
@@ -721,6 +735,8 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         super().__init__()
         self.setupUi(self)
         self.config = Z.config['Settings']
+        self.new_font = None
+        self.old_font = QtWidgets.QApplication.font()
         try:
             self.setup_values()
         except Exception:
@@ -729,11 +745,25 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
             self.config = Z.config['Settings']
             self.setup_values()
 
+        self.choose_font_btn.clicked.connect(self.change_font)
+
+    def change_font(self):
+        font, ok = QtWidgets.QFontDialog.getFont()
+        if ok:
+            # self.lbl.setFont(font)
+            global app
+            QtWidgets.QApplication.setFont(font)
+            self.new_font = font.toString()
+
+
+
     def exec(self):
         super().exec()
 
         if self.result():
             self.set_config()
+        else:
+            QtWidgets.QApplication.setFont(self.old_font)
 
     def setup_values(self):
         self.set_auto_save()
@@ -758,6 +788,7 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         self.config['Auto-save'] = auto_save
         self.config['Join Battle automatically adds 3'] = jb_add_3
         self.config['Reset includes players'] = reset_players
+        self.config['Font'] = self.new_font
 
         global current_config
         current_config.save_config()
@@ -777,10 +808,30 @@ current_config = TrackerConfig(application_path)
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
 app = QtWidgets.QApplication(sys.argv)
+
+try:
+    fontstring = Z.config['Settings']['Font']
+    font = QtGui.QFont()
+    font.fromString(fontstring)
+    app.setFont(font)
+except:
+    pass
+
 # Z.set_up_test()
 
 window = MainWindow(application_path)
 # QtWidgets.QMessageBox.warning(window, "Message", config_path)
 
+
+
 window.show()
+try:
+    fontstring = Z.config['Settings']['tracker Font']
+    print(fontstring)
+    font = QtGui.QFont()
+    font.fromString(fontstring)
+    print(font)
+    window.tableView.setFont(font)
+except:
+    print('DUDE')
 sys.exit(app.exec())
