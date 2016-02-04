@@ -18,25 +18,31 @@ ui_files = [string for string in file_list if re.match(r'.*\.ui', string)]
 py_files = [string for string in file_list if
             re.match(r'.*\.py', string) and not (string == '__init__.py' or string == 'convert_ui.py')]
 
+ui_files.sort()
+
+py_files.sort()
+
 print(ui_files)
 print(py_files)
 
+conversion = False
 for file in ui_files:
     name = file.split('.')[0]
     match = name + '.py'
     if match not in py_files:
         with open(match,'w',encoding='utf-8') as new_file:
             uic.compileUi(file,new_file)
-            print(True)
 
         subprocess.run(['hg','add',match,'-y'])
+        conversion = True
         continue
 
     ui_time = get_datetime(file)
     py_time = get_datetime(match)
 
-    print(ui_time < py_time)
+    if py_time < ui_time:
+        with open(match, 'w', encoding='utf-8') as new_file:
+            uic.compileUi(file, new_file)
+        conversion = True
 
-
-
-
+print(conversion)
