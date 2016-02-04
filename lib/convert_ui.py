@@ -5,14 +5,17 @@ import os
 path = os.getcwd()
 
 # uic.compileUiDir(path)
-print(path)
+# print(path)
+
+
 def get_datetime(filename: str):
     timestamp = os.path.getmtime(filename)
     return datetime.datetime.fromtimestamp(timestamp)
 
+
 file_list = os.listdir(path)
 
-print(file_list)
+
 
 ui_files = [string for string in file_list if re.match(r'.*\.ui', string)]
 py_files = [string for string in file_list if
@@ -22,18 +25,16 @@ ui_files.sort()
 
 py_files.sort()
 
-print(ui_files)
-print(py_files)
 
 conversion = False
 for file in ui_files:
     name = file.split('.')[0]
     match = name + '.py'
     if match not in py_files:
-        with open(match,'w',encoding='utf-8') as new_file:
-            uic.compileUi(file,new_file)
+        with open(match, 'w', encoding='utf-8') as new_file:
+            uic.compileUi(file, new_file)
 
-        subprocess.run(['hg','add',match,'-y'])
+        subprocess.run(['hg', 'add', match, '-y'])
         conversion = True
         continue
 
