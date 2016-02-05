@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>488</width>
-    <height>144</height>
+    <width>436</width>
+    <height>147</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,6 +20,12 @@
       <layout class="QFormLayout" name="formLayout">
        <item row="0" column="0">
         <widget class="QLabel" name="label">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>Auto-save frequency</string>
          </property>
@@ -27,6 +33,12 @@
        </item>
        <item row="0" column="1">
         <widget class="QComboBox" name="auto_save_comboBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <item>
           <property name="text">
            <string>Every Turn</string>
@@ -48,6 +60,12 @@
      </item>
      <item>
       <widget class="QCheckBox" name="reset_checkBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Reset includes Players</string>
        </property>
@@ -55,6 +73,12 @@
      </item>
      <item>
       <widget class="QCheckBox" name="jb_checkBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Join Battle automatically adds 3</string>
        </property>
@@ -65,7 +89,7 @@
        <item>
         <widget class="QPushButton" name="Reset_Button_btn">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -78,7 +102,7 @@
        <item>
         <widget class="QPushButton" name="choose_font_btn">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>

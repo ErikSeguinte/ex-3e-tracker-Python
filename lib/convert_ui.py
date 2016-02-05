@@ -47,5 +47,6 @@ for file in ui_files:
             uic.compileUi(file, new_file)
 
         conversion = True
+        print('Converting ' + str(file))
 
 print(conversion)

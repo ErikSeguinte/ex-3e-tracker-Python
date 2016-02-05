@@ -25,9 +25,10 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             font = QtGui.QFont()
             font.fromString(fontstring)
             self.tableView.setFont(font)
+            self.tableView.horizontalHeader().setFont(font)
 
         except:
-            pass
+            raise
 
         self.setup_model()
 
@@ -96,6 +97,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             QtWidgets.QMessageBox.warning(self.window2, "Message",
                                           ("Unable to load combat.This may be due to the file being saved on "
                                            "an older version or choosing an invalid file."))
+            self.tableView.resizeRowsToContents()
+            self.tableView.resizeColumnsToContents()
 
     def save_combat(self):
         fname = QtWidgets.QFileDialog.getSaveFileName(None, 'Open file', self.save_path, "Save File (*.sav)")
@@ -259,6 +262,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         self.table = self.tableView
         self.tableView.setModel(self.model)
+
         character_list = Z.character_list
 
         # Z.sort_table()
