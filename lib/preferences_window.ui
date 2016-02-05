@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>387</width>
-    <height>121</height>
+    <width>488</width>
+    <height>144</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,30 +44,32 @@
          </item>
         </widget>
        </item>
-       <item row="1" column="1">
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QCheckBox" name="jb_checkBox">
-           <property name="text">
-            <string>Join Battle automatically adds 3</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="reset_checkBox">
-           <property name="text">
-            <string>Reset includes Players</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="reset_checkBox">
+       <property name="text">
+        <string>Reset includes Players</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="jb_checkBox">
+       <property name="text">
+        <string>Join Battle automatically adds 3</string>
+       </property>
+      </widget>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QPushButton" name="Reset_Button_btn">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>Reset Fonts</string>
          </property>
@@ -75,6 +77,12 @@
        </item>
        <item>
         <widget class="QPushButton" name="choose_font_btn">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>Choose Font</string>
          </property>

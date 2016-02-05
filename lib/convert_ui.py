@@ -36,6 +36,7 @@ for file in ui_files:
 
         subprocess.run(['hg', 'add', match, '-y'])
         conversion = True
+        print('Converting ' + str(file))
         continue
 
     ui_time = get_datetime(file)
@@ -44,6 +45,7 @@ for file in ui_files:
     if py_time < ui_time:
         with open(match, 'w', encoding='utf-8') as new_file:
             uic.compileUi(file, new_file)
+
         conversion = True
 
 print(conversion)
