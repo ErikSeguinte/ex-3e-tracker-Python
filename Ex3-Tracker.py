@@ -320,7 +320,13 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.setup_model()
 
     def preferences_window(self):
-        PreferencesWindow().exec()
+        result = PreferencesWindow().exec()
+
+        if result:
+            self.resize(self.sizeHint())
+            self.setup_model()
+
+
 
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
@@ -736,6 +742,7 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         self.config = Z.config['Settings']
         self.new_font = None
         self.old_font = QtWidgets.QApplication.font()
+        self.font_change = False
         try:
             self.setup_values()
         except Exception:
@@ -762,12 +769,15 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
             global app
             QtWidgets.QApplication.setFont(font)
             self.new_font = font.toString()
+            self.resize(self.sizeHint())
+            self.font_change = True
 
     def exec(self):
         super().exec()
 
         if self.result():
             self.set_config()
+            return self.font_change
         else:
             QtWidgets.QApplication.setFont(self.old_font)
 
@@ -802,9 +812,12 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
 
 config_name = 'Ex3-Tracker.cfg'
 
+version = [0, 4, 0]
+
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
     application_path = os.path.dirname(sys.executable)
+    version.append('alpha')
 elif __file__:
     application_path = os.path.dirname(__file__)
 

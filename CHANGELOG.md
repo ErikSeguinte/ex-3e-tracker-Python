@@ -11,6 +11,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Fixed
 - changed "name" to "Name" in the main tracker table header.
 
+## Changed
+### Mac
+- Changed button style so they can resize. (Sorry rounded corner fans.)
+- Main window buttons resize on Mac
+
 ## [0.3.0] 2016-01-25
 ### Added
 - Custom Gambits can now be added from the Edit menu. These are added to the config file.
