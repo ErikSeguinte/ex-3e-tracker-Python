@@ -27,8 +27,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.tableView.setFont(font)
             self.tableView.horizontalHeader().setFont(font)
 
-        except:
-            raise
+        except KeyError:
+            pass
 
         self.setup_model()
 
@@ -837,13 +837,15 @@ try:
     font = QtGui.QFont()
     font.fromString(fontstring)
     app.setFont(font)
-except:
+except KeyError:
     pass
 
 # Z.set_up_test()
 
 window = MainWindow(application_path)
 # QtWidgets.QMessageBox.warning(window, "Message", config_path)
+
+# app.setStyle('Fusion')
 
 
 
