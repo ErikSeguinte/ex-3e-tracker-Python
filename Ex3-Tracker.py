@@ -20,7 +20,18 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         # self.statusBar()
         character_list = Z.character_list
         self.model = QtGui.QStandardItemModel(len(character_list), 5, self)
+        try:
+            fontstring = Z.config['Settings']['tracker Font']
+            font = QtGui.QFont()
+            font.fromString(fontstring)
+            self.tableView.setFont(font)
+            self.tableView.horizontalHeader().setFont(font)
+
+        except KeyError:
+            pass
+
         self.setup_model()
+
         self.window2 = None
         self.application_path = path
         self.save_path = path
@@ -36,6 +47,18 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionSave_to_Text_File.triggered.connect(self.save_to_text)
         self.actionPreferences.triggered.connect(self.preferences_window)
         self.actionCustom_Gambits.triggered.connect(self.custom_gambit_window)
+        self.actionChoose_Font.triggered.connect(self.choose_font)
+
+    def choose_font(self):
+        font, ok = QtWidgets.QFontDialog.getFont()
+        if ok:
+            # self.lbl.setFont(font)
+            # QtWidgets.QApplication.setFont(font)
+
+            self.tableView.setFont(font)
+            Z.config['Settings']['tracker font'] = font.toString()
+            current_config.save_config()
+            self.setup_model()
 
     def custom_gambit_window(self):
         CustomGambitWindow().exec()
@@ -72,6 +95,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             QtWidgets.QMessageBox.warning(self.window2, "Message",
                                           ("Unable to load combat.This may be due to the file being saved on "
                                            "an older version or choosing an invalid file."))
+            self.tableView.resizeRowsToContents()
+            self.tableView.resizeColumnsToContents()
 
     def save_combat(self):
         fname = QtWidgets.QFileDialog.getSaveFileName(None, 'Open file', self.save_path, "Save File (*.sav)")
@@ -226,7 +251,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         Z.sort_table()
         self.model = QtGui.QStandardItemModel(len(character_list), 6, self)
 
-        self.model.setHeaderData(0, QtCore.Qt.Horizontal, "name")
+        self.model.setHeaderData(0, QtCore.Qt.Horizontal, "Name")
         self.model.setHeaderData(1, QtCore.Qt.Horizontal, "Initiative")
         self.model.setHeaderData(2, QtCore.Qt.Horizontal, "Crash")
         self.model.setHeaderData(3, QtCore.Qt.Horizontal, "Onslaught")
@@ -235,6 +260,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         self.table = self.tableView
         self.tableView.setModel(self.model)
+
         character_list = Z.character_list
 
         # Z.sort_table()
@@ -296,7 +322,11 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.setup_model()
 
     def preferences_window(self):
-        PreferencesWindow().exec()
+        result = PreferencesWindow().exec()
+
+        if result:
+            self.resize(self.sizeHint())
+            self.setup_model()
 
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
@@ -710,6 +740,9 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         super().__init__()
         self.setupUi(self)
         self.config = Z.config['Settings']
+        self.new_font = None
+        self.old_font = QtWidgets.QApplication.font()
+        self.font_change = False
         try:
             self.setup_values()
         except Exception:
@@ -718,11 +751,35 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
             self.config = Z.config['Settings']
             self.setup_values()
 
+        self.choose_font_btn.clicked.connect(self.change_font)
+        self.Reset_Button_btn.clicked.connect(self.reset_fonts)
+
+    def reset_fonts(self):
+        Z.config.remove_option('Settings', 'font')
+        Z.config.remove_option('Settings', 'tracker font')
+        current_config.save_config()
+        QtWidgets.QMessageBox.warning(None, "Message",
+                                      "Please restart this application to return to your system default fonts.")
+        self.close()
+
+    def change_font(self):
+        font, ok = QtWidgets.QFontDialog.getFont()
+        if ok:
+            # self.lbl.setFont(font)
+            global app
+            QtWidgets.QApplication.setFont(font)
+            self.new_font = font.toString()
+            self.resize(self.sizeHint())
+            self.font_change = True
+
     def exec(self):
         super().exec()
 
         if self.result():
             self.set_config()
+            return self.font_change
+        else:
+            QtWidgets.QApplication.setFont(self.old_font)
 
     def setup_values(self):
         self.set_auto_save()
@@ -747,6 +804,7 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         self.config['Auto-save'] = auto_save
         self.config['Join Battle automatically adds 3'] = jb_add_3
         self.config['Reset includes players'] = reset_players
+        self.config['Font'] = self.new_font
 
         global current_config
         current_config.save_config()
@@ -754,9 +812,12 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
 
 config_name = 'Ex3-Tracker.cfg'
 
+version = [0, 4, 0]
+
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
     application_path = os.path.dirname(sys.executable)
+    version.append('alpha')
 elif __file__:
     application_path = os.path.dirname(__file__)
 
@@ -766,10 +827,24 @@ current_config = TrackerConfig(application_path)
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
 app = QtWidgets.QApplication(sys.argv)
+
+try:
+    fontstring = Z.config['Settings']['Font']
+    font = QtGui.QFont()
+    font.fromString(fontstring)
+    app.setFont(font)
+except KeyError:
+    pass
+
 # Z.set_up_test()
 
 window = MainWindow(application_path)
 # QtWidgets.QMessageBox.warning(window, "Message", config_path)
 
+# app.setStyle('Fusion')
+
+
+
 window.show()
+
 sys.exit(app.exec())
