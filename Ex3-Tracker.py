@@ -694,6 +694,7 @@ class AboutWindow(QtWidgets.QDialog, About_gui.Ui_Dialog):
     def __init__(self, parent=None, ):
         super().__init__()
         self.setupUi(self)
+        self.version_label.setText('Version ' + '.'.join([str(x) for x in version]))
 
     def exec(self):
         super().exec()
@@ -821,9 +822,10 @@ version = [0, 4, 0]
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
     application_path = os.path.dirname(sys.executable)
-    version.append('alpha')
+
 elif __file__:
     application_path = os.path.dirname(__file__)
+    version.append('alpha')
 
 config_path = os.path.join(application_path, config_name)
 

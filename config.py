@@ -2,6 +2,7 @@ import configparser, os
 import ZeltInit
 
 
+
 class TrackerConfig:
     def __init__(self, path):
         self.application_path = path
@@ -28,6 +29,8 @@ class TrackerConfig:
     def create_config(self):
         """Create a config file
         """
+        self.config.add_section('General')
+        self.config.set('General', 'version', '.'.join([str(number) for number in version]))
         self.config.add_section("Settings")
         self.config.set("Settings", "End of round alert", 'False')
         self.config.set("Settings", "Reset includes players", 'False')

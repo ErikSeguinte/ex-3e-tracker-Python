@@ -2,11 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Known Issues
+### General
+- If you have both a custom overall font and a different tracker table font, the overall font will over ride the tracker table font on start up.
+### Mac
+- The default native style doesn't appear to like resizing elements when font size is increased. Combo boxes and buttons will stay the same size regardless of how big the font it inside of it.
+
 ## [Unreleased]
 ## Added
 - Ability to change font and font size of application. 
   - This font change is saved to the config file. 
 - ability to change font in main window.
+- Aim action in 'other actions' window.
 
 ## Fixed
 - changed "name" to "Name" in the main tracker table header.
@@ -16,16 +23,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Changed button style so they can resize. (Sorry rounded corner fans.)
 - Main window buttons resize on Mac
 
+## Added
+- Version info to about window
+
 ## [0.3.0] 2016-01-25
 ### Added
 - Custom Gambits can now be added from the Edit menu. These are added to the config file.
--  "Custom Gambit" option now included in decisive window where you are allowed to enter your own difficulty.
+- "Custom Gambit" option now included in decisive window where you are allowed to enter your own difficulty.
 - Onslaught Penalty appears in the main window.
 
 ### Fixed
-- Blank names were crashing the join battle window, and probably anywhere else where the
-    name was explicitly called. Blank names are no longer allowed to be created. They
-    will instead default to "Character #X"
+- Blank names were crashing the join battle window, and probably anywhere else where the name was explicitly called. Blank names are no longer allowed to be created. They will instead default to "Character #X"
 
 - Mistakenly checked defender's initiative when determining if gambit would crash attacker.
 
