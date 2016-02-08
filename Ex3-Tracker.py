@@ -829,9 +829,9 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         else:
             if platform.system() == 'Windows':
                 app.setStyle('WindowsVista')
-                app.style
-            else:
-                print(platform.system())
+
+            elif platform.system() == 'Darwin':
+                app.setStyle('Macintosh')
 
         global current_config
         current_config.save_config()
