@@ -829,10 +829,11 @@ elif __file__:
 
 config_path = os.path.join(application_path, config_name)
 
-current_config = TrackerConfig(application_path)
+current_config = TrackerConfig(application_path, version)
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
 app = QtWidgets.QApplication(sys.argv)
+app.setStyle('Fusion')
 
 try:
     fontstring = Z.config['Settings']['Font']
@@ -847,7 +848,7 @@ except KeyError:
 window = MainWindow(application_path)
 # QtWidgets.QMessageBox.warning(window, "Message", config_path)
 
-# app.setStyle('Fusion')
+
 
 
 
