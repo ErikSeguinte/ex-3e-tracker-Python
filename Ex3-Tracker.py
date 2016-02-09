@@ -871,7 +871,17 @@ window = MainWindow(application_path)
 # QtWidgets.QMessageBox.warning(window, "Message", config_path)
 
 
+style = Z.config['Settings'].get('Style','default')
 
+
+if style == 'Fusion':
+    app.setStyle('Fusion')
+else:
+    if platform.system() == 'Windows':
+        app.setStyle('WindowsVista')
+
+    elif platform.system() == 'Darwin':
+        app.setStyle('Macintosh')
 
 
 window.show()
