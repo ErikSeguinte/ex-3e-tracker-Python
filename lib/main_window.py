@@ -210,3 +210,4 @@ class Ui_MainWindow(object):
         self.actionSave_to_Text_File.setText(_translate("MainWindow", "Save to Text File"))
         self.actionCustom_Gambits.setText(_translate("MainWindow", "Custom Gambits"))
         self.actionChoose_Font.setText(_translate("MainWindow", "Change Table Font"))
+

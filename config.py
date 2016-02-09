@@ -2,12 +2,18 @@ import configparser, os
 import ZeltInit
 
 
+
 class TrackerConfig:
-    def __init__(self, path):
+    def __init__(self, path, version):
         self.application_path = path
         self.path = os.path.join(path, 'Ex3-Tracker.cfg')
         self.path = os.path.relpath(self.path)
         self.config = configparser.ConfigParser()
+
+        self.version = version
+        self.major_version = version[0]
+        self.minor_version = version[1]
+        self.patch_version = version[2]
 
         try:
             self.config.read_file(open(self.path))
@@ -28,6 +34,11 @@ class TrackerConfig:
     def create_config(self):
         """Create a config file
         """
+        self.config.add_section('Version')
+        self.config.set('Version', 'Major', str(self.major_version))
+        self.config.set('Version', 'minor', str(self.minor_version))
+        self.config.set('Version', 'patch', str(self.patch_version))
+
         self.config.add_section("Settings")
         self.config.set("Settings", "End of round alert", 'False')
         self.config.set("Settings", "Reset includes players", 'False')

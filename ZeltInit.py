@@ -23,6 +23,7 @@ DEFAULT_GAMBITS = (
 )
 
 OTHER_ACTIONS = (
+    ("Aim", 0),
     ("Delay", 2),
     ("Disengage", 2),
     ("Withdraw", 10),

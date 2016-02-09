@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, sys
+import os, sys, platform
 from config import TrackerConfig
 
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -690,6 +690,7 @@ class AboutWindow(QtWidgets.QDialog, About_gui.Ui_Dialog):
     def __init__(self, parent=None, ):
         super().__init__()
         self.setupUi(self)
+        self.version_label.setText('Version ' + '.'.join([str(x) for x in version]))
 
     def exec(self):
         super().exec()
@@ -785,6 +786,13 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         self.set_auto_save()
         self.jb_checkBox.setChecked(self.config.getboolean('Join Battle automatically adds 3'))
         self.reset_checkBox.setChecked(self.config.getboolean('Reset includes players'))
+        style = self.config.get('Style', 'default')
+        global app
+
+        if style == 'Fusion':
+            self.style_comboBox.setCurrentIndex(1)
+        else:
+            self.style_comboBox.setCurrentIndex(0)
 
     def set_auto_save(self):
         setting = self.config['Auto-save']
@@ -804,7 +812,22 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         self.config['Auto-save'] = auto_save
         self.config['Join Battle automatically adds 3'] = jb_add_3
         self.config['Reset includes players'] = reset_players
-        self.config['Font'] = self.new_font
+        if self.new_font:
+            self.config['Font'] = self.new_font
+        style = str(self.style_comboBox.itemText(self.style_comboBox.currentIndex()))
+        print(style)
+
+        self.config['Style'] = style
+
+        global app
+        if style == 'Fusion':
+            app.setStyle('Fusion')
+        else:
+            if platform.system() == 'Windows':
+                app.setStyle('WindowsVista')
+
+            elif platform.system() == 'Darwin':
+                app.setStyle('Macintosh')
 
         global current_config
         current_config.save_config()
@@ -817,16 +840,18 @@ version = [0, 4, 0]
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
     application_path = os.path.dirname(sys.executable)
-    version.append('alpha')
+
 elif __file__:
     application_path = os.path.dirname(__file__)
+    version.append('alpha')
 
 config_path = os.path.join(application_path, config_name)
 
-current_config = TrackerConfig(application_path)
+current_config = TrackerConfig(application_path, version)
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
 app = QtWidgets.QApplication(sys.argv)
+# app.setStyle('Fusion')
 
 try:
     fontstring = Z.config['Settings']['Font']
@@ -841,8 +866,18 @@ except KeyError:
 window = MainWindow(application_path)
 # QtWidgets.QMessageBox.warning(window, "Message", config_path)
 
-# app.setStyle('Fusion')
 
+style = Z.config['Settings'].get('Style','default')
+
+
+if style == 'Fusion':
+    app.setStyle('Fusion')
+else:
+    if platform.system() == 'Windows':
+        app.setStyle('WindowsVista')
+
+    elif platform.system() == 'Darwin':
+        app.setStyle('Macintosh')
 
 
 window.show()
