@@ -4,9 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Known Issues
 ### General
+- Upgrading while keeping an old config file may cause issues. If things aren't working right, please try deleting or renaming the config file.
 - If you have both a custom overall font and a different tracker table font, the overall font will over ride the tracker table font on start up.
 ### Mac
 - The default native style doesn't appear to like resizing elements when font size is increased. Combo boxes and buttons will stay the same size regardless of how big the font it inside of it.
+  - **Workaround:** The Fusion style may work a little better. The comboboxes grow, but the labels don't.
 
 ## [Unreleased]
 ## Added
@@ -14,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - This font change is saved to the config file. 
 - ability to change font in main window.
 - Aim action in 'other actions' window.
+- ability to change the window style between a native look to QT's Fusion style. 
 
 ## Fixed
 - changed "name" to "Name" in the main tracker table header.
