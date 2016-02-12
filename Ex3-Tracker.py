@@ -840,6 +840,7 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
 config_name = 'Ex3-Tracker.cfg'
 
 version = [0, 4, 0]
+app = QtWidgets.QApplication(sys.argv)
 
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
@@ -850,12 +851,14 @@ elif __file__:
     version.append('alpha')
 
 config_path = os.path.join(application_path, config_name)
-
-current_config = TrackerConfig(application_path, version)
+default_font = QtGui.QFont()
+print(default_font.toString())
+current_config = TrackerConfig(application_path, version, default_font.toString())
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
-app = QtWidgets.QApplication(sys.argv)
+
 # app.setStyle('Fusion')
+
 
 try:
     fontstring = Z.config['Settings']['Font']
@@ -863,7 +866,7 @@ try:
     font.fromString(fontstring)
     app.setFont(font)
 except KeyError:
-    pass
+    print('Font not found')
 
 # Z.set_up_test()
 
