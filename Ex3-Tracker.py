@@ -764,7 +764,15 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         self.close()
 
     def change_font(self):
-        font, ok = QtWidgets.QFontDialog.getFont()
+        fontDialog = QtWidgets.QFontDialog()
+        system_default_font = QtGui.QFont.lastResortFont()
+        print(system_default_font.toString())
+        # if self.old_font == system_default_font:
+        #     print('Default Font!')
+        # else:
+        #     print('Not Default!')
+        fontDialog.setCurrentFont(QtGui.QFont())
+        font, ok = fontDialog.getFont(self.old_font)
         if ok:
             # self.lbl.setFont(font)
             global app
@@ -772,6 +780,11 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
             self.new_font = font.toString()
             self.resize(self.sizeHint())
             self.font_change = True
+        else:
+            print(font.toString())
+            # font.setPointSize(32)
+            # global app
+            # app.setFont(font)
 
     def exec(self):
         super().exec()
