@@ -768,10 +768,18 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         self.close()
 
     def change_font(self):
-        font, ok = QtWidgets.QFontDialog.getFont()
+        font_dialog=QtWidgets.QFontDialog()
+        fontstring = Z.config['Settings']['Font']
+        current_font = QtGui.QFont()
+        current_font.fromString(fontstring)
+
+        font_dialog.setCurrentFont(current_font)
+
+        font, ok = font_dialog.getFont()
         if ok:
             # self.lbl.setFont(font)
             global app
+            print(font.toString())
             QtWidgets.QApplication.setFont(font)
             self.new_font = font.toString()
             self.resize(self.sizeHint())
@@ -819,7 +827,7 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         if self.new_font:
             self.config['Font'] = self.new_font
         style = str(self.style_comboBox.itemText(self.style_comboBox.currentIndex()))
-        print(style)
+        # print(style)
 
         self.config['Style'] = style
 
@@ -852,7 +860,7 @@ elif __file__:
 
 config_path = os.path.join(application_path, config_name)
 default_font = QtGui.QFont()
-print(default_font.toString())
+# print(default_font.toString())
 current_config = TrackerConfig(application_path, version, default_font.toString())
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
@@ -864,6 +872,7 @@ try:
     fontstring = Z.config['Settings']['Font']
     font = QtGui.QFont()
     font.fromString(fontstring)
+    # print(fontstring)
     app.setFont(font)
 except KeyError:
     print('Font not found')
