@@ -765,13 +765,8 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
 
     def change_font(self):
         fontDialog = QtWidgets.QFontDialog()
-        system_default_font = QtGui.QFont.lastResortFont()
-        print(system_default_font.toString())
-        # if self.old_font == system_default_font:
-        #     print('Default Font!')
-        # else:
-        #     print('Not Default!')
-        fontDialog.setCurrentFont(QtGui.QFont())
+
+        fontDialog.setCurrentFont(self.old_font)
         font, ok = fontDialog.getFont(self.old_font)
         if ok:
             # self.lbl.setFont(font)
@@ -858,13 +853,17 @@ elif __file__:
     application_path = os.path.dirname(__file__)
     version.append('alpha')
 
+app = QtWidgets.QApplication(sys.argv)
+default_font = QtGui.QFont().toString()
 config_path = os.path.join(application_path, config_name)
 
-current_config = TrackerConfig(application_path, version)
+current_config = TrackerConfig(application_path, version, default_font)
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
-app = QtWidgets.QApplication(sys.argv)
+
 # app.setStyle('Fusion')
+
+
 
 try:
     fontstring = Z.config['Settings']['Font']

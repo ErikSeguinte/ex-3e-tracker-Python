@@ -4,7 +4,7 @@ import ZeltInit
 
 
 class TrackerConfig:
-    def __init__(self, path, version):
+    def __init__(self, path, version, default_font):
         self.application_path = path
         self.path = os.path.join(path, 'Ex3-Tracker.cfg')
         self.path = os.path.relpath(self.path)
@@ -14,6 +14,7 @@ class TrackerConfig:
         self.major_version = version[0]
         self.minor_version = version[1]
         self.patch_version = version[2]
+        self.config['DEFAULT'] = {'Font': default_font}
 
         try:
             self.config.read_file(open(self.path))
@@ -43,7 +44,9 @@ class TrackerConfig:
         self.config.set("Settings", "End of round alert", 'False')
         self.config.set("Settings", "Reset includes players", 'False')
         self.config.set("Settings", "Join Battle automatically adds 3", 'True')
-        self.config.set("Settings", "Font", 'Default')
+
+        # self.config.set("Settings", "Font", self.default_font)
+        # self.config.set
 
         # 'Every Turn', 'Every Round', 'Off'
         self.config.set("Settings", "Auto-save", "Every Turn")
