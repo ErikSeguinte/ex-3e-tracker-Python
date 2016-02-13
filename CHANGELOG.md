@@ -4,16 +4,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Known Issues
 ### General
+- Upgrading while keeping an old config file may cause issues. If things aren't working right, please try deleting or renaming the config file.
 - If you have both a custom overall font and a different tracker table font, the overall font will over ride the tracker table font on start up.
+ 
 ### Mac
 - The default native style doesn't appear to like resizing elements when font size is increased. Combo boxes and buttons will stay the same size regardless of how big the font it inside of it.
+  - **Workaround:** The Fusion style may work a little better. The comboboxes grow, but the labels don't.
 
-## [Unreleased]
+## [0.4.0] 2016-02-12
 ## Added
 - Ability to change font and font size of application. 
   - This font change is saved to the config file. 
 - ability to change font in main window.
 - Aim action in 'other actions' window.
+- ability to change the window style between a native look to QT's Fusion style. 
 
 ## Fixed
 - changed "name" to "Name" in the main tracker table header.
@@ -71,6 +75,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Character's Crash counter is incremented once they reach the top of the initiative, instead of when they perform an action.
 - Characters will reset their crash status at the beginning of their 4th turn (when they reach the top of 	initiative), instead of when performing their first action after their 3rd turn.
 - (internal) modification window uses character.__dict__ instead of calling the variables individually. Only returns changed values to update the original dict.
+
 ### Fixed
 -   Resetting combat reset's player Character's initiative and crash status.
 
@@ -79,6 +84,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added `Full Defense` to other action window.
 - Added this changelog, following the example from  [Keep a Changelog](http://keepachangelog.com/)
+
 ### Fixed
 - Fixed fatal crash in 'other action' window.
 - Possibly fixed packaging so windows version can be opened in Windows older than 10. (Probably still not

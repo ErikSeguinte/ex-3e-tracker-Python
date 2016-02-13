@@ -4,6 +4,7 @@ import os
 
 path = os.getcwd()
 
+
 # uic.compileUiDir(path)
 # print(path)
 
@@ -15,8 +16,6 @@ def get_datetime(filename: str):
 
 file_list = os.listdir(path)
 
-
-
 ui_files = [string for string in file_list if re.match(r'.*\.ui', string)]
 py_files = [string for string in file_list if
             re.match(r'.*\.py', string) and not (string == '__init__.py' or string == 'convert_ui.py')]
@@ -24,7 +23,6 @@ py_files = [string for string in file_list if
 ui_files.sort()
 
 py_files.sort()
-
 
 conversion = False
 for file in ui_files:

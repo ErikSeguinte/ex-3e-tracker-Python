@@ -29,6 +29,7 @@ This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written 
 *   Save and load combats, loading current initiative, order, etc
 *   Auto save of combats, configurable to every turn, every round, or never. Defaults to every turn.
 *   Resume auto-save without choosing a file.
+*   Font can be changed to accomodate usage on a big screen for sharing. (Please see Known Issues below.)
 
 
 
@@ -84,7 +85,7 @@ When fighting creatures of Legendary size, a check-box has been provided asking 
 Unless this box is checked, it will be impossible to bring the creature's initiative lower than 1. This option
 is grayed out unless applicable.
 
-"Other Actions" include Delay, withdraw, Full Defense and disengage.
+"Other Actions" include Aim, Delay, withdraw, Full Defense and disengage.
 
 Modify Character allows you to manually edit a character's flags and initiative. NOTE: Inert initiative takes
 precedence over legendary size.
@@ -100,3 +101,13 @@ Custom Gambits that are used frequently can be added for reuse later from the ed
 Use the format "Name : Difficulty", with each gambit seperated by a new line. The default
 gambits cannot be modified, they will be regenerated if deleted or changed.
 The custom gambits will be saved to the config file.
+
+## Known Issues
+### General
+- Upgrading while keeping an old config file may cause issues. If things aren't working right, please try deleting or renaming the config file.
+- If you have both a custom overall font and a different tracker table font, the overall font will over ride the tracker table font on start up.
+### Mac
+- The default native style doesn't appear to like resizing elements when font size is increased. Combo boxes and buttons will stay the same size regardless of how big the font it inside of it.
+  - **Workaround:** The Fusion style may work a little better. The comboboxes grow, but the labels don't.
+
+

@@ -36,8 +36,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.application_path = path
         self.save_path = path
 
-
-
     def setup_menu_items(self):
         self.actionLoad_Players.triggered.connect(self.add_players_from_file)
         self.actionQuit.triggered.connect(sys.exit)
@@ -329,8 +327,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if result:
             self.resize(self.sizeHint())
             self.setup_model()
-
-
 
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
@@ -768,22 +764,22 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         self.close()
 
     def change_font(self):
-        font_dialog=QtWidgets.QFontDialog()
-        fontstring = Z.config['Settings']['Font']
-        current_font = QtGui.QFont()
-        current_font.fromString(fontstring)
+        fontDialog = QtWidgets.QFontDialog()
 
-        font_dialog.setCurrentFont(current_font)
-
-        font, ok = font_dialog.getFont()
+        fontDialog.setCurrentFont(self.old_font)
+        font, ok = fontDialog.getFont(self.old_font)
         if ok:
             # self.lbl.setFont(font)
             global app
-            print(font.toString())
             QtWidgets.QApplication.setFont(font)
             self.new_font = font.toString()
             self.resize(self.sizeHint())
             self.font_change = True
+        else:
+            print(font.toString())
+            # font.setPointSize(32)
+            # global app
+            # app.setFont(font)
 
     def exec(self):
         super().exec()
@@ -827,7 +823,7 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
         if self.new_font:
             self.config['Font'] = self.new_font
         style = str(self.style_comboBox.itemText(self.style_comboBox.currentIndex()))
-        # print(style)
+        print(style)
 
         self.config['Style'] = style
 
@@ -848,7 +844,6 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
 config_name = 'Ex3-Tracker.cfg'
 
 version = [0, 4, 0]
-app = QtWidgets.QApplication(sys.argv)
 
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
@@ -858,24 +853,25 @@ elif __file__:
     application_path = os.path.dirname(__file__)
     version.append('alpha')
 
+app = QtWidgets.QApplication(sys.argv)
+default_font = QtGui.QFont().toString()
 config_path = os.path.join(application_path, config_name)
-default_font = QtGui.QFont()
-# print(default_font.toString())
-current_config = TrackerConfig(application_path, version, default_font.toString())
+
+current_config = TrackerConfig(application_path, version, default_font)
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
 
 # app.setStyle('Fusion')
 
 
+
 try:
     fontstring = Z.config['Settings']['Font']
     font = QtGui.QFont()
     font.fromString(fontstring)
-    # print(fontstring)
     app.setFont(font)
 except KeyError:
-    print('Font not found')
+    pass
 
 # Z.set_up_test()
 

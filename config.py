@@ -14,7 +14,7 @@ class TrackerConfig:
         self.major_version = version[0]
         self.minor_version = version[1]
         self.patch_version = version[2]
-        self.config['DEFAULT'] = {'Font' : default_font}
+        self.config['DEFAULT'] = {'Font': default_font}
 
         try:
             self.config.read_file(open(self.path))
