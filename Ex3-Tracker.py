@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import os, sys, platform
+import os, sys, platform, urllib
 from config import TrackerConfig
 
 from PyQt5 import QtGui, QtCore, QtWidgets
