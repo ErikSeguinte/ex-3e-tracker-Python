@@ -33,6 +33,7 @@ for file in ui_files:
             uic.compileUi(file, new_file)
 
         subprocess.run(['hg', 'add', match, '-y'])
+        subprocess.run(['hg', 'add', file, '-y'])
         conversion = True
         print('Converting ' + str(file))
         continue
