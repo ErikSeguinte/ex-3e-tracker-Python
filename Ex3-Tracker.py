@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-import os, sys, platform, urllib
+import os, sys, platform
 from config import TrackerConfig
+from requests import get
 
 from PyQt5 import QtGui, QtCore, QtWidgets
 
@@ -48,6 +49,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionPreferences.triggered.connect(self.preferences_window)
         self.actionCustom_Gambits.triggered.connect(self.custom_gambit_window)
         self.actionChoose_Font.triggered.connect(self.choose_font)
+        self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
 
     def choose_font(self):
         font, ok = QtWidgets.QFontDialog.getFont()
@@ -327,6 +329,21 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         if result:
             self.resize(self.sizeHint())
             self.setup_model()
+
+    def check_for_updates(self):
+        r = get('https://www.dropbox.com/s/feeycgizkochox0/Ex3-Tracker.txt?dl=1')
+        latest = r.text.split('.')
+        global version
+
+        new_version_available = False
+        for i in range(2):
+            number = int(latest[i])
+            if number > version[i]:
+                new_version_available = True
+                break
+
+        if new_version_available:
+            print("New version available")
 
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
