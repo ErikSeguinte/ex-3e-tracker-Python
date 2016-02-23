@@ -373,26 +373,18 @@ class JoinBattleWindow(QtWidgets.QDialog):
 
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(275, 150)
+        Dialog.resize(275, 112)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.verticalLayout = QtWidgets.QVBoxLayout()
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.set
-        self.groupBox2 = QtWidgets.QGroupBox(Dialog)
-        self.groupBox2.setTitle("")
-        self.groupBox2.setObjectName("groupBox2")
-        self.formLayout_3 = QtWidgets.QFormLayout(self.groupBox2)
-        self.formLayout_3.setObjectName("formLayout_3")
-        self.label_3 = QtWidgets.QLabel(self.groupBox2)
-        self.label_3.setObjectName("label_3")
-        self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_3)
-        self.spinBox2 = QtWidgets.QSpinBox(self.groupBox2)
-        self.spinBox2.setMinimum(-99)
-        self.spinBox2.setObjectName("spinBox2")
-        self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.spinBox2)
-        self.verticalLayout.addWidget(self.groupBox2)
-        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.formLayout = QtWidgets.QFormLayout()
+        self.formLayout.setObjectName("formLayout")
+        self.label = QtWidgets.QLabel(Dialog)
+        self.label.setObjectName("label")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label)
+        self.spinBox = QtWidgets.QSpinBox(Dialog)
+        self.spinBox.setObjectName("spinBox")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.spinBox)
+        self.horizontalLayout.addLayout(self.formLayout)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
@@ -407,8 +399,7 @@ class JoinBattleWindow(QtWidgets.QDialog):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Join Battle!"))
-        self.label.setText(_translate("Dialog", "Join Battle!"))
-        self.label_3.setText(_translate("Dialog", "Join Battle!"))
+        self.label.setText(_translate("Dialog", "TextLabel"))
 
     def exec(self):
         super().exec()
