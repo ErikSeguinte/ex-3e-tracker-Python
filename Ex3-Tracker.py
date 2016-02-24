@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os, sys, platform
 from config import TrackerConfig
+from requests import get
 
 from PyQt5 import QtGui, QtCore, QtWidgets
 
@@ -48,6 +49,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.actionPreferences.triggered.connect(self.preferences_window)
         self.actionCustom_Gambits.triggered.connect(self.custom_gambit_window)
         self.actionChoose_Font.triggered.connect(self.choose_font)
+        self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
 
     def choose_font(self):
         font, ok = QtWidgets.QFontDialog.getFont()
@@ -328,6 +330,27 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             self.resize(self.sizeHint())
             self.setup_model()
 
+    def check_for_updates(self):
+        r = get('https://www.dropbox.com/s/feeycgizkochox0/Ex3-Tracker.txt?dl=1')
+        latest = r.text.split('.')
+        global version
+
+        new_version_available = False
+        for i in range(2):
+            number = int(latest[i])
+            if number > version[i]:
+                new_version_available = True
+                break
+
+        if new_version_available:
+            QtWidgets.QMessageBox.warning(self.window2, "Message",
+                                          "Version " + str(latest[0]) + '.' + str(latest[1]) + '.' + str(
+                                              latest[2]) + " now available.")
+        else:
+            QtWidgets.QMessageBox.warning(self.window2, "Message",
+                                          "Version " + str(latest[0]) + '.' + str(latest[1]) + '.' + str(
+                                              latest[2]) + " is up to date.")
+
 
 class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
     def __init__(self, name, parent=None, ):
@@ -447,7 +470,7 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
 
         trick = (tricks, attacker_trick, defender_trick)
 
-        values = {'combatants':        combatants, 'damage': damage, 'trick': trick, 'rout': rout,
+        values = {'combatants': combatants, 'damage': damage, 'trick': trick, 'rout': rout,
                   'damage_exceeds_10': damage_exceeds_10}
 
         # values = (attacker, defender), damage, trick, rout, success
@@ -843,7 +866,7 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
 
 config_name = 'Ex3-Tracker.cfg'
 
-version = [0, 4, 0]
+version = [0, 5, 0]
 
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
@@ -859,7 +882,6 @@ config_path = os.path.join(application_path, config_name)
 
 current_config = TrackerConfig(application_path, version, default_font)
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
-
 
 # app.setStyle('Fusion')
 
@@ -879,8 +901,7 @@ window = MainWindow(application_path)
 # QtWidgets.QMessageBox.warning(window, "Message", config_path)
 
 
-style = Z.config['Settings'].get('Style','default')
-
+style = Z.config['Settings'].get('Style', 'default')
 
 if style == 'Fusion':
     app.setStyle('Fusion')
@@ -890,7 +911,6 @@ else:
 
     elif platform.system() == 'Darwin':
         app.setStyle('Macintosh')
-
 
 window.show()
 

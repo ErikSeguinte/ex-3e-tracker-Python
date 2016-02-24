@@ -225,7 +225,7 @@
      <x>0</x>
      <y>0</y>
      <width>778</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -258,6 +258,8 @@
     </property>
     <addaction name="actionAbout"/>
     <addaction name="actionReadme"/>
+    <addaction name="separator"/>
+    <addaction name="actionCheck_for_Updates"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -321,6 +323,11 @@
   <action name="actionChoose_Font">
    <property name="text">
     <string>Change Table Font</string>
+   </property>
+  </action>
+  <action name="actionCheck_for_Updates">
+   <property name="text">
+    <string>Check for Updates</string>
    </property>
   </action>
  </widget>
