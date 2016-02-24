@@ -380,16 +380,11 @@ class JoinBattleWindow(QtWidgets.QDialog):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.formLayout = QtWidgets.QFormLayout()
         self.formLayout.setObjectName("formLayout")
-        self.label = QtWidgets.QLabel(Dialog)
-        self.label.setObjectName("label")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label)
-        self.spinBox = QtWidgets.QSpinBox(Dialog)
-        self.spinBox.setObjectName("spinBox")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.spinBox)
+        self.spinboxes = self.create_list(self)
         self.horizontalLayout.addLayout(self.formLayout)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.horizontalLayout.addWidget(self.buttonBox)
 
@@ -398,10 +393,25 @@ class JoinBattleWindow(QtWidgets.QDialog):
         self.buttonBox.rejected.connect(Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def retranslateUi(self, Dialog):
-        _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Join Battle!"))
-        self.label.setText(_translate("Dialog", "TextLabel"))
+    # def retranslateUi(self, Dialog):
+    #     _translate = QtCore.QCoreApplication.translate
+    #     Dialog.setWindowTitle(_translate("Dialog", "Join Battle!"))
+    #     self.label.setText(_translate("Dialog", "TextLabel"))
+
+    def create_list(self, Dialog):
+        i=0
+        spinboxes = list()
+        for character in Z.character_list:
+            label = QtWidgets.QLabel(Dialog)
+            label.setObjectName(character.name)
+            self.formLayout.setWidget(i, QtWidgets.QFormLayout.LabelRole, label)
+            spinBox = QtWidgets.QSpinBox(Dialog)
+            spinBox.setObjectName(character.name + "_spinBox")
+            self.formLayout.setWidget(i, QtWidgets.QFormLayout.FieldRole, spinBox)
+            i += 1
+            spinboxes.append(spinBox)
+        return spinboxes
+
 
     def exec(self):
         super().exec()

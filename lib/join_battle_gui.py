@@ -22,6 +22,12 @@ class Ui_Dialog(object):
         self.spinBox = QtWidgets.QSpinBox(Dialog)
         self.spinBox.setObjectName("spinBox")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.spinBox)
+        self.label_2 = QtWidgets.QLabel(Dialog)
+        self.label_2.setObjectName("label_2")
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_2)
+        self.spinBox_2 = QtWidgets.QSpinBox(Dialog)
+        self.spinBox_2.setObjectName("spinBox_2")
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.spinBox_2)
         self.horizontalLayout.addLayout(self.formLayout)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
@@ -38,4 +44,5 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Join Battle!"))
         self.label.setText(_translate("Dialog", "TextLabel"))
+        self.label_2.setText(_translate("Dialog", "TextLabel"))
 
