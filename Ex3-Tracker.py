@@ -345,7 +345,13 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
                 break
 
         if new_version_available:
-            print("New version available")
+            QtWidgets.QMessageBox.warning(self.window2, "Message",
+                                          "Version " + str(latest[0]) + '.' + str(latest[1]) + '.' + str(
+                                              latest[2]) + " now available.")
+        else:
+            QtWidgets.QMessageBox.warning(self.window2, "Message",
+                                          "Version " + str(latest[0]) + '.' + str(latest[1]) + '.' + str(
+                                              latest[2]) + " is up to date.")
 
 
 # class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
@@ -525,7 +531,7 @@ class AttackWindow(QtWidgets.QDialog, attack_gui.Ui_Dialog):
 
         trick = (tricks, attacker_trick, defender_trick)
 
-        values = {'combatants':        combatants, 'damage': damage, 'trick': trick, 'rout': rout,
+        values = {'combatants': combatants, 'damage': damage, 'trick': trick, 'rout': rout,
                   'damage_exceeds_10': damage_exceeds_10}
 
         # values = (attacker, defender), damage, trick, rout, success
@@ -938,7 +944,6 @@ config_path = os.path.join(application_path, config_name)
 current_config = TrackerConfig(application_path, version, default_font)
 Z.auto_save_path = os.path.relpath(os.path.join(application_path, '__autosave.sav'))
 
-
 # app.setStyle('Fusion')
 
 
@@ -957,8 +962,7 @@ window = MainWindow(application_path)
 # QtWidgets.QMessageBox.warning(window, "Message", config_path)
 
 
-style = Z.config['Settings'].get('Style','default')
-
+style = Z.config['Settings'].get('Style', 'default')
 
 if style == 'Fusion':
     app.setStyle('Fusion')
@@ -968,7 +972,6 @@ else:
 
     elif platform.system() == 'Darwin':
         app.setStyle('Macintosh')
-
 
 window.show()
 
