@@ -9,6 +9,8 @@ import ZeltInit as Z
 from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui, character_picker_ui, \
     Modification_Window, other_action_gui, About_gui, preferences_window, custom_gambit
 
+version = [0, 5, 0]
+
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def __init__(self, path):
@@ -909,7 +911,7 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
 
 config_name = 'Ex3-Tracker.cfg'
 
-version = [0, 5, 0]
+
 
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
