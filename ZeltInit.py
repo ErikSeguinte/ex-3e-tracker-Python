@@ -59,7 +59,10 @@ for action in OTHER_ACTIONS:
     action_dict[name] = cost
 
 config = None
-auto_save_path = os.path.relpath(os.path.join(os.path.dirname(__file__), '__autosave.sav'))
+try:
+    auto_save_path = os.path.relpath(os.path.join(os.path.dirname(__file__), '__autosave.sav'))
+except ValueError:
+    auto_save_path = (os.path.join(os.path.dirname(__file__), '__autosave.sav'))
 
 
 def debug_print(string):
