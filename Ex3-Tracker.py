@@ -191,21 +191,17 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
 
-        for character in c_list:
-            if character.join_battle_pool == 0:
+        i = 0
+        values = JoinBattleWindow().exec()
+        if values is not None:
+            for character in c_list:
                 # Ask for Initiative
 
-                values = JoinBattleWindow(character.name).exec()
-                if values is not None:
-                    join_battle = values
-                    if add_3:
-                        join_battle += 3
-                    character.initiative = join_battle
-                else:
-                    break
-
-            else:
-                character.join_battle()
+                join_battle = values[i]
+                if add_3:
+                    join_battle += 3
+                character.initiative = join_battle
+                i += 1
 
         self.setup_model()
 
@@ -374,7 +370,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
 
 class JoinBattleWindow(QtWidgets.QDialog):
-    def __init__(self, name, parent=None, ):
+    def __init__(self, parent=None, ):
         Dialog = super().__init__()
         self.setupUi(self)
         # self.groupBox.setTitle(name)
@@ -390,7 +386,7 @@ class JoinBattleWindow(QtWidgets.QDialog):
         self.horizontalLayout.addLayout(self.formLayout)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.horizontalLayout.addWidget(self.buttonBox)
 
@@ -405,7 +401,7 @@ class JoinBattleWindow(QtWidgets.QDialog):
     #     self.label.setText(_translate("Dialog", "TextLabel"))
 
     def create_list(self, Dialog):
-        i=0
+        i = 0
         spinboxes = list()
         for character in Z.character_list:
             label = QtWidgets.QLabel(Dialog)
@@ -419,7 +415,6 @@ class JoinBattleWindow(QtWidgets.QDialog):
             spinboxes.append(spinBox)
         return spinboxes
 
-
     def exec(self):
         super().exec()
 
@@ -429,8 +424,9 @@ class JoinBattleWindow(QtWidgets.QDialog):
             return None
 
     def get_values(self):
-        join_battle = self.spinBox.value()
-        return join_battle
+        # join_battle = self.spinBox.value()
+        values = [(spinbox.value()) for spinbox in self.spinboxes]
+        return values
 
 
 class OtherActionWindow(QtWidgets.QDialog, other_action_gui.Ui_Dialog):
@@ -927,8 +923,6 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
 
 
 config_name = 'Ex3-Tracker.cfg'
-
-
 
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):
