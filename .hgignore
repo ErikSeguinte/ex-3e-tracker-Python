@@ -6,3 +6,6 @@ syntax: glob
 build
 dist
 *.cfg
+*.pyc
+.DS_Store
+.python-version
