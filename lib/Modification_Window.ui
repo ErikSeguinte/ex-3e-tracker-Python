@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>381</width>
-    <height>239</height>
+    <height>264</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -70,7 +70,11 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QSpinBox" name="Initiative_box"/>
+        <widget class="QSpinBox" name="Initiative_box">
+         <property name="minimum">
+          <number>-99</number>
+         </property>
+        </widget>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_4">

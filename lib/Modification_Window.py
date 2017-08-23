@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/Users/HornetBookstore/PycharmProjects/ex-3e-init-tracker/lib/Modification_Window.ui'
+# Form implementation generated from reading ui file 'Modification_Window.ui'
 #
-# Created by: PyQt5 UI code generator 5.5.1
+# Created by: PyQt5 UI code generator 5.9
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,13 +11,13 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(381, 239)
+        Dialog.resize(381, 264)
         self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.formLayout_2 = QtWidgets.QFormLayout()
-        self.formLayout_2.setFormAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.formLayout_2.setFormAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.formLayout_2.setObjectName("formLayout_2")
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName("label")
@@ -34,19 +34,20 @@ class Ui_Dialog(object):
         self.horizontalLayout_2.addLayout(self.formLayout_2)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.horizontalLayout_2.addWidget(self.buttonBox)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.formLayout = QtWidgets.QFormLayout()
-        self.formLayout.setFormAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.formLayout.setFormAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.formLayout.setObjectName("formLayout")
         self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setObjectName("label_2")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label_2)
         self.Initiative_box = QtWidgets.QSpinBox(Dialog)
+        self.Initiative_box.setMinimum(-99)
         self.Initiative_box.setObjectName("Initiative_box")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.Initiative_box)
         self.label_4 = QtWidgets.QLabel(Dialog)
@@ -125,3 +126,4 @@ class Ui_Dialog(object):
         self.crashed_recentlycheck.setText(_translate("Dialog", "Crashed Recently"))
         self.has_gone_check.setText(_translate("Dialog", "Has Gone"))
         self.delayed_checkBox.setText(_translate("Dialog", "Delayed"))
+
