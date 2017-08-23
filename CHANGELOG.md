@@ -14,7 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - **Workaround:** The Fusion style may work a little better. The comboboxes grow, but the labels don't.
 
 
-## [0.4.1] Unreleased
+## [0.4.1] 2017-08-23
 ### Fixed
 - Allow negative initiative in modify window. (Issue #2)
 
