@@ -9,6 +9,8 @@ import ZeltInit as Z
 from lib import attack_gui, decisive_gui, main_window, new_character_ui, join_battle_gui, character_picker_ui, \
     Modification_Window, other_action_gui, About_gui, preferences_window, custom_gambit
 
+version = [0, 5, 0]
+
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
     def __init__(self, path):
@@ -189,21 +191,17 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
             QtWidgets.QMessageBox.warning(self.window2, "Message", "Please add characters first.")
             return
 
-        for character in c_list:
-            if character.join_battle_pool == 0:
+        i = 0
+        values = JoinBattleWindow().exec()
+        if values is not None:
+            for character in c_list:
                 # Ask for Initiative
 
-                values = JoinBattleWindow(character.name).exec()
-                if values is not None:
-                    join_battle = values
-                    if add_3:
-                        join_battle += 3
-                    character.initiative = join_battle
-                else:
-                    break
-
-            else:
-                character.join_battle()
+                join_battle = values[i]
+                if add_3:
+                    join_battle += 3
+                character.initiative = join_battle
+                i += 1
 
         self.setup_model()
 
@@ -352,11 +350,70 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
                                               latest[2]) + " is up to date.")
 
 
-class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
-    def __init__(self, name, parent=None, ):
-        super().__init__()
+# class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
+#     def __init__(self, name, parent=None, ):
+#         super().__init__()
+#         self.setupUi(self)
+#         self.groupBox.setTitle(name)
+#
+#     def exec(self):
+#         super().exec()
+#
+#         if self.result():
+#             return self.get_values()
+#         else:
+#             return None
+#
+#     def get_values(self):
+#         join_battle = self.spinBox.value()
+#         return join_battle
+
+
+class JoinBattleWindow(QtWidgets.QDialog):
+    def __init__(self, parent=None, ):
+        Dialog = super().__init__()
         self.setupUi(self)
-        self.groupBox.setTitle(name)
+        # self.groupBox.setTitle(name)
+
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(275, 112)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.formLayout = QtWidgets.QFormLayout()
+        self.formLayout.setObjectName("formLayout")
+        self.spinboxes = self.create_list(self)
+        self.horizontalLayout.addLayout(self.formLayout)
+        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+        self.buttonBox.setOrientation(QtCore.Qt.Vertical)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setObjectName("buttonBox")
+        self.horizontalLayout.addWidget(self.buttonBox)
+
+        # self.retranslateUi(Dialog)
+        self.buttonBox.accepted.connect(Dialog.accept)
+        self.buttonBox.rejected.connect(Dialog.reject)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    # def retranslateUi(self, Dialog):
+    #     _translate = QtCore.QCoreApplication.translate
+    #     Dialog.setWindowTitle(_translate("Dialog", "Join Battle!"))
+    #     self.label.setText(_translate("Dialog", "TextLabel"))
+
+    def create_list(self, Dialog):
+        i = 0
+        spinboxes = list()
+        for character in Z.character_list:
+            label = QtWidgets.QLabel(Dialog)
+            label.setObjectName(str(character.name))
+            label.setText(character.name)
+            self.formLayout.setWidget(i, QtWidgets.QFormLayout.LabelRole, label)
+            spinBox = QtWidgets.QSpinBox(Dialog)
+            spinBox.setObjectName(character.name + "_spinBox")
+            self.formLayout.setWidget(i, QtWidgets.QFormLayout.FieldRole, spinBox)
+            i += 1
+            spinboxes.append(spinBox)
+        return spinboxes
 
     def exec(self):
         super().exec()
@@ -367,8 +424,9 @@ class JoinBattleWindow(QtWidgets.QDialog, join_battle_gui.Ui_Dialog):
             return None
 
     def get_values(self):
-        join_battle = self.spinBox.value()
-        return join_battle
+        # join_battle = self.spinBox.value()
+        values = [(spinbox.value()) for spinbox in self.spinboxes]
+        return values
 
 
 class OtherActionWindow(QtWidgets.QDialog, other_action_gui.Ui_Dialog):
@@ -865,8 +923,6 @@ class PreferencesWindow(QtWidgets.QDialog, preferences_window.Ui_Dialog):
 
 
 config_name = 'Ex3-Tracker.cfg'
-
-version = [0, 5, 0]
 
 # determine if application is a script file or frozen exe
 if getattr(sys, 'frozen', False):

@@ -1,8 +1,12 @@
-# Change Log
+Change Log
+==========
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Known Issues
+
+
+Known Issues
+------------
 ### General
 - Upgrading while keeping an old config file may cause issues. If things aren't working right, please try deleting or renaming the config file.
 - If you have both a custom overall font and a different tracker table font, the overall font will over ride the tracker table font on start up.
@@ -10,6 +14,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Mac
 - The default native style doesn't appear to like resizing elements when font size is increased. Combo boxes and buttons will stay the same size regardless of how big the font it inside of it.
   - **Workaround:** The Fusion style may work a little better. The comboboxes grow, but the labels don't.
+
+
+## [0.4.1] Unreleased
+### Fixed
+#### Windows
+- Prevent Crash on Startup when run from a seperate drive. (Relative paths cause issues when crossing drive letters)
+
+### Added
+- Rudimentary Update checker. Checks a text file for current version, alerts user to download.
 
 ## [0.4.0] 2016-02-12
 ## Added

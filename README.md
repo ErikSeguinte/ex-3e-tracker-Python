@@ -1,6 +1,12 @@
 # Exalted 3rd Edition Initiative Tracker
 
-This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written in Python® 3.5.1, QT 5.5.1, and PyQT 5.5.1. Bundled using PyInstaller. Created by Erik Seguinte <ErikSeguinte@gmail.com>
+This is an initiative tracker for Onyx Path's 3rd edition Exalted game. Written in
+Python® 3.5.1, QT 5.5.1, and PyQT 5.5.1. Bundled using PyInstaller.
+
+Developed using Test Driven Development and UnitTest.
+
+Created by
+ Erik Seguinte <ErikSeguinte@gmail.com>
 
 ## Features
 

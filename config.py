@@ -1,10 +1,11 @@
 import configparser, os
 import ZeltInit
+from PyQt5.QtGui import QFont
 
 
 
 class TrackerConfig:
-    def __init__(self, path, version, default_font):
+    def __init__(self, path, version=[0,0,0], default_font=QFont()):
         self.application_path = path
         self.path = os.path.join(path, 'Ex3-Tracker.cfg')
         self.path = os.path.relpath(self.path)

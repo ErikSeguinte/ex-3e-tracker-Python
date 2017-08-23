@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/Users/HornetBookstore/PycharmProjects/ex-3e-init-tracker/lib/join_battle_gui.ui'
+# Form implementation generated from reading ui file 'join_battle_gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -11,25 +11,27 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(236, 70)
+        Dialog.resize(275, 112)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.groupBox = QtWidgets.QGroupBox(Dialog)
-        self.groupBox.setTitle("")
-        self.groupBox.setObjectName("groupBox")
-        self.formLayout = QtWidgets.QFormLayout(self.groupBox)
+        self.formLayout = QtWidgets.QFormLayout()
         self.formLayout.setObjectName("formLayout")
-        self.label = QtWidgets.QLabel(self.groupBox)
+        self.label = QtWidgets.QLabel(Dialog)
         self.label.setObjectName("label")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.label)
-        self.spinBox = QtWidgets.QSpinBox(self.groupBox)
-        self.spinBox.setMinimum(-99)
+        self.spinBox = QtWidgets.QSpinBox(Dialog)
         self.spinBox.setObjectName("spinBox")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.spinBox)
-        self.horizontalLayout.addWidget(self.groupBox)
+        self.label_2 = QtWidgets.QLabel(Dialog)
+        self.label_2.setObjectName("label_2")
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.label_2)
+        self.spinBox_2 = QtWidgets.QSpinBox(Dialog)
+        self.spinBox_2.setObjectName("spinBox_2")
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.spinBox_2)
+        self.horizontalLayout.addLayout(self.formLayout)
         self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
         self.buttonBox.setOrientation(QtCore.Qt.Vertical)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.horizontalLayout.addWidget(self.buttonBox)
 
@@ -41,4 +43,6 @@ class Ui_Dialog(object):
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Join Battle!"))
-        self.label.setText(_translate("Dialog", "Join Battle!"))
+        self.label.setText(_translate("Dialog", "TextLabel"))
+        self.label_2.setText(_translate("Dialog", "TextLabel"))
+

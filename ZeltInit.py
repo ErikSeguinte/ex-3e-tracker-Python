@@ -64,6 +64,7 @@ try:
 except ValueError:
     auto_save_path = (os.path.join(os.path.dirname(__file__), '__autosave.sav'))
 
+
 def debug_print(string):
     """ Prints string. Used in debugging so it can be found easier later.
 
