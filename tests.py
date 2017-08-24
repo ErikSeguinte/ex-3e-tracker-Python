@@ -391,30 +391,30 @@ class MyTest(unittest.TestCase):
             self.assertEqual(giant.crash_state, crash, "loop " + str(i))
             i += 1
 
-            # values = iter(known_values)
-            #
-            # damage, j_init, g_init, crash = next(values)
+    def test_inert_initiative(self):
+        Z.reset_combat()
+        jack = Z.Character(name='Jack', initiative=10)
+        Z.character_list.append(jack)
+        army = Z.Character(name='Army', initiative=5, inert=True)
+        Z.character_list.append(army)
 
-            # Z.skip_turn()
-            # Z.sort_table()
-            # Z.handle_withering((0, 1), damage)
-            # Z.sort_table()
+        Z.sort_table()
+        Z.handle_withering((0, 1), 3)
 
-            # Z.print_table(True)
-            # self.assertEqual(giant.initiative, g_init)
-            # self.assertEqual(jack.initiative, j_init)
-            # self.assertEqual(giant.crash_state, crash)
-            #
-            # damage, j_init, g_init, crash = next(values)
-            # Z.sort_table()
-            # Z.handle_withering((0, 1), damage)
-            # Z.sort_table()
-            #
-            # Z.print_table(True)
-            # self.assertEqual(giant.initiative, g_init)
-            # self.assertEqual(jack.initiative, j_init)
-            # self.assertEqual(giant.crash_state, crash)
+        self.assertEqual(jack.initiative, 11)
+        self.assertEqual(army.initiative, 5)
+        Z.sort_table()
 
+        Z.handle_withering((0,1), 7)
+
+        self.assertEqual(jack.initiative, 4)
+        self.assertEqual(army.initiative, 5)
+        Z.sort_table()
+
+        Z.handle_withering((0,1), 4)
+
+        self.assertEqual(jack.initiative, -5)
+        self.assertEqual(army.initiative, 5)
 
 if __name__ == '__main__':
     unittest.main()
