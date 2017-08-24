@@ -18,7 +18,7 @@ class TrackerConfig:
         self.config['DEFAULT'] = {'Font': default_font}
 
         try:
-            self.config.read_file(open(self.path))
+            self.config.read(self.path)
 
         except IOError:
             self.create_config()
