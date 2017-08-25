@@ -14,6 +14,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - **Workaround:** The Fusion style may work a little better. The comboboxes grow, but the labels don't.
 
 
+## [0.4.3] 2017-08-24
+### Fixed
+- prevent crash on startup when creating new cfg file
 ## [0.4.2] 2017-08-24
 ### Fixed
 - Inert Initiative should actually be inert
