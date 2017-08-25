@@ -18,7 +18,9 @@ class TrackerConfig:
         self.config['DEFAULT'] = {'Font': default_font}
 
         try:
-            self.config.read(self.path)
+            f = open(self.path)
+            self.config.read_file(f)
+            f.close()
 
         except IOError:
             self.create_config()
@@ -27,7 +29,9 @@ class TrackerConfig:
             self.config.sections()
             print(str(self.config.sections()))
 
+
         ZeltInit.config = self.config
+        print(self.config.sections())
 
         if 'gambits' in self.config['Custom']:
             self.process_custom_gambits(self.config["Custom"]["gambits"])
@@ -59,7 +63,7 @@ class TrackerConfig:
         self.config.set('Settings', 'auto_save custom path', 'False')
         self.config.set('Settings', 'Auto-save path', rel_path)
 
-        self.config.add_section("Custom")
+        self.config.add_section('Custom')
         config = self.config["Custom"]
 
     #         config["gambits"] = """\
