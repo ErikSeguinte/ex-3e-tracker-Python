@@ -357,12 +357,16 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
                 if check_for_crash(defender_index, damage):
                     if attacker.shift_target is defender:  # Initiative Shift!
                         shifting = True
-                    attacker.initiative += 5
+
+                    if not attacker.inert_initiative: #Inert initiative should not increase
+                        attacker.initiative += 5
+
                     defender.crash_state = True
                     defender.shift_target = attacker
 
                 # Successful Attack
-                attacker.initiative += damage
+                if not attacker.inert_initiative: #Inert initiative should not increase
+                    attacker.initiative += damage
                 if shifting:
                     attacker.has_gone = False
                     if attacker.initiative < 3:
@@ -381,8 +385,9 @@ def handle_withering(combatants, damage, trick=(False, 0, 0), rout=0, success=Tr
                 else:
                     defender.initiative -= damage
 
-            # Attacker gains 1 init regardless of damage
-            attacker.initiative += 1
+            # non-inert Attacker gains 1 init regardless of damage
+            if not attacker.inert_initiative: #Inert initiative should not increase
+                attacker.initiative += 1
 
         else:
             bonus = (rout * 5) + 1
