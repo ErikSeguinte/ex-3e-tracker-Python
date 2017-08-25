@@ -399,21 +399,23 @@ class MyTest(unittest.TestCase):
         Z.character_list.append(army)
 
         Z.sort_table()
-        Z.handle_withering((0, 1), 3)
 
+        # Jack attacks Army
+        Z.handle_withering((0, 1), 3)
         self.assertEqual(jack.initiative, 11)
         self.assertEqual(army.initiative, 5)
         Z.sort_table()
 
+        # Army attacks Jack
         Z.handle_withering((0,1), 7)
-
         self.assertEqual(jack.initiative, 4)
         self.assertEqual(army.initiative, 5)
         Z.sort_table()
 
+        #Top of round. Army crash's jack
         Z.handle_withering((0,1), 4)
 
-        self.assertEqual(jack.initiative, -5)
+        self.assertEqual(jack.initiative, -0)
         self.assertEqual(army.initiative, 5)
 
 if __name__ == '__main__':
