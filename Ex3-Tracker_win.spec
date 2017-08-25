@@ -4,10 +4,10 @@ block_cipher = None
 
 
 a = Analysis(['Ex3-Tracker.py'],
-             pathex=['C:\\Users\\Primefactorx01\\AppData\\Local\\Programs\\Python\\Python35\\Lib\\site-packages\\PyQt5\\Qt\\bin', 'F:\\windows\\projects\\ex-3e-init-tracker'],
+             pathex=['C:\\Users\\Primefactorx01\\Documents\\Python\\ex-3e-init-tracker'],
              binaries=[],
              datas=[],
-             hiddenimports=[],
+             hiddenimports=['queue'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
@@ -22,12 +22,12 @@ exe = EXE(pyz,
           name='Ex3-Tracker',
           debug=False,
           strip=False,
-          upx=True,
-          console=False )
+          upx=False,
+          console=True )
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
                a.datas,
                strip=False,
-               upx=True,
+               upx=False,
                name='Ex3-Tracker')
